@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html class="bgf3" style="height: 100%;">
+	<head>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+	    <script src="js/update.js"></script>
+	    <link href="css/mui.min.css" rel="stylesheet"/>
+	    <link href="css/app.css" rel="stylesheet"/>
+	    <link rel="stylesheet" type="text/css" href="css/style/footer.css"/>
+	    <style type="text/css">
+	    	.mui-slider-indicator .mui-active.mui-indicator {
+	    		background: #52c4fe;
+	    	}
+	    	.mui-slider-indicator .mui-indicator {
+	    		display: inline-block;
+	    		width: 6px;
+	    		height: 6px;
+	    		margin: 1px 6px;
+	    		cursor: pointer;
+	    		border-radius: 50%;
+	    		background: ghostwhite;
+	    		-webkit-box-shadow: 0 0 0px 0px ;
+	    		box-shadow: 0 0 0px 0px ;
+	    	}
+	    </style>
+	</head>
+	<body id="page" style="height:100%;background-color:#F6F6F6;">
+		<div id="">
+		<div id="slider" class="mui-slider banner">
+			<div class="mui-slider-group mui-slider-loop">
+				<!--额外增加的一个节点(循环轮播：第一个节点是最后一张轮播)-->
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<a href="#">
+						<img src="images/banner3.jpg">
+					</a>
+				</div>
+				<!-- 第一张 -->
+				<div class="mui-slider-item">
+					<a data-url="spread/inte_center">
+						<img src="images/banner1.jpg">
+					</a>
+				</div>
+				<!-- 第二张 -->
+				<div class="mui-slider-item">
+					<a data-url="spread/sharePage">
+						<img src="images/banner2.jpg">
+					</a>
+				</div>
+				<!-- 第三张 -->
+				<div class="mui-slider-item">
+					<a data-url="auth/step0">
+						<img src="images/banner3.jpg">
+					</a>
+				</div>
+				<!--额外增加的一个节点(循环轮播：最后一个节点是第一张轮播)-->
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<a href="#">
+						<img src="images/banner1.jpg">
+					</a>
+				</div>
+			</div>
+			<div class="mui-slider-indicator">
+				<div class="mui-indicator mui-active"></div>
+				<div class="mui-indicator"></div>
+				<div class="mui-indicator"></div>
+			</div>
+		</div>
+		<div class="headlines" style="height: 45px">
+			<div class="pic" style="font-size:17px;color: orange;font-weight: 500;">游卡头条:</div>
+		  	<div id="ink_con" class="shell">		  		
+				<a v-for="item in news" data-url="news/info" data-params="{info_id:{{item.article_id}} }">
+					<i class="hot">热门</i>{{item.title}}
+				</a>
+		  	</div>
+		</div>
+		<div class="list" style="height: 120px;margin-top:10px;">
+			<div class="homeleft link" onclick="judgement()" style="background-size: 100%;background-position-y: 45%;height: 135px;padding-left: 15px;">
+				<div class="text">
+					<strong style="font-size:16px;">旅游出行</strong>
+					<span>用车租车 出行好方便</span>
+				</div>
+			</div>
+			<div class="homeright" data-jump style="background-size: 100%;background-position-y: 45%;height: 135px;">
+				<div class="top link"> 
+					<div class="text">
+						<strong style="font-size:16px;">接送服务</strong>
+						<span>火车 飞机 都能接送啦</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr style="height:1px;border:none;border-top:1px solid #e1e1e1;margin-top:10px;" />
+		<table id="nav" width="100%" height="60px" style="background-color: white;">
+			<tr align="center">
+				<td width="20%">
+					<a id="daoyou">
+						<img src="images/tourist.jpg" style="width: 45%;"/>
+						<p style="font-size: 13px;">导 游</p>
+					</a>
+				</td>
+				<td width="20%" onclick="noStart()">
+					<img src="images/hotels.jpg" style="width: 45%;"/>
+					<p style="font-size: 13px;">酒 店</p>
+				</td>
+				<td width="20%" onclick="noStart()">
+					<img src="images/back.jpg" style="width: 46%;"/>
+					<p style="font-size: 13px;">签 到</p>
+				</td>
+				<td width="20%" onclick="noStart()">
+					<img src="images/food.jpg" style="width: 45%;"/>
+					<p style="font-size: 13px;">美 食</p>
+				</td>
+				<td width="20%">
+					<img src="images/forum.jpg" style="width: 45%;"/>
+					<p style="font-size: 13px;">返 空</p>
+				</td>
+			</tr>
+		</table>
+		<hr style="height:1px;border:none;border-top:1px solid #e1e1e1;"/>
+		<hr style="height:1px;border:none;border-top:1px solid #e1e1e1;margin-top:10px;"/>
+		<div class="personal" style="padding-left: 10px;background-color: white;height: 30px;padding-top:5px;">
+			<div style="display: inline;color:#53cac3;font-size: 16px;">
+				<img src="images/yktj.png" style="display: inline;width:4.5%;margin-bottom: -2px;margin-left: 5px;"/>
+				 游卡推荐
+			</div>
+			<div style="display: inline;padding-right: 5px;float: right;margin-top:3px;color: #939393;" onclick="noStart()">
+				更多
+				<img src="images/right_go.png" style="width: 17%;margin-bottom: -2px;"/>
+			</div>
+		</div>
+		<table width="100%" style="background-color:white;">
+			<tr align="center">
+				<td width="30%" data-url="spread/sharePage" style=""> 
+					<img src="images/energy.jpg" style="width: 90%;border-radius: 7px;margin-left: 10px;"/>
+				</td>
+				
+				<td width="30%" v-if="driver.status == 1" data-url="driver-plat/index">
+					<img src="images/order.jpg" style="width: 90%;border-radius: 7px ;"/>
+				</td>
+				<td width="30%" v-else data-url="auth/step0">
+					<img src="images/order.jpg" style="width: 90%;border-radius: 7px ;"/>
+				</td>		
+				<td width="30%" data-url="spread/inte_center">
+					<img src="images/integral.jpg" style="width: 90%;border-radius: 7px;margin-right: 10px;"/>
+				</td>				
+			</tr>
+		</table>
+		</div>
+		<div style="display: block;" class="footer_bar openwebview">
+			<ul class="warp clearfix" style="background-color:#f1f1f1;">
+			    <li>
+			        <a data-url="index">
+			            <i><img src="images/shouye1.png"/></i>
+			            <span style="font-size: 14px;color: #52C4FE;">首页</span>
+			        </a>
+			    </li>
+			    <li>
+			        <a data-url="news/index">
+			            <i><img src="images/xiaoxi.png"/></i>
+			            <span style="font-size: 14px;">消息</span>
+			        </a>
+			    </li>
+			    <li>
+			        <a data-url="account/index">
+			            <i><img src="images/own.png"/></i>
+			            <span style="font-size: 14px;">我的</span>
+			        </a>
+			    </li>
+			</ul>
+		</div>
+		<script src="js/lib/mui.min.js"></script>
+	    <script src="js/lib/jquery-2.2.1.min.js"></script>
+	    <script src="js/lib/vue.min.js"></script>
+	    <script src="js/app.min.js"></script>
+		<script src="js/module/index.js"></script>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					driver: [],
+					userInfo:[],
+					news: null,
+				}
+			});
+			mui.plusReady(function() {
+				/*预加载接送服务*/
+				var page = mui.preload({
+				    url:'/page/shuttle/index.html',
+				    id:'shuttle/index',//默认使用当前页面的url作为id
+				    extras:{},//传参
+				    show:{
+				    	autoShow:true,//页面loaded事件发生后自动显示，默认为true
+					    aniShow:"slide-in-right",//页面显示动画，默认为”slide-in-right“；
+					    duration:500,//页面动画持续时间，Android平台默认100毫秒，iOS平台默认200毫秒；
+				    },//页面跳转动画
+				});
+				window.noStart = function(){
+					plus.nativeUI.toast('正在开发中,敬请期待!');
+				}
+				http.post('api/News/getNewsList', {type: 2}, function(msg, data) {
+					vm.news = data.data;
+					console.info(data.data); 
+				});
+				window.homeLoad = function(){
+					if (user.check()) {
+						auth.update(function(info){
+							vm.driver = info.driver;
+						});
+						user.update(function(info) {
+							vm.info = info;
+						});	
+					}
+				}	
+				homeLoad();
+		        windows.receive('update', function(info) {
+					homeLoad();
+				});	
+				window.judgement = function(){
+					auth.update(function(info){
+						vm.driver = info.driver;
+						console.log(info.driver);
+						if(info.driver!=null){
+							 if(info.driver.status==1){ 				
+								windows.open('driver-plat/index');
+							}else{ 
+								windows.open('platform/user');
+							}
+						}else{
+							windows.open('platform/user');
+						}
+					});
+				}
+			});
+			mui('body').on('tap', '[data-jump]', function(e) {      
+			  mui.openWindow({
+			    id:'shuttle/index'
+			  });
+			});
+			window.addEventListener("initCart", function(event) {
+				var d = event.detail;
+				location.reload(d.jus);
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			#para1 {background: url(../../images/bg_login.jpg) no-repeat;background-size: 100%;background-repeat: no-repeat;background-attachment: fixed;}
+			* {margin: 0;padding: 0;}
+			input::-webkit-input-placeholder,
+			textarea::-webkit-input-placeholder {
+				color: white;
+			}
+		</style>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/app.css" />
+	</head>
+	<body id="para1">
+		<div>
+			<div style="padding-top:28%;">
+				<div id="image-youka" align="middle">
+					<img src="../../images/logo_login.png" width="40%">
+				</div>
+			</div>
+			<form class="form" id="page" style="padding-top: 15%;">
+				<div class="car-info authenticate-form" style="background-color:transparent;">
+					<dl>
+						<dt style="height:38px;"><img src="../../images/shouji.png" height=40px style="padding-top:10px;padding-left:30px;background-color: transparent;"></dt>
+						<dd><input type="tel" class="mui-input-clear mui-input" id="account" v-model="account" placeholder="请输入手机号码" style="background-color:transparent;font-size:15px;" /> </dd>
+						<hr style="width:90%;margin-left: 5%;border:0;background-color:white;height:1px;"/>
+					</dl>
+					<br/>
+					<dl>
+						<dt style="height:38px;"><img src="../../images/mima.png" height=39px style="padding-top:10px;padding-left:30px;"></dt>
+						<dd><input type="password" class="mui-input-clear mui-input" id="password" v-model="password" placeholder="请输入密码" style="background-color:transparent ;-webkit-print-color-adjust: economy;font-size:15px;" /> </dd>
+						<hr style="width:90%;margin-left: 5%;border:0;background-color:white;height:1px;"/>
+					</dl>
+				</div>
+				<div class="pay-button" align="middle" style="position: relative;">
+					<a class="mui-pull-right forget" href="forgety.html" style="color: white;padding-bottom: 13%;margin-right: 10%;margin-top: auto;">? 忘记密码</a>
+					<button type="button" class="mui-btn mui-btn-block" v-on:tap="login" style="background-color:transparent;border:1px solid white;height:40px;width:95%;border-radius:20px;font-size:17px;">登录</button>
+					<a href="register.html" class="mui-btn mui-btn-block registered-button" style="background-color:transparent;font-size:17px;">注册</a>
+				</div>
+			</form>
+		</div>
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/update.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			new Vue({
+				el: '#page',
+				methods: {
+					login: function() {
+						var accountBox = document.getElementById('account');
+						var passwordBox = document.getElementById('password');
+						
+						//获取移动设备的id
+						var mainActivity = plus.android.runtimeMainActivity();
+					    var Settings= plus.android.importClass("android.provider.Settings");
+					    console.log(Settings.Secure.getString(mainActivity.getContentResolver(),Settings.Secure.ANDROID_ID));
+					    var app_id = Settings.Secure.getString(mainActivity.getContentResolver(),Settings.Secure.ANDROID_ID);
+					    
+						var info = plus.push.getClientInfo();
+						if (info.clientid == '') {
+							plus.nativeUI.toast('没有获取到您的设备信息');
+						}
+						if (!accountBox.value) {
+							plus.nativeUI.toast('请使用手机号码为账号名称');
+							return;
+						}
+						var data = {
+							account: accountBox.value,
+							password: passwordBox.value,
+							clientid: info.clientid,
+						};
+						http.post('api/BaseApi/login', data, function(msg, info) {
+							plus.nativeUI.toast(msg);
+							user.login(info);
+							mui.currentWebview.close();
+						});
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,84 @@
+.ui-page-login,
+body {
+	font-family:"Microsoft YaHei";
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+	background-color:#f3f3f3;
+}
+.mui-content{height: 100%;}
+input[type='tel'],input[type='password'] {font-family:"Microsoft YaHei";font-size:.8rem;height:46px;margin:0;border:none}
+.area{margin:20px auto 0 auto}
+.mui-input-group label{width:22%}
+.mui-input-row label~input,.mui-input-row label~select,.mui-input-row label~textarea{width:78%}
+.mui-checkbox input[type=checkbox],.mui-radio input[type=radio]{top:6px}
+.mui-content-padded{margin-top:40px;}
+.mui-btn{padding:10px}
+.link-area{display:block;text-align:center}
+.spliter{color:#bbb;padding:0 8px}
+.oauth-area{position:absolute;bottom:20px;left:0;text-align:center;width:100%;padding:0;margin:0}
+.oauth-area .oauth-btn{display:inline-block;width:50px;height:50px;background-size:30px 30px;background-position:center center;background-repeat:no-repeat;margin:0 20px;border:solid 1px #ddd;border-radius:25px}
+.oauth-area .oauth-btn:active{border:solid 1px #aaa}
+.oauth-area .oauth-btn.disabled{background-color:#ddd}
+
+.mui-bar-nav{z-index: 10; right: 0;left: 0; height: 48px;padding-right: 10px;padding:0 1em; border-bottom: 0; background-color: #52c4fe;box-shadow:none; -webkit-backface-visibility: hidden; backface-visibility: hidden;}
+.mui-bar-nav h1{line-height:48px;color:#FFFFFF;font-size: 17px;position: absolute;display: block;width: 100%;margin: 0 -10px; padding: 0; text-align: center;white-space: nowrap;}
+.mui-bar-nav a{color: #fff;}
+
+.login .mui-input-group .mui-input-row{height: 46px;line-height:46px;margin-top:0;}
+.login .car-info{margin-top: 4px;}
+.login label,.login input{height: 46px;line-height:46px;padding: 0 1em;font-family:"Microsoft YaHei";font-size: 0.9rem;}
+.login label{padding-right: 0;}
+.login input{height: 46px;line-height:46px;padding: 0 1em;width: 72%;}
+
+.login-button button{height: 40px;line-height: 40px;padding: 0;font-size: 1.0rem;background-color: #52c4fe;border:none;}
+.login-button button:enabled:active{background: #F5806C;border:none;}
+.login-button button.registered-button{background-color:#50D066;}
+.login-button button.registered-button:enabled:active{background-color:#6BDD7E;}
+
+.forget-password{float: right; margin-right: 1em;}
+.forget-password a{font-size:0.9rem;color:#ff801a;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

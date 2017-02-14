@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="bgf3">
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../../css/app.css"/>	
+		<link rel="stylesheet" type="text/css" href="../../css/mui.picker.css"/>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.dtpicker.css"/>		
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">发布接送任务</h1>
+		</header>
+		<div class="mt4 mui-content mdb65" id="page">
+			<form  id="form">
+				<div class="shuttle">
+					<div  class="mui-segmented-control">
+						<a class="mui-control-item" data-url="shuttle/meet-plane" style="color: #333333;">接飞机</a>
+						<a class="mui-control-item  mui-active">送飞机</a>
+					</div>
+				</div>
+				<div class="shuttle-con">
+					<ul class="mui-table-view form-input">
+						<li class="mui-table-view-cell">
+							<div class="mui-input-row">
+								<label style="color: #333333;">接人地址</label>
+								<input type="text" placeholder="请输入接人地址" name="sites" style="color: #6c6c6c;">
+							</div>
+						</li>
+						<li class="mui-table-view-cell">
+							<div class="mui-input-row">
+								<span style="padding: 15px;color: #333333;">送达机场航站楼</span>
+								<a id="btn_select"> 
+									<select style="width: 60%;height: 20px;padding-left: 20px;" id="sites" name="address"> 
+										<option value="T1">T1</option> 
+										<option value="T2">T2</option>
+									</select> 
+								</a> 
+							</div>
+						</li>
+						<li class="mui-table-view-cell">
+							<div class="mui-input-row">
+								<label style="color: #333333;">航班班次</label>
+								<input type="text" placeholder="请输入航班班次" name="number" style="color: #6c6c6c;">
+							</div>
+						</li>
+					</ul>
+					<ul class="mui-table-view form-input">
+						<li class="mui-table-view-cell">
+							<div class="mui-input-row">
+								<label style="color: #333333;">乘车人数</label>
+								<input type="text" placeholder="请填写乘车人数" name="people_num"style="color: #6c6c6c;">
+							</div>
+						</li>
+						<li class="mui-table-view-cell">
+							<div class="mui-input-row">
+								<label style="color: #333333;">联系电话</label>
+								<input type="text" placeholder="请填写联系电话	" name="phone" style="color: #6c6c6c;">	
+							</div>
+						</li>
+						<li class="mui-table-view-cell">
+							<div class="mui-input-row">
+								<label style="color: #333333;">联 系 人</label>
+								<input type="text" placeholder="请填写联系人姓名" name="people" style="color: #6c6c6c;">
+							</div>
+						</li>
+					</ul>	
+					<ul class="mui-table-view form-input">			
+						<li class="mui-table-view-cell">
+							<div class="mui-input-row">
+								<span style="padding: 15px;color: #333333;padding-left: 17px;">车型费用￥</span>
+									<form style="display: inline;"> 
+										<a id="btn_select"> 
+											<select style="width: 60%;height: 20px;padding-left: 20px;" name="typles"> 
+												<option v-for="item in items" value="{{item.money}}">{{item.seat}}座({{item.money}}元)&emsp;&emsp;剩余&ensp;{{item.num}}&ensp;趟/次</option>
+											</select>
+										</a> 
+									</form>
+								</div>
+							</li>
+							<!--酒店接人时间 begin-->
+							<li class="mui-table-view-cell">
+								<div style="height: 46px;line-height: 43px;" class="btn">	
+									<button id="btn" data-options='{"value":"2016-5-20 10:10","beginYear":2010,"endYear":2020}' class=" mui-btn" style="border:0;font-size: 13px;padding-left: 15px;">接人时间</button>
+									<div id="starttime" name="starttime" style="display: inline;padding-left: 10%;" >
+										<span id="sp" style="font-size: 13px;color: currentcolor;color: #a7a5a5;">点击选择日期</span>
+										<input id="inputObj" name="start_time" type="text">
+									</div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<div style="height: 46px;line-height: 43px;" class="btn1">	
+									<button id="btn1" data-options='{"value":"2016-5-20 10:10","beginYear":2010,"endYear":2020}' class=" mui-btn" style="border:0;font-size: 13px;padding-left: 15px;color: #6c6c6c;">起飞时间</button>
+									<div id="starttime" name="starttime" style="display: inline;padding-left: 10%;" >
+										<span id="sp1" style="font-size: 13px;color: currentcolor;color: #a7a5a5;">点击选择日期</span>
+										<input id="inputObj1" name="fly_time" type="text">
+									</div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+									<label style="color: #333333;">差价费用</label>
+									<input type="number" name="add_money" placeholder="请填写差价" style="color: #6c6c6c;">
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<div class="mui-input-row">
+									<label style="color: #6c6c6c;">备&emsp;注</label>
+									<input name="remark" type="text" placeholder='其他备注' style="color: #6c6c6c;">
+									<input type="hidden" name="is_plane"  value="1"  />
+									<input type="hidden" name="is_meet"  value="0"  />
+								</div>
+							</li>
+						</ul>
+					</div>
+				</form>
+			<div class="mui-bottom suspension release-button bgff">
+			 	<button type="button" class="mui-btn mui-btn-block" v-on:tap="addTask">确认并支付</button>
+			</div>
+		</div>
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="../../js/time/mui.picker.js"></script>
+		<script src="../../js/time/mui.picker.min.js" type="text/javascript"></script>
+		<script type="text/javascript" src="../../js/time/mui.dtpicker.js"></script>		
+		<script>
+		var vm = new Vue({
+			el: '#page',
+			data: {
+				start_time : '',
+				fly_time:'',
+				items:[]
+			},
+			methods: {
+				addTask: function(){
+					plus.nativeUI.showWaiting( "订单提交中..." );
+					var myTime = new Date();
+					var nowTime = myTime.getTime();
+					var startTime = document.getElementById("inputObj").value;
+					var start_time = (new Date(startTime)).getTime();
+					if(start_time-nowTime>85800000){
+						var formData = form.getFormData("#form");
+						formData = $.extend(formData,{'num':1});
+						http.post('api/User/setShuttle', formData, function(msg, d){
+							console.log(JSON.stringify(d));
+							plus.nativeUI.closeWaiting();
+							windows.open('shuttle/paycar', d);
+						});
+					}else{
+						alert("接人时间只能预约24小时后的服务哟！加急订单需单独确认；"+"详询："+"\n"+"29座以下：18980878649"+"\n"+"29座以上：17716133601");
+					}
+					plus.nativeUI.closeWaiting();
+				},				
+			}
+		});	
+		mui.plusReady(function() {
+			$('.typles').val();
+			http.post('api/User/GetCarType',{flag:'0'}, function(msg, data){
+				vm.items = data;
+			});
+		})
+		</script>	
+		
+		<script>
+			(function($) {
+				$.init();
+				var btns = $('.btn');
+				btns.each(function(i, btn) {
+					btn.addEventListener('tap', function() {
+					var optionsJson = this.getAttribute('data-options') || '{}';
+					var options = JSON.parse(optionsJson);
+					var picker = new $.DtPicker(options);
+					picker.show(function(rs) {
+						inputObj.value=rs.text;
+						sp.innerText = rs.text;
+						picker.dispose();
+					});
+				}, false);
+			});
+		})(mui);
+		</script>
+		
+		<script>
+			(function($) {
+				$.init();
+				var btns = $('.btn1');
+				btns.each(function(i, btn) {
+					btn.addEventListener('tap', function() {
+					var optionsJson = this.getAttribute('data-options') || '{}';
+					var options = JSON.parse(optionsJson);
+					var picker = new $.DtPicker(options);
+					picker.show(function(rs) {
+						inputObj1.value=rs.text;
+						sp1.innerText = rs.text;
+						picker.dispose();
+					});
+				}, false);
+			});
+		})(mui);
+		</script>	
+	</body>
+</html>

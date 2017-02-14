@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html class="bgf3">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/app.css">
+	</head>
+	<body>
+		<!--标题 begin-->	
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">司机认证 - 选填资料</h1>
+		</header>
+		<!--标题 end-->
+		
+		<div class="mt4 mui-content bgf3">
+			<div class="msg-wrap">
+				<div class="mui-table-cell mui-col-xs-4 pic">
+					<img src="../../images/msg4.jpg" />
+				</div>
+				<div class="mui-table-cell mui-col-xs-8 text">
+					<p>完善更多资料，获取更多机会</p>
+				</div>
+			</div>
+			<form action="api/Auth/setDriver/t-4.html" id="page">
+			<div class="mui-table-view car-info authenticate-form more-info m0">
+					<dl class="mui-table-view-cell">
+						<dt>营运证号</dt>
+						<dd><input type="text" name="transport_no" v-model="transport_no" placeholder="请填写你的营运证号" /> </dd>
+					</dl>
+					<dl class="mui-table-view-cell">
+						<dt>从业资格证号</dt>
+						<dd><input type="text" name="cert_no" v-model="cert_no" placeholder="请填写你的从业资格证号" /> </dd>
+					</dl>
+			</div>
+			<div class="mui-table-view car-info upload-pic-wrap OptionalInfo">
+					<dl class="mui-table-view-cell">
+						<dt>上传相关证照</dt>
+					</dl>
+					<dl class="mui-table-view-cell">
+						<dd>
+							<ul class="upload-pic">
+								<li v-on:tap="transport">
+									<input id="transport_image" type="hidden" name="transport_image" v-model="transport_image" value="">
+									<img src="{{transport_image ? transport_image: '../../images/uppic.jpg'}}" width="64" height="64"/>
+									<p>运输证</p>
+								</li>
+								<li v-on:tap="cert">
+									<input id="cert_image" type="hidden" name="cert_image" v-model="cert_image" value="">
+									<img src="{{cert_image ? cert_image: '../../images/uppic.jpg'}}" width="64" height="64"/>
+									<p>从业资格证</p>
+								</li>
+							</ul>
+						</dd>
+					</dl>
+			</div>
+			<div class="mui-bottom ft-button suspension">
+				<button type="button" class="reset-button"  data-back="true">上一步</button>
+				<button type="button" class="sure-button" v-on:tap="submit">下一步</button>
+			</div>
+			</form>
+		</div>	
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+   
+		var vm = new Vue({
+			el: '#page',
+			data:{
+				transport_no:'',
+				cert_no:'',
+				transport_image:'',
+				cert_image:'',
+			},
+			methods: {
+				cars: function() {
+					windows.open('auto/uploadimg');
+				},
+				success: function(msg, info) {
+					windows.open('auth/step5');
+				},
+				// 运输证
+				transport: function() {
+					http.images('api/BaseApi/upload', function(msg, info) {
+						vm.transport_image = info.url;
+					});
+				},
+				// 从业资格证
+				cert: function() {
+					http.images('api/BaseApi/upload', function(msg, info) {
+						vm.cert_image = info.url;
+					});
+				},
+			}
+		});
+		http.get('api/Auth/getAuth',{},function(msg, info){
+			console.log(JSON.stringify(info));
+			driver = info.driver;
+			vm.transport_no = driver.transport_no;
+			vm.cert_no = driver.cert_no;
+			vm.transport_image = driver.transport_image;
+			vm.cert_image = driver.cert_image;
+		});		
+	</script>		
+	</body>
+</html>

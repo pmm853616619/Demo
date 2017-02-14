@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class="bgf3">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/app.css">
+	</head>
+	<body>
+	<!--标题 begin-->	
+	<header class="mui-bar mui-bar-nav m-title">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">司机认证 - 证件上传</h1>
+	</header>
+	<!--标题 end-->
+	
+	<div class="mt4 mui-content mdb40 bgf3">
+		<div class="msg-wrap">
+			<div class="mui-table-cell mui-col-xs-4 pic">
+				<img src="../../images/msg5.jpg" />
+			</div>
+			<div class="mui-table-cell mui-col-xs-8 text">
+				<p>提交证件，用户更放心</p>
+			</div>
+		</div>
+		<form class="form" id="page" action="api/Auth/setDriver/t-3.html">
+		<div class="mui-table-view car-info upload-documents m0">
+				<dl class="mui-table-view-cell">
+					<dt>身份证照</dt>
+					<dd>
+						<ul class="upload-pic">
+							<li v-on:tap="upIdcard_a">
+								<input id="lefile1" v-model="upIdcard_a_image" type="hidden" value="">
+								<img src="{{upIdcard_a_image ? upIdcard_a_image: '../../images/bg1.jpg'}}" width="64" height="64"/>
+							</li>
+							<li  v-on:tap="upIdcard_b">
+								<input id="lefile2" v-model="upIdcard_b_image" type="hidden" value="">
+								<img src="{{upIdcard_b_image ? upIdcard_b_image: '../../images/bg2.jpg'}}" width="64" height="64"/>
+							</li>
+						</ul>
+					</dd>
+				</dl>
+				<dl class="mui-table-view-cell">
+					<dt>驾驶证照</dt>
+					<dd>
+						<ul class="upload-pic">
+							<li v-on:tap="drive_a">
+								<input id="lefile3" type="hidden" v-model="driver_image_a">
+								<img src="{{driver_image_a ? driver_image_a: '../../images/bg3.jpg'}}" width="64" height="64"/>
+							</li>
+							<li v-on:tap="drive_b">
+								<input id="lefile4" type="hidden" v-model="driver_image_b">
+								<img src="{{driver_image_b ? driver_image_b: '../../images/bg4.jpg'}}" width="64" height="64"/>
+							</li>
+						</ul>
+					</dd>
+				</dl>
+				<dl class="mui-table-view-cell">
+					<dt>行驶证照</dt>
+					<dd>
+						<ul class="upload-pic">
+							<li v-on:tap="driving_a">
+								<input id="lefile5" type="hidden" v-model="driving_image_a">
+								<img src="{{driving_image_a ? driving_image_a: '../../images/bg5.jpg'}}" width="64" height="64"/>
+							</li>
+							<li v-on:tap="driving_b">
+								<input id="lefile6" type="hidden" v-model="driving_image_b">
+								<img src="{{driving_image_b ? driving_image_b: '../../images/bg6.jpg'}}" width="64" height="64"/>
+							</li>
+						</ul>
+					</dd>
+				</dl>
+				<dl class="mui-table-view-cell">
+					<dt>车辆详情</dt>
+					<dd>
+						<ul class="upload-pic">
+							<li v-on:tap="auto_a">
+								<input id="lefile7" type="hidden" v-model="auto_images_a">
+								<img src="{{auto_images_a ? auto_images_a: '../../images/bg7.jpg'}}" width="64" height="64"/>
+								<p>斜45度角</p>
+							</li>
+							<li v-on:tap="auto_b">
+								<input id="lefile8" type="hidden" v-model="auto_images_b">
+								<img src="{{auto_images_b ? auto_images_b: '../../images/bg8.jpg'}}" width="64" height="64"/>
+								<p>内室</p>
+							</li>
+							<li v-on:tap="auto_c">
+								<input id="lefile9" type="hidden" v-model="auto_images_c">
+								<img src="{{auto_images_c ? auto_images_c: '../../images/bg9.jpg'}}" width="64" height="64"/>
+								<p>中控</p>
+							</li>
+						</ul>
+					</dd>
+				</dl>
+				<dl class="mui-table-view-cell" v-if="auto_kind == 2">
+					<dt>商业保单</dt>
+					<dd>
+						<ul class="upload-pic">
+							<li v-on:tap="policy">
+								<input id="lefile10" type="hidden" v-model="policy_image">
+								<img src="{{policy_image ? policy_image: '../../images/bg10.jpg'}}" width="64" height="64"/>
+								<p>非运营车辆选择上传</p>
+							</li>
+						</ul>
+					</dd>
+				</dl>
+		</div>
+		<div class="mui-bottom ft-button suspension">
+			<button type="button" class="reset-button" data-back="true">上一步</button>
+			<button type="button" class="sure-button" v-on:tap="submit">下一步</button>
+		</div>
+		</form>
+	</div>
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>       
+			var vm = new Vue({
+				el: '#page',
+				data:{
+					upIdcard_a_image:'',
+					upIdcard_b_image:'',
+					
+					driver_image_a:'',
+					driver_image_b:'',
+					driving_image_a:'',
+					driving_image_b:'',
+					
+					auto_images_a:'',
+					auto_images_b:'',
+					auto_images_c:'',
+					
+					policy_image:'',
+					auto_kind:'',
+				},
+				methods: {
+					cars: function() {
+						windows.open('auto/driver2');
+					},
+					// 身份证
+					upIdcard_a: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.upIdcard_a_image = info.url;
+						});
+					},
+					upIdcard_b: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.upIdcard_b_image = info.url;
+						});
+					},
+					// 驾驶证
+					drive_a: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.driver_image_a = info.url;
+						});
+					},
+					drive_b: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.driver_image_b = info.url;
+						});
+					},
+					// 行驶证 driving_a
+					driving_a: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.driving_image_a = info.url;
+						});
+					},
+					driving_b: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.driving_image_b = info.url;
+						});
+					},
+					// 车辆图片 v-on:tap="auto_a"
+					auto_a: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.auto_images_a = info.url;
+						});
+					},
+					auto_b: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.auto_images_b = info.url;
+						});
+					},
+					auto_c: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.auto_images_c = info.url;
+						});
+					},
+					// 保单 policy_image
+					policy: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.policy_image = info.url;
+						});
+					},
+					success: function(msg, info) {
+						windows.open('auth/step4');
+					}
+				}
+			});
+					http.get('api/Auth/getAuth',{},function(msg, info){
+						console.log(JSON.stringify(info));
+						driver = info.driver;
+						vm.auto_kind = driver.auto_kind;
+						vm.upIdcard_a_image = driver.idcard_image.upIdcard_a_image;
+						vm.upIdcard_b_image = driver.idcard_image.upIdcard_b_image;
+						vm.driver_image_a	= driver.driver_image.driver_image_a;
+						vm.driver_image_b	= driver.driver_image.driver_image_b;
+						vm.driving_image_a	= driver.driving_image.driving_image_a;
+						vm.driving_image_b	= driver.driving_image.driving_image_b;
+						vm.auto_images_a	= driver.auto_images.auto_images_a;
+						vm.auto_images_b	= driver.auto_images.auto_images_b;
+						vm.auto_images_c	= driver.auto_images.auto_images_c;
+						vm.policy_image		= driver.policy_image;
+					});
+	</script>	
+	
+	</body>
+</html>

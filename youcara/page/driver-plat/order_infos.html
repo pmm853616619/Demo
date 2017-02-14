@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="../../css/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/app.css"/>
+</head>
+<body>
+	<!--标题 begin-->	
+	<header class="mui-bar mui-bar-nav m-title">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">司机中心 - 任务详情</h1>
+	</header>
+	<!--标题 end-->	
+	<div class="mt4 mui-content driverdetail bgf3" id="page">
+		<div class="mui-table-view">
+			<div class="order-info-user">
+				<img src="../../images/user.png" width="60" class="user-img mui-pull-left"/>
+				<ul class="userinfo mui-pull-left">
+					<li>订单编号:<span>{{order_info.order_no}}</span></li>
+					<li></li>
+					<li>{{order_info.start_address}} ~ {{order_info.end_address}}</li>
+					<li v-if="order_info.status>=4&&order_info.pay_scale>=20">{{order_info.nickname}}<a href="tel:{{order_info.mobile}}">{{order_info.mobile}}</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="mui-table-view car-info">
+			<dl class="mui-table-view-cell">
+				<dt>任务状态</dt>
+				<dd>
+					<span class="fonr-orange">{{order_info.status_txt}}</span>
+					<div class="changeOrder-btn">
+						<input type="button" value="取消合作" class="canceltrip" v-if="order_info.status==4&& order_info.pay_scale == 0" v-on:tap="cancel">
+					</div>
+				</dd>
+			</dl>
+			<dl class="mui-table-view-cell">
+				<dt>行程需求</dt>
+				<dd v-if="order_info.goback==1">往返</dd>
+				<dd v-else>单程</dd>
+			</dl>
+			<dl class="mui-table-view-cell">
+				<dt>乘车人数</dt>
+				<dd>{{order_info.people_num}}人</dd>
+			</dl>
+			<dl class="mui-table-view-cell">
+				<dt>行程天数</dt>
+				<dd>{{order_info.days?order_info.days:1}}天</dd>
+			</dl>
+			<dl class="mui-table-view-cell">
+				<dt>出发时间</dt>
+				<dd>{{order_info.start_time | date 3}}</dd>
+			</dl>
+			<dl class="mui-table-view-cell" v-if="order_info.goback==1">
+				<dt>返程时间</dt>
+				<dd>{{order_info.back_time | date 3}}</dd>
+			</dl>
+			<dl class="mui-table-view-cell">
+				<dt>选择车型</dt>
+				<dd>{{order_info.auto_brand_name}}</dd>
+			</dl>
+			<dl class="mui-table-view-cell">
+				<dt>行程计划</dt>
+				<dd>{{order_info.content ? order_info.content:''}}</dd>
+			</dl>
+		</div>
+		<div class="mui-table-view car-info" >
+			<dl class="mui-table-view-cell">
+				<dt>行程金额</dt>
+				<dd>
+					¥{{order_info.price_price}}&nbsp;&nbsp;&nbsp;&nbsp;已支付&nbsp;<span>¥{{order_info.price_price * order_info.pay_scale /100}}</span>
+				</dd>
+			</dl>
+		</div>
+		<div class="mui-bottom pay-button default-button" v-if="order_info.status==3" id="setConfirm">
+		 	<button type="button" class="mui-btn mui-btn-block" v-on:tap="setConfirm(order_info.order_id)">确认合作</button>
+		</div>
+		<div id="completeA" class="mui-bottom pay-button default-button" v-if="order_info.status==4&& order_info.pay_scale == 20"> 
+		 	<button type="button" class="mui-btn mui-btn-block" v-on:tap="completeA(order_info.order_id)">确认上车，通知用户支付尾款</button>
+		</div>
+		<div id="completeA" class="mui-bottom pay-button default-button" v-if="order_info.status==4&&  order_info.pay_scale == 100"> 
+		 	<button type="button" class="mui-btn mui-btn-block" v-on:tap="completeA(order_info.order_id)">确认上车</button>
+		</div>
+		<div id="complete" class="mui-bottom pay-button default-button" v-if="order_info.pay_scale >= 100 && order_info.status==5">
+		 	<button type="button" class="mui-btn mui-btn-block" v-on:tap="complete(order_info.order_id)">完成本次行程</button>
+		</div>
+	</div>
+	<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el: '#page',
+			methods: {
+				setConfirm: function() {
+					plus.nativeUI.confirm('确认接受此次出行任务？', function(e) {
+						if (e.index == 1) {
+							return false;
+						}
+						plus.nativeUI.showWaiting( "请稍等..." );
+						http.post('api/Driver/setConfirm', {id: vm.order_info.order_id}, function(msg, info) {
+							plus.nativeUI.toast(msg);
+							$("#setConfirm").remove();
+							plus.nativeUI.closeWaiting();
+							var main = plus.webview.getWebviewById("driver-plat/order/confirm");
+							var jus = '';
+							mui.fire(main,"initCart",{
+								jus:true
+			                });
+							mui.currentWebview.close();
+						});
+					});
+				},
+				// 上车确认
+				completeA: function(id){
+					plus.nativeUI.confirm('您确定已经接到乘客？', function(e) {
+						if (e.index == 1) {
+							return false;
+						}
+						plus.nativeUI.showWaiting( "请稍等..." );
+						http.post('api/Driver/setCompletePrice', {id: vm.order_info.order_id}, function(msg, info) {
+							plus.nativeUI.toast(msg);
+							$("#completeA").remove();
+							plus.nativeUI.closeWaiting();
+							var main = plus.webview.getWebviewById("driver-plat/order/get-on");
+							var jus = '';
+							mui.fire(main,"initCart",{
+								jus:true
+			                });
+							mui.currentWebview.close();
+						});
+					});
+				},
+				complete: function() {
+					plus.nativeUI.confirm('确认完成本次出行？', function(e) {
+						if (e.index == 1) {
+							return false;
+						}
+						plus.nativeUI.showWaiting( "请稍等..." );
+						http.post('api/Driver/setComplete', {id: vm.order_info.order_id}, function(msg, info) {
+							plus.nativeUI.toast(msg);
+							$("#complete").remove();
+							plus.nativeUI.closeWaiting();
+						});
+					});
+				},
+				cancel:function(){
+					var btnArray = ['否', '是'];
+					mui.confirm('您确认要取消合作吗？', '', btnArray, function(e) {
+						if (e.index == 1) {
+							http.post('api/Driver/DriverCancelOrder', {order_no:vm.order_info.order_id}, function(){
+								$('#status').text('已关闭');
+								$('.changeOrder-btn').remove();
+								plus.nativeUI.toast('已取消');
+							});
+						} 
+					})				
+				}
+			}
+		});		
+		mui.plusReady(function() {
+			var self = plus.webview.currentWebview();
+			window.getInfo = function() {
+				windows.send('driver-plat/index', 'update');
+				http.post('api/Driver/getOrderPriceInfo', {
+					id: self.info_id
+				}, function(msg, info) {
+					vm.$data = info;
+					// 用户
+					var authInfo = database.get('auth');
+					if (authInfo.uid == info.user_id) {
+						vm.isMyInfo = true;
+					}
+					// 司机
+					auth.getInfo(function(info) {
+						vm.driver = info.driver;
+					});
+					vm.star = 1;
+				}, function() {
+					windows.send('driver-plat/index', 'update');
+					mui.currentWebview.close();
+				});
+			};
+			getInfo();
+			windows.receive('update', function(info) {
+				getInfo();
+			});
+		});		
+	</script>
+</body>
+</html>

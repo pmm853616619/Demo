@@ -1,0 +1,118 @@
+/*通用样式*/
+body{font-family:"Microsoft YaHei";font-size: 0.9rem; background-color: #f3f3f3;font-size:0.8rem;}
+.mt10{margin-top:10px;}
+.mt20{margin-top:20px;}
+.fs{font-size: 0.8rem;}
+.pd1{padding:0 1em;}
+.fl{float: left;}
+img{width:100%;background-size: 240px;}
+.mui-bar-nav{z-index: 10; right: 0;left: 0; height: 48px;padding-right: 10px;padding:0 1em; border-bottom: 0; background-color: #52c4fe;-webkit-backface-visibility: hidden; backface-visibility: hidden;box-shadow: none;}
+.mui-bar-nav h1{line-height:48px;color:#FFFFFF;font-size: 17px; position: absolute;display: block;width: 100%;margin: 0 -10px; padding: 0; text-align: center;white-space: nowrap;}
+.mui-bar-nav a{color: #fff;}
+.mui-content{width:100%;clear:both;background: transparent;}
+.footer{margin-top:20px ;width:100%;padding:0 1em;height:45px;}
+.footerbtn{border:none; background-color:#52c4fe ;color: #fff;font-size: 1.0rem;display: block; width: 100%;}
+.footerbtn:enabled:active{background-color: #52c4fe;}
+
+/*页面无内容*/
+.msg-wrap{padding: 20px 1em 20px 1em;}
+.msg-wrap .pic{vertical-align: middle;text-align: center;}
+.msg-wrap .pic img{width:60%;height: auto;}
+.msg-wrap .text{vertical-align: middle;}
+.msg-wrap .text p{font-size: 1.2em;color: #9395bc;line-height: 26px;}
+
+/*公告列表*/
+#list{width:100%;padding: 0 1em;margin-top: 20px;list-style: none;}
+#list li .table-left em{height:15px;width:15px;border:2px solid #52c4fe ;border-radius: 30px;float: left;}
+#list li .table-left{height:20px;line-height: 16px;margin-top: 10px;}
+#list li .table-left span{float: left;margin-left: 5px;}
+#list li .table-right{border-left:2px solid #52c4fe;margin-left:6px;width:100%;}
+#list li .table-right img{padding:10px;width:100%;}
+
+/*公告详情*/
+.mui-content .activity{color:#c9a673;width:40%;height:30px;border-bottom:2px solid #c9a673;}
+.mui-content .activity span{margin-left:27%;}
+.mui-content .activity1{color: #74665b;margin-left: 10%;}
+header .icon2{display:inline-block;background: url(../images/icons.png) no-repeat -64px 0;float: right;background-size: 240px;width: 20px;height: 20px;margin-top: 15px;}
+.popupcontent{background: #fff;width:100%;}
+.popupcontent table {width: 100%;text-align: center;padding: 0 1em;}
+.popupcontent table tr {height:40px;}
+.popupcontent table tr td{padding: 10px;}
+.popupcontent table tr td .popupicon{width:75px;height:75px;background: #52c4fe;border-radius: 5px;margin: 0 auto;}
+.popupcontent .weixin{display: inline-block; background: url(../images/icons.png) no-repeat -84px 0;background-size: 240px; width: 50px;height: 35px; margin-top: 25px;}
+.popupcontent .pengyouquan{display: inline-block; background: url(../images/icons.png) no-repeat -132px 0;background-size: 240px; width: 50px;height: 35px; margin-top: 22px;}
+.popupcontent .xinliang{display: inline-block; background: url(../images/icons.png) no-repeat -176px 0;background-size: 240px; width: 50px;height: 35px; margin-top: 22px;}
+.popupcontent .qq{display: inline-block; background: url(../images/icons.png) no-repeat -0px -66px;background-size: 240px; width: 40px;height:45px; margin-top: 16px;}
+.popupcontent .qqkong{display: inline-block; background: url(../images/icons.png) no-repeat -0 -26px;background-size: 240px; width: 39px;height: 34px; margin-top: 20px;}
+.popupcontent .tengxun{display: inline-block; background: url(../images/icons.png) no-repeat -36px -26px;background-size: 240px; width: 50px;height: 35px; margin-top: 20px;}
+.popupcontent table tr td .popup1{font-size: 0.8rem;margin-top:10px;}
+.popupcontent .close{width:100%;height: 50px;border-top: 1px solid #d9d9d9;text-align: center;line-height: 50px;color: #404040;}
+
+/*个人中心常住城市*/
+.mui-pull-right{font-size: 1em;margin-top: 14px;}
+.mui-input-row input{font-size:0.9rem;border: 1px solid #52c4fe;}
+
+/*个人中心*/
+.personal{width:100%;height:150px;background: #fff;}
+.personal div{text-align: center;}
+.personal div img{width:70px;height:70px;border-radius: 100px;}
+.personal-con{font-size: 1.1em;margin-top: 4px;width: 100%;}
+.personal-money{caption-side: #838383;width: 100%;}
+.personal-money span{color: #FF0000;}
+.con-class{width:100%;background: #fff;padding:1em;position: relative;}
+.con-class span{width:16.1%;margin:7px 1.4%;border:1px solid #bfbfbf;background: #bfbfbf;position: relative;padding: 5px 0;}
+.con-class .con-class1{background: #52c4fe;border:1px solid #52c4fe;}
+.con-class .con-class1 i{position:absolute;right:-3px;bottom:-3px;display: inline-block; background: url(../images/icons.png) no-repeat -1px -115px;background-size: 240px; width:16px;height:16px; z-index:1;}
+.mui-content .con-ul{width:100%;background: #fff;padding: 0 0 0 1em;}
+.mui-content .con-ul li .stroke{float: left;display:inline-block;background:url(../images/icons.png) no-repeat -91px -35px;background-size:240px;width:30px;height:30px;z-index:99;margin-left:-6px;margin-top:7px;}
+.mui-table-view-cell>a:not(.mui-btn){margin:0px;}
+.mui-content .con-ul li .balance{float: left;display:inline-block;background:url(../images/icons.png) no-repeat -133px -35px;background-size:240px;width:30px;height:30px;z-index:99;margin-left:-6px;margin-top:7px;}
+.mui-content .con-ul li .balance1{float: left;display:inline-block;background:url(../images/icons.png) no-repeat -176px -34px;background-size:240px;width:30px;height:30px;z-index:99;margin-left:-6px;margin-top:7px;}
+.mui-content .con-ul li .balance2{float: left;display:inline-block;background:url(../images/icons.png) no-repeat -46px -70px;background-size:240px;width:30px;height:30px;z-index:99;margin-left:-6px;margin-top:7px;}
+.mui-content .con-ul li .balance3{float: left;display:inline-block;background:url(../images/icons.png) no-repeat -90px -70px;background-size:240px;width:30px;height:30px;z-index:99;margin-left:-6px;margin-top:7px;}
+.mui-content .con-ul .mui-table-view-cell:after {background-color: transparent;}
+.ul-3 .mui-table-view-cell{border-bottom: 1px solid #e7e7e7;}
+.ul-3 .mui-table-view-cell:last-child{border-bottom: none;}
+.personal-botton{height: 58px;padding: 10px 1em 0px 1em;overflow: hidden;border-top: 1px solid #e7e7e7;background-color: #fff;}
+
+/*提现*/
+.withdraw{background-color: #fff;}
+.withdraw .mui-input-row{border-bottom:1px solid #E7E7E7;height:45px;line-height:45px;margin-left: 1em;}
+.withdraw .mui-input-row label,.withdraw .mui-input-row input{font-family:"Microsoft YaHei";}
+.withdraw .mui-input-row label{height: 45px;line-height: 45px;padding: 0 0.5em;width: 24%;}
+.withdraw .mui-input-row input{width: 76%;height: 44px;}
+.con-content{margin-left: 1em;line-height: 24px;}
+.con-content span{color: #52c4fe;}
+
+/*我的账户*/
+.account{width:150px;margin: 50px auto 45px auto;height:150px;border:5px solid #52c4fe;border-radius:50%;}
+.account div{margin: auto;text-align: center;}
+.account .account-title{font-size: 1rem;margin-top:42px;}
+.account .account-money{font-size: 1.5rem;color: #52c4fe;margin-top:10px;;}
+.footerwater{border:none; background-color:#e6e6e6 ;color: #404040;font-size: 1.0rem;display: block; width: 100%;}
+
+/*修改昵称*/
+.con-modify{width:50%;margin:auto;text-align: center;margin-top: 40px;}
+.con-modify img{max-width: 212px;}
+.con-description .row1,.con-description .row2{margin: auto;font-size: 1.1em;text-align: center;line-height: 32px;color:#737373;}
+.con-description .row2{margin-top: 20px;}
+
+/*账户设置*/
+.mui-table-view-cell .mui-badge{background: #fff;color: #52c4fe;font-size:0.8rem;}
+.mui-table-view-cell .account-icon1{float: left;display:inline-block;background:url(../images/icons.png) no-repeat -134px -68px;background-size:240px;width:30px;height:30px;z-index:99;margin-left:-6px;margin-top:7px;}
+.mui-table-view-cell .account-icon2{float: left;display:inline-block;background:url(../images/icons.png) no-repeat -176px -68px;background-size:240px;width:30px;height:30px;z-index:99;margin-left:-6px;margin-top:7px;}
+.mui-table-view-cell .account-icon3{float: left;display:inline-block;background:url(../images/icons.png) no-repeat -176px -34px;background-size:240px;width:30px;height:30px;z-index:99;margin-left:-6px;margin-top:7px;}
+.mui-table-view-cell .account-icon4{float: left;display:inline-block;background:url(../images/icons.png) no-repeat -46px -105px;background-size:240px;width:30px;height:30px;z-index:99;margin-left:-6px;margin-top:7px;}
+
+/*账户流水*/
+.mui-table-view-cell{list-style: none;padding: 10px 0 10px 5px}
+.mui-table-view-cell .account-icon5{float: left;display:inline-block;background:url(../images/icons.png) no-repeat -88px -105px;background-size:240px;width:50px;height:50px;z-index:99;margin-left:19px;margin-top:9px;}
+.mui-table-view-cell .account-span {color:#a6a6a6;line-height:1.5em;margin-top:12px;}
+.mui-table-view-cell .account-span2{font-size: 0.8rem;}
+.mui-table-view-cell .account-span2 strong{font-size: 0.95rem;margin-left:20px;line-height:1.5em;}
+.mui-table-view-cell .account-span2 span{color:#737373;line-height:1.5em;margin-left:15px;font-size:0.8rem;}
+.runningwater .mui-table-view-cell{ padding-right:0px;}
+.account-water #list{margin-top: 4px;}
+
+
+

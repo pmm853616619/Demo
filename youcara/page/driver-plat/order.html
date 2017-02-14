@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css"/>
+		<link rel="stylesheet" type="text/css" href="../../css/app.css"/>
+		
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">已报价订单</h1>
+		</header>
+		
+		<div class="mui-content" id="page">
+			<div id="slider" class="mui-slider mui-fullscreen">
+				<div class="mui-slider-group travel-list mt2 top">
+					<div class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="driver-quotes-list already-offer mui-table-view" data-params="{type:3}">
+									<li class="mui-table-view-cell" v-for="item in list_t1"  data-url="driver-plat/order_infos" data-params="{info_id:{{item.p_id}}}">
+										<div class="mui-table">
+											<div class="mui-table-cell mui-col-xs-9">
+												<h4 class="mui-ellipsis address">{{item.start_address}} - {{item.end_address}} <span>{{item.people_num}}人</span></h4>
+												<h5 class="time">{{item.start_time | date 3}}<font v-if="item.goback==1"> ~ {{item.back_time | date 3}}</font><font v-else color="#ff9037">单程</font></h5>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>	
+			</div>
+		</div>
+		<script type="text/javascript" charset="UTF-8">
+			var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					driver:[],
+					list_t1:[],
+					page: 1,
+					loading : 1
+				}
+			});
+			// 实时获取司机认证状态
+			http.get('api/Auth/getAuth',{},function(msg, info){
+				vm.driver = info.driver;
+			});
+			mui.plusReady(function() {
+				window.loadData = function(){
+					page.tabNewlist(function(self,ul){
+					var params = $(ul).data('params');
+			        if (params) {
+			            params = eval('(' + params + ')');
+			        }
+					params = params ? params : {};
+					params = $.extend({page: vm.page,flag:3}, params);
+					http.post("api/Driver/getOrderList", params, function(msg, data) {
+						if (data.data.length) {
+							if(params.type==3) {
+								vm.list_t1 = data.data;
+							}
+						}else{
+							if(params.type==3) {
+								vm.list_t1 = [];
+							}
+						}
+						vm.page = data.cur_page + 1;
+						if (data.count_page > data.cur_page){
+							self.endPullUpToRefresh(false);
+						} else {
+							self.endPullUpToRefresh(true);
+						}
+		
+					}, function(){
+						plus.nativeUI.closeWaiting();
+						self.endPullUpToRefresh(false);
+					});
+					}, function(self,ul){
+						var params = $(ul).data('params');
+				        if (params) {
+				            params = eval('(' + params + ')');
+				        }
+						params = params ? params : {};
+						params = $.extend({page: 1,flag:3}, params);
+						http.post("api/Driver/getOrderList", params, function(msg, data) {
+							if (data.data.length) {
+								if(params.type==3) {
+									vm.list_t1 = data.data;
+								}
+							}else{
+								if(params.type==3) {
+									vm.list_t1 = [];
+								}
+							}
+							vm.loading = 0;
+							vm.page = 1;
+							if (data.count_page > data.cur_page) {
+								self.endPullDownToRefresh(false);
+							} else {
+								self.endPullDownToRefresh(true);
+							}			
+						}, function(){
+							vm.loading = 0;
+							plus.nativeUI.closeWaiting();
+							self.endPullDownToRefresh(false);
+						});						
+					});
+				};
+				loadData();
+				windows.receive('update', function(info) {
+					loadData();
+				});		
+			});			
+    	</script>
+	</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/app.css"/>
+	</head>
+	<body>
+
+	<!--标题 begin-->
+	<header class="mui-bar mui-bar-nav m-title">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">车型选择</h1>
+	</header>
+	<!--标题 end-->
+	
+	<div class="mt4 mui-content mdb40 bgff brand" id="page">
+		<form name="searchForm" id="form">
+			<div class="type">
+				<h1 class="title">选择类型<span> (单选)</span></h1>
+				<div id="dr_type"></div>
+			</div>
+			<div class="number-seats">
+				<h1 class="title">选择座位数<span> (单选)</span></h1>
+				<div id="seats"></div>
+			</div>
+			<div class="checkbox-wrap">
+				<h1 class="title">选择品牌<span> (可多选)</span></h1>
+				<div id="brandlist"></div>
+			</div>
+		</form>
+		<dl class="explanation" style="clear: both;">
+			<dd>
+				<i class="green-box"></i>
+				<span>绿色为普通车型</span>
+			</dd>
+			<dd>
+				<i class="red-box"></i>
+				<span>蓝色为个性车型</span>
+			</dd>
+		</dl>
+		<div class="mui-bottom ft-button suspension">
+			<!--<button type="button" class="reset-button">重   置</button>-->
+			<button type="button" class="footerbtn" v-on:click="sssd">确   定</button>
+		</div>	
+	</div>
+	<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+	mui.plusReady(function() {
+		var nwaiting = plus.nativeUI.showWaiting();//显示原生等待框
+		var typeList = [];
+		var brandList = [];
+		var typeNameArray={};
+		var brandNameArray={};
+		http.get('api/BaseApi/getDriverType',{},function(msg, info){
+			typeList = info.type;
+			brandList = info.brand;
+			var tpl ='<ul>';
+			for (var i=0; i < typeList.length; i++) {
+				typeNameArray[typeList[i].type_id]=typeList[i].name;
+				tpl += '<li class="type_click" data-seat="'+ typeList[i].seat +'"><div class="mui-input-row mui-radio mui-left">';
+				tpl += '<label>'+ typeList[i].name +'</label><input type="radio" name="type" value="' + typeList[i].type_id  +'"';
+				if (i==0) {
+					tpl += 'checked>';
+				} else{
+					tpl += '>';
+				}
+				tpl += '</div></li>';
+			}
+			tpl += '</ul>';
+			$("#dr_type").html(tpl);
+			// console.log(tpl);
+			
+			var tpl ='<ul>';
+			for (var i=0;i< brandList.length; i++) {
+				brandNameArray[brandList[i].brand_id] = brandList[i].name;
+				tpl += '<li><div class="mui-input-row mui-checkbox mui-left"><label class="label">'+ brandList[i].name +'</label><input ';
+				if (brandList[i].type==1) {
+					tpl += 'class="common-car"';
+				}else{
+					tpl += 'class="personality-car"';
+				}
+				tpl +=' name="brand" value="'+ brandList[i].brand_id +'" type="checkbox" ></div></li>';
+			}
+			tpl +='</ul>';
+			// console.log(tpl);
+			$("#brandlist").html(tpl);
+			// 模拟点击
+			$(".type_click").get(0).click();
+			nwaiting.close(); //新webview的载入完毕后关闭等待框
+		});
+		$("#form").on('click', '.type_click', function(){
+			var seat = $(this).data('seat').split(',');
+			seatTpl("#seats", seat);
+		});
+		var vm = new Vue({
+			el: '#page',
+			methods: {
+				sssd: function(){
+					var d = form.getFormData("#form");
+					if (!d.type) {
+						mui.toast('请选择车类型');
+						return false;
+					}
+					if (!d.seat) {
+						mui.toast('请选择座位数');
+						return false;
+					}
+					if (!d.brand) {
+						mui.toast('您至少该选择一个意向车型品牌');
+						return false;
+					}
+					if (d.brand.length==1) {
+						var brandName = brandNameArray[d.brand];
+					}else{
+						var brandName='';
+						$.each(d.brand, function(i,e) {
+							brandName+=brandNameArray[e]+',';
+						});
+						brandName = brandName.substring(0,brandName.length-1); //brandName.ToString().RTrim(',');//  brandName.TrimEnd(',');
+					}
+					var self = plus.webview.currentWebview();
+					var main = plus.webview.getWebviewById(self.page);
+					var txt_name = d.seat + '座-'+typeNameArray[d.type]+'-品牌('+ brandName+')';
+					mui.fire(main,"initCart",{
+	                    txt_name:txt_name,
+	                    type:d.type,
+	                    seat:d.seat,
+	                    brand:d.brand
+	                });
+					mui.currentWebview.close(); 
+				},
+			}
+		});
+		// 座位TPL
+		function seatTpl(obj,data){
+			var tpl ='<ul>';
+			for (var i=0; i<data.length; i++) {
+				tpl+='<li><div class="item"><div class="mui-input-row mui-radio mui-left"><label>'+data[i]+'座</label>';
+				tpl+='<input type="radio" name="seat" value="'+ data[i] +'"></div></div></li>';
+			}
+			tpl += '</ul>';
+			$(obj).html(tpl);
+		}
+	});
+	</script>
+	</body>
+</html>

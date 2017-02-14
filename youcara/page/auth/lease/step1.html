@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html class="bgf3">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" href="../../../css/mui.min.css">
+		<link rel="stylesheet" href="../../../css/app.css">
+	</head>
+	<body>
+	<!--标题 begin-->	
+	<header class="mui-bar mui-bar-nav m-title">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">租赁认证</h1>
+	</header>
+	<!--标题 end-->
+	
+	<div class="mt4 mui-conetnt" id="page">
+				
+		<div class="msg-wrap bgf3" style="margin-top: 50px;">
+			<div class="mui-table-cell mui-col-xs-4 pic">
+				<img src="../../../images/msg3.jpg" />
+			</div>
+			<div class="mui-table-cell mui-col-xs-8 text">
+				<p>你的个人资料还要完善哦~</p>
+			</div>
+		</div>
+		<form id="form" class="form" action="api/Auth/setGroup/t-1">
+		<div class="mui-table-view car-info authenticate-form m0">
+				<dl class="mui-table-view-cell">
+					<dt>姓      名</dt>
+					<dd><input type="text" class="mui-input-clear" name="name" v-model="name" id="name" value="" placeholder="真实姓名"/></dd>
+				</dl>
+				<dl class="mui-table-view-cell">
+					<dt>性      别</dt>
+					<dd>
+						<div class="radio gender">
+							<div class="mui-input-row mui-radio mui-left">
+								<label for="radio1">男</label>
+								<input name="sex" v-model="sex" type="radio" id="radio1" value="1" checked>
+							</div>
+							<div class="mui-input-row mui-radio mui-left">
+								<label for="radio2">女</label>
+								<input name="sex" v-model="sex" type="radio" id="radio2" value="2">
+							</div>
+						</div>
+					</dd>
+				</dl>
+				<dl class="mui-table-view-cell mui-input-row">
+					<dt>联系方式</dt>
+					<dd><input type="text" class="mui-input-clear" name="tel" v-model="tel" placeholder="联系方式" value=""/> </dd>
+				</dl>
+				<dl class="mui-table-view-cell mui-input-row">
+					<dt>座机号码</dt>
+					<dd><input type="text" class="mui-input-clear" name="phone" v-model="phone" placeholder="座机号码" value=""/> </dd>
+				</dl>
+				<dl class="mui-table-view-cell mui-input-row">
+					<dt>办公地址</dt>
+					<dd><input type="text" class="mui-input-clear" name="address" v-model="address" placeholder="办公地址" value=""/> </dd>
+				</dl>
+				<dl class="mui-table-view-cell mui-input-row">
+					<dt>身份证号</dt>
+					<dd><input type="text" class="mui-input-clear" name="idcard" v-model="idcard" placeholder="填写与姓名相符的身份证号" value=""/> </dd>
+				</dl>
+				<dl class="mui-table-view-cell">
+					<dd class="button">
+						<input type="hidden" name="group_id" v-model="group_id"  value="7" />
+						<input type="hidden" name="tmp_status" v-model="tmp_status"  value="" />
+						<button type="button" class="mui-btn mui-btn-danger mui-btn-block" v-on:tap="submit">下一步</button>
+					</dd>
+				</dl>
+		</div>
+
+		</form>
+	</div>
+		<script src="../../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+
+			var vm = new Vue({
+				el: '#page',
+				data:{
+					tmp_status:'',
+					status:'',
+					
+				},
+				methods: {
+					success: function(msg, info) {
+						windows.open('auth/lease/step2', info);
+					}
+				}
+			});
+
+			http.get('api/Auth/getGroupAuth',{},function(msg, info){
+				console.log(JSON.stringify(info));
+				if(info != '' && info != null) {
+					vm.$data = info;
+				}
+			})
+		</script>
+	</body>
+</html>

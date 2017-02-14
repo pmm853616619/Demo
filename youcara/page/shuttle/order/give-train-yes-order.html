@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../../css/decline.css">
+		<link rel="stylesheet" href="../../../css/mui.min.css">
+		<link rel="stylesheet" href="../../../css/app.css"/>
+		<style type="text/css">
+			.mui-segmented-control{width: 50%;border-radius: 7px;margin-left:25%;border:1px solid #44B7FF;}
+			.mui-table-view-inverted:before {
+				height: 0px;
+			}
+			.mui-table-view-inverted:after {
+				height: 0px;
+			}
+			.triangle{
+				width: 0;height: 0;border: transparent solid 10px;border-bottom-color: currentColor;margin-left: 90%;margin-top: -8px;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a id="icon-menu" class="mui-action-menu mui-icon  mui-pull-right">
+				<img src="../../../images/menu.png" style="width: 50%;padding-top: 5px;float: right;"/>
+			</a>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" ></a>
+			<h1 class="mui-title">送火车订单</h1>
+		</header>
+		<div id="menu-wrapper" class="menu-wrapper hidden">
+			<div id="menu" class="menu">
+				<div class="triangle"></div>
+				<ul class="mui-table-view mui-table-view-inverted">
+					<li class="mui-table-view-cell">
+						<a data-url="shuttle/order/meet-plane-yes-order">接飞机</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a data-url="shuttle/order/give-plane-yes-order">送飞机</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a data-url="shuttle/order/meet-train-yes-order">接火车</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a data-url="shuttle/order/give-train-yes-order">送火车</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div id="menu-backdrop" class="menu-backdrop"></div>
+		<div class="mui-content">
+			<div id="slider" class="mui-slider mui-fullscreen">
+				<!--button begin-->
+				<div style="background-color: white;padding-top: 10px;padding-bottom: 10px;">
+					<div  class="mui-segmented-control" >
+					<a class="mui-control-item  mui-active" style="border-radius: 5px;font-size: 15px;" href="#plane">已受理</a>
+					<a id="status1" value="2" class="mui-control-item" data-url="shuttle/order/give-train-no-order" style="color:  #52C4FE;border-radius: 5px;font-size: 15px;">待受理</a>
+				</div>
+				</div>
+				
+				<!--button end-->
+				<hr style="border:none;border-top:1px solid #e1e1e1;" />
+				<div style="width: 100%;height: 35px;padding-top: 12px;text-align: center;font-size: 13px;background-color: #f6f6f6;">
+					<span style="color: #bebebe;">
+						您的订单已处理，我们会立即派发车辆，请耐心等待
+					</span>
+				</div>
+				<hr style="border:none;border-top:1px solid #e1e1e1;" />
+				<div id="page" class="mui-slider-group travel-list mt2">
+					<div id="plane" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul id="test" class="mui-table-view">
+									<li class="mui-table-view-cell" v-for="item in list_t1">
+										<div class="mui-slider-right mui-disabled">
+											<a class="mui-btn mui-btn-red">删除</a>
+										</div>
+										<div class="mui-table mui-slider-handle" >
+							                <div class="mui-table-cell mui-col-xs-9"  data-url="shuttle/order/quoted_info" data-params="{info_id:{{item.order_no}}}">
+												<p class="mui-ellipsis" v-if="item.goback==1">{{item.start_time}}  &emsp;{{item.number}}&emsp;{{item.people_num}}人&ensp;|&ensp;{{item.typles}}元</p>
+							                    <p class="mui-ellipsis" v-else>{{item.start_time}}&emsp;{{item.number}}&emsp;{{item.people_num}}人&ensp;|&ensp;费用：&ensp;<font color="#ff9037">{{item.typles}}元</font></p>
+							                    <p class="row11" style="margin-top: 5px;color: #5DCDC8;"><i></i>&emsp;{{item.sites}} ~ {{item.address}}</p>
+							                    <p class="mui-h6 mui-ellipsis my-offer" style="margin-top: 5px;color:#ADAEB0 ;">任务编号:<span>{{item.order_no}}</span></p>
+							                    <input id="shuttle_id" type="hidden" value="{{item.shuttle_id}}"/>
+							                </div>
+							            </div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			var menuWrapper = document.getElementById("menu-wrapper");
+			var menu = document.getElementById("menu");
+			var menuWrapperClassList = menuWrapper.classList;
+			var backdrop = document.getElementById("menu-backdrop");
+			backdrop.addEventListener('tap', toggleMenu);
+			document.getElementById("icon-menu").addEventListener('tap',toggleMenu)
+			//下沉菜单中的点击事件
+			mui('#menu').on('tap', 'a', function() {
+				toggleMenu();
+//				info.innerHTML = '你已选择：'+this.innerHTML;
+			});
+			var busying = false;
+			function toggleMenu() {
+				if (busying) {
+					return;
+				}
+				busying = true;
+				if (menuWrapperClassList.contains('mui-active')) {
+					document.body.classList.remove('menu-open');
+					menuWrapper.className = 'menu-wrapper fade-out-up animated';
+					menu.className = 'menu bounce-out-up animated';
+					setTimeout(function() {
+						backdrop.style.opacity = 0;
+						menuWrapper.classList.add('hidden');
+					}, 500);
+				} else {
+					document.body.classList.add('menu-open');
+					menuWrapper.className = 'menu-wrapper fade-in-down animated mui-active';
+					menu.className = 'menu bounce-in-down animated';
+					backdrop.style.opacity = 1;
+				}
+				setTimeout(function() {
+					busying = false;
+				}, 500);
+			}
+		</script>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					list_t1: null,
+					page:1,
+					loading : 1
+				}
+			});
+			mui.plusReady(function() {
+				window.dataDel = function(){
+						(function($) {
+						//第一个demo，拖拽后显示操作图标，点击操作图标删除元素；
+						$('#test').on('tap', '.mui-btn', function(event) {
+							var shuttle_id = document.getElementById("shuttle_id").value;
+							var elem = this;
+							var li = elem.parentNode.parentNode;
+							console.info("删除订单id："+shuttle_id);
+							mui.confirm('确认删除该条记录？', '游 卡', btnArray, function(e) {
+								if (e.index == 0) {
+									li.parentNode.removeChild(li);
+									http.post("api/User/DelShuttle",{shuttle_id:shuttle_id},function(){
+										console.log("删除成功");
+									});
+								} else {
+									setTimeout(function() {
+										$.swipeoutClose(li);
+									}, 0);
+								}
+							});
+						});
+						var btnArray = ['确认', '取消'];
+					})(mui);
+				}
+				
+				window.loadData = function(){
+					page.tabNewlist(function(self,ul){
+						var params = $(ul).data('params');
+				        if (params) {
+				            params = eval('(' + params + ')');
+				        }
+						params = params ? params : {};
+						params = $.extend(params,{'flag':2,'status':1,'is_plane':0,'is_meet':0},{page:vm.page});
+						http.post("api/User/PickUp", params, function(msg, data) {
+							if(data.data.length){
+								vm.list_t1 = data.data;
+							}else{
+								vm.list_t1 = [];
+							}	
+							vm.page = data.cur_page + 1;
+							if (data.count_page > data.cur_page) {
+								self.endPullUpToRefresh(false);
+							} else {
+								self.endPullUpToRefresh(true);
+							}
+						}, function(){
+							plus.nativeUI.closeWaiting();
+							self.endPullUpToRefresh(false);
+						});
+					}, function(self,ul){
+						var params = $(ul).data('params');
+				        if (params) {
+				            params = eval('(' + params + ')');
+				        }
+						params = params ? params : {};
+						params = $.extend(params,{'flag':2,'status':1,'is_plane':0,'is_meet':0},{page:1});
+						http.post("api/User/PickUp", params, function(msg, data) {
+							if(data.data.length){
+								vm.list_t1 = data.data;
+							}else{
+								vm.list_t1 = [];
+							}
+							vm.page = 1;
+							if (data.count_page > data.cur_page) {
+								self.endPullUpToRefresh(false);
+							} else {
+								self.endPullUpToRefresh(true);
+							}
+							vm.loading = 0;
+						}, function(){
+							vm.loading = 0;
+							plus.nativeUI.closeWaiting();
+							self.endPullDownToRefresh(false);
+						});
+					});
+				}
+				loadData();
+				dataDel();
+				windows.receive('update', function(info) {
+					loadData();
+					dataDel();
+				});
+			});
+		</script>
+	</body>
+</html>   

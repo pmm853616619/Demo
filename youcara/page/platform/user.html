@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../css/user.css" rel="stylesheet" />
+		<link href="../../css/app.css" rel="stylesheet" />
+		<style type="text/css">
+			.top {
+				width: 90px;				
+				margin-top: 13px;
+				margin-left: 7%;
+				height: 30px;
+				text-align: center;
+			}
+			.topdiv {
+				padding-top: 17px;
+			}
+			.center {
+				width: 100%;
+			}
+			.btndiv {
+				padding-top: 10px;
+				padding-bottom: 0px;
+				padding-left: 10px;
+				padding-right: 10px;
+				text-align: center;
+			}
+			.mybtnleft {
+				width: 53%;
+				height: 47px;
+				border-radius: 10px;
+				color: #52C4FE;
+				
+				border-color: #98CFFE;
+				font-size: 15px;
+			}
+			.text1 {
+				position: relative;
+				text-align: center;
+				width: 50%;
+				height: 110px;
+			}
+			.text2 {
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				text-align: center;
+				width: 100%;
+				height: 20px;
+			}
+			.text2 label {
+				font-size: 14px;
+				color: #a9a08e;
+			}
+			.text2 input {
+				height: 10px;
+				color: #a9a08e;
+				border-color: #ffefd5;
+				background-color: #ffefd5;
+			}
+			.mui-grid-view.mui-grid-9 .mui-table-view-cell {
+				margin: 0;
+				padding: 11px 15px;
+				vertical-align: top;
+				border-right: 1px solid #eee;
+				border-bottom: 1px solid #eee;
+			}
+			.ava {
+				width: 100px;
+				background-color: transparent;
+				height: 100px;
+				margin-left: 7%;
+				margin-top: 100px;
+				position: fixed;
+				border: 10px solid #ffffff;
+				overflow: hidden;
+				background-size: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">游卡工作台</h1>
+		</header>
+		<div id="page">
+			<div style="background-color:#EAF5FF;">
+				<div style="width:90px;height: 120px;margin-top:45px;margin-left: 7%;padding-top:30px;">
+					<img v-if="info.avatar" src="{{info.avatar}}" style="width: 100%;height: 100%;border-radius: 50px;" />
+					<img v-else src="../../images/user.png" style="width: 100%;height: 100%;border-radius: 50px;" />
+				</div>
+				<div class="top">
+					<span style="font-size: 16px;"></span>
+					<span class="personal-con mt10" v-if="info.nickname" style="font-size: 16px;">{{info.nickname}}</span>
+					<span class="personal-con mt10" v-else>{{info.mobile}}</span>
+				</div>
+				<p style="color: #6C7479;font-size: 15px;letter-spacing: 2px;float:right;margin-top:-130px;margin-right:20%;">尊敬的用户<br><br>&nbsp;&nbsp;<span style="font-size: 16px;">欢迎你</span></p>
+				<div class="btndiv">
+					<button type="button" class="mui-btn mybtnleft" data-url="platform/publish" style="margin-right:-130px;margin-top:-60px;background-color: #DDF4FF;">发布任务</button>
+				</div>
+			</div>
+			<div style="width: 100%;">
+				<ul class="mui-table-view mui-grid-view mui-grid-9" style="background-color:white;">
+					<li class="mui-table-view-cell mui-media mui-col-xs-6 text1" style="height: 150px;margin-top: 30px;" data-url="platform/order/handle">
+						<img src="../../images/handle.png" style="width:40%;"/>
+						<p><strong>待处理</strong></p>
+						<div class="text2">
+							<label style="font-size: 13px;">当前待处理任务:</label>
+							<label id="1"></label>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-6 text1" style="height: 150px;margin-top: 30px;" data-url="platform/order/get-on">
+						<img src="../../images/jinxing.png" style="width:40%;" />
+						<p><strong>进行中</strong></p>
+						<div class="text2">
+							<label style="font-size: 13px;">当前进行中任务:</label>
+							<label id="2"></label>
+						</div>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-6" style="height: 150px;border-bottom: white;">
+						<a data-url="platform/order/carry-out">
+							<img src="../../images/wancheng.png" style="width:40%;" />
+							<p><strong>已完成</strong></p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-6" style="height: 150px;border-bottom: white;">
+						<a data-url="platform/order/close">
+							<img src="../../images/guanbi.png" style="width:40%;" />
+							<p><strong>已关闭</strong></p>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script src="../../js/lib/mui.min.js"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js"></script>
+		<script src="../../js/lib/vue.min.js"></script>
+		<script src="../../js/app.min.js"></script>
+		<script src="../../js/update.js"></script>
+		<script>
+			var vm = new Vue({
+				el: '#page',
+				config: {
+					debug: true
+				},
+				data: {
+					num: '',
+					driver: [],
+					info: [],
+					news: '',
+					page: 1
+				}
+			});
+
+			function refresh() {
+				location = location;
+			}
+			// 实时获取司机认证状态
+			http.get('api/Auth/getAuth', {}, function(msg, info) {
+				vm.driver = info.driver;
+			});
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				http.post('api/User/getTravelList', {
+					type: 2
+				}, function(msg, data) {
+					if (data.count != undefined) {
+						$("#2").html(data.count);
+					} else {
+						$("#2").html(0);
+					}
+				});
+				http.post('api/News/getNewsList', {
+					type: 2
+				}, function(msg, data) {
+					vm.news = data.data;
+					console.info(data.data);
+				});
+				http.post('api/User/getTravelList', {
+					type: 1
+				}, function(msg, data) {
+					vm.num = data.count;
+					if (data.count != undefined) {
+						$("#1").html(data.count);
+					} else {
+						$("#1").html(0);
+					}
+				});
+				http.post('api/News/UserInfo', {}, function(msg, data) {
+					vm.info = data;
+				});
+				window.getAuth = function() {
+					auth.update(function(info) {
+						vm.driver = info.driver;
+					});
+				}
+				getAuth();
+
+			});		
+			window.addEventListener("initCart", function(event) {
+				var d = event.detail;
+				location.reload(d.jus);
+			});
+		</script>
+	</body>
+</html>

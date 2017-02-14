@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html class="bgf3">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/app.css">
+	</head>
+	<body>
+		<!--标题 begin-->	
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">上传资料</h1>
+		</header>
+		<!--标题 end-->
+		
+		<div class="mt4 mui-content bgf3">
+			<form action="api/Auth/setDriver/t-4.html" id="page">
+				<p style="margin-top: 5%;text-align: center;">* 我们需要简单验证您的身份</p>
+				<div class="mui-table-view car-info upload-pic-wrap OptionalInfo">
+					<dl class="mui-table-view-cell">
+						<dd>
+							<ul>
+								<li v-on:tap="cert">
+									<input id="cert_image" type="hidden" name="cert_image" v-model="cert_image" value="">
+									<img src="{{cert_image ? cert_image: '../../images/cem.jpg'}}" style="width: 80%;margin: 10%;height: 170px;"/>
+									<p style="text-align: center;">上传名片/工作牌</p> 
+								</li>
+							</ul>
+						</dd>
+					</dl>
+				</div>
+				<div id="token"></div>
+				<button id='logn' v-on:tap="logn" type="button" class="mui-btn mui-btn-block" style="background-color:#52C4FE;border-radius: 20px;height:40px;width:80%;margin-left:10%;margin-top: 15%;margin-bottom:5%;color: #ffffff;">确认注册</button>
+				<button id='logn' v-on:tap="logn" type="button" class="mui-btn mui-btn-block" style="background-color:transparent;border: 0px;height:40px;width:80%;margin-left:10%;margin-bottom:5%;color: #000000;">跳过</button>
+			</form>
+		</div>	
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/md5.js"></script>
+	   	<script src="../../js/config.js"></script>
+	   	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+	   	
+		<script>
+			var _url = window.location.href;
+			var decodedUrl = decodeURIComponent(_url);
+			console.log(decodedUrl);
+			function parse_url(_url) {
+				var pattern = /(\w+)=(\w+)/ig;
+				var parames = {};
+				_url.replace(pattern, function(a, b, c) {
+					parames[b] = c;
+				});
+				return parames;
+			}
+			var parames = parse_url(_url);
+			var account = parames['account'];//手机号码
+			var password = parames['password'];//密码
+			var code = parames['code'];//验证码
+			var nickname = parames['nickname'];//昵称
+			var career = parames['career'];//身份
+			var token = hex_md5(hex_md5("account="+account+"auth_link=81de98f70f97e7b3f0f87cfb96cd2522"+"auth_token=null"+"auth_uid=null"+"career="+career+"code="+code+"password="+password)+key); 	
+			console.log(token);
+			console.log(("account="+account+"career="+career+"code="+code+"nickname="+nickname+"password="+password)+key);
+			var regInfo = {
+				account: account,
+				password: password,
+				code: code,
+				nickname:nickname,
+				career:career,
+				token:token
+			};
+			var vm = new Vue({
+				el: '#page',
+				data:{
+					cert_image:'',
+				},
+				methods: {
+					cert: function() {
+						plus.nativeUI.showWaiting( "请稍等..." );
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.cert_image = info.url;
+						});
+						plus.nativeUI.closeWaiting();
+					},
+					logn:function(){
+						http.post('api/Account/register', regInfo, function(msg, info) {
+						windows.send('index', 'update');
+						mui.currentWebview.close();
+					});
+				}
+			}
+		});
+		http.get('api/Auth/getAuth',{},function(msg, info){
+			driver = info.driver;
+			vm.cert_image = driver.cert_image;
+		});		
+	</script>
+	</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html class="bgf3">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../../css/mui.min.css">
+		<link rel="stylesheet" href="../../../css/app.css">
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">添加车辆</h1>
+		</header>
+		<div class="mt4 mui-content bgf3">
+			<div class="msg-wrap">
+				<a style="margin-right: 10px;"><img src="../../../images/msg4.jpg" width="30" height="30"/></a>
+				<span style="position: absolute;z-index: 0;margin-top: 10px;">完善资料,成为车队</span>
+			</div>
+			<div id="page">
+				<form action="api/Driver/AddCar" id="form">
+					<div class="mui-table-view car-info authenticate-form more-info m0">
+							<dl class="mui-table-view-cell">
+								<dt>车 牌 号</dt>
+								<dd><input type="text" name="car_num" placeholder="请输入车牌号" /></dd> 
+							</dl>					
+							<div class="mui-input-row mui-table-view-cell" v-on:click="typeTs">
+								<label style="padding: 0px;width: 95px;height:24px;padding-top:5px;">车型选择</label>
+								<input type="hidden" name="auto_type" id="auto_type" value="" v-model="auto_type" />
+								<input type="hidden" name="auto_seat" id="auto_seat" value="" v-model="auto_seat" />
+								<input type="hidden" name="auto_brand" id="auto_brand" value="" v-model="auto_brand" />
+								<input type="hidden" name="auto_brand_name" id="auto_brand_name" value="" v-model="auto_brand_name"/>
+								<div id="brand" style="margin-top:5px;opacity: 0.6;">{{auto_brand_name?auto_brand_name:'点击选择车型及品牌座位数'}}</div>
+						    </div>
+							<dl class="mui-table-view-cell">
+								<dt>车辆识别代号</dt>
+								<dd><input type="text" name="driving_no" placeholder="请输入行驶证号" /> </dd>
+							</dl>
+					</div>
+					<div class="mui-table-view car-info upload-pic-wrap OptionalInfo">
+						<dl class="mui-table-view-cell">
+							<dt style="margin-right: 30px;">车辆详情</dt>
+							<dd>
+								<ul class="upload-pic">
+									<li v-on:tap="auto_a">
+										<input id="auto_images_a" type="hidden" v-model="auto_images_a">
+										<img src="{{auto_images_a ? auto_images_a: '../../../images/bg7.jpg'}}" width="64" height="64"/>
+										<p>斜45度角</p>
+									</li>
+									<li v-on:tap="auto_b">
+										<input id="auto_images_b" type="hidden" v-model="auto_images_b">
+										<img src="{{auto_images_b ? auto_images_b: '../../../images/bg8.jpg'}}" width="64" height="64"/>
+										<p>内室</p>
+									</li>
+									<li v-on:tap="auto_c">
+										<input id="auto_images_c" type="hidden" v-model="auto_images_c">
+										<img src="{{auto_images_c ? auto_images_c: '../../../images/bg9.jpg'}}" width="64" height="64"/>
+										<p>中控</p>
+									</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
+					<div class="mui-table-view car-info upload-pic-wrap OptionalInfo">
+						<dl class="mui-table-view-cell">
+							<dt>上传相关证照</dt>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dd>
+								<ul class="upload-pic">
+									<li v-on:tap="verify_a" style="width: 20%;">
+										<input id="verify_images_a" type="hidden" name="verify_images_a" v-model="verify_images_a" value="">
+										<img src="{{verify_images_a ? verify_images_a: '../../../images/uppic.jpg'}}" width="64" height="64"/>
+										<p>商业保单</p>
+									</li>
+									<li v-on:tap="verify_b" style="width: 20%;">
+										<input id="verify_images_b" type="hidden" name="verify_images_b" v-model="verify_images_b" value="">
+										<img src="{{verify_images_b ? verify_images_b: '../../../images/uppic.jpg'}}" width="64" height="64"/>
+										<p>运输证</p>
+									</li>
+									<li v-on:tap="verify_c" style="width: 20%;">
+										<input id="verify_images_c" type="hidden" name="verify_images_c" v-model="verify_images_c" value="">
+										<img src="{{verify_images_c ? verify_images_c: '../../../images/uppic.jpg'}}" width="64" height="64"/>
+										<p>营运证</p>
+									</li>
+									<li v-on:tap="verify_d" style="width: 20%;">
+										<input id="verify_images_d" type="hidden" name="verify_images_d" v-model="verify_images_d" value="">
+										<img src="{{verify_images_d ? verify_images_d: '../../../images/uppic.jpg'}}" width="64" height="64"/>
+										<p>行驶证</p>
+									</li>
+								</ul>
+							</dd>
+						</dl>
+					</div>
+					<div class="mui-bottom bgff suspension release-button">
+						<input type="hidden" name="order_id" id="order_id" value="" />
+					 	<button type="button" class="mui-btn footerbtn" v-on:tap="addTask">确认添加</button>			 	
+					</div>		
+				</form>
+			</div>	
+		</div>	
+		<script src="../../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+		//车辆照片
+		var auto_images_a = '';
+		var auto_images_b = '';
+		var auto_images_c = '';
+		//证件照片
+		var verify_images_a = '';
+		var verify_images_b = '';
+		var verify_images_c = '';
+		var verify_images_d = '';
+	
+		var vm = new Vue({
+			el: '#page',
+			config:{debug:true},
+			data:{
+				//车辆照片
+				auto_images_a:'',
+				auto_images_b:'',
+				auto_images_c:'',
+				
+				//相关证件
+				verify_images_a:'',
+				verify_images_b:'',
+				verify_images_c:'',
+				verify_images_d:'',
+				
+				auto_type:'',
+				auto_seat:'',
+				auto_brand:'',
+				auto_brand_name:'',
+				car_num:'',
+				driving_no:''
+			},
+			methods: {
+				//车型选择
+				typeTs: function(e){
+					http.get('api/BaseApi/getDriverType',{},function(msg, info){
+						windows.open('auth/team/car', info);
+					});
+				},
+				
+				// 斜角
+				auto_a: function() {
+					http.images('api/BaseApi/upload', function(msg, info) {
+						vm.auto_images_a = info.url;
+						auto_images_a = info.url;
+					});
+				},
+				// 内饰
+				auto_b: function() {
+					http.images('api/BaseApi/upload', function(msg, info) {
+						vm.auto_images_b = info.url;
+						auto_images_b = info.url;
+					});
+				},
+				//中控
+				auto_c: function() {
+					http.images('api/BaseApi/upload', function(msg, info) {
+						vm.auto_images_c = info.url;
+						auto_images_c = info.url;
+					});
+				},
+				
+				//相关证件
+				verify_a: function() {
+					http.images('api/BaseApi/upload', function(msg, info) {
+						vm.verify_images_a = info.url;
+						verify_images_a = info.url;
+					});
+				},
+				verify_b: function() {
+					http.images('api/BaseApi/upload', function(msg, info) {
+						vm.verify_images_b = info.url;
+						verify_images_b = info.url;
+					});
+				},
+				verify_c: function() {
+					http.images('api/BaseApi/upload', function(msg, info) {
+						vm.verify_images_c = info.url;
+						verify_images_c = info.url;
+					});
+				},
+				verify_d: function() {
+					http.images('api/BaseApi/upload', function(msg, info) {
+						vm.verify_images_d = info.url;
+						verify_images_d = info.url;
+					});
+				},
+				
+				addTask:function(){
+					plus.nativeUI.showWaiting( "处理中..." );
+					var formData = form.getFormData("#form");
+					formData = $.extend({auto_images_a: auto_images_a,auto_images_b:auto_images_b,
+										 auto_images_c:auto_images_c,verify_images_a:verify_images_a,
+										 verify_images_b:verify_images_b,verify_images_c:verify_images_c,
+										 verify_images_d:verify_images_d}, formData);
+					http.post('api/Driver/AddCar', formData, function(msg, d){
+						windows.open('auth/team/team', 'update');
+						plus.nativeUI.toast(msg);							
+						plus.nativeUI.closeWaiting();
+						alert("车辆添加成功，请等待审核！");
+						mui.currentWebview.close();
+					});
+				},
+			}
+		});
+		mui.plusReady(function() {
+			var value = plus.webview.currentWebview();
+			if(parseInt(value.info_id)>0){
+				http.get('api/User/getTravelInfo', {id:value.info_id}, function(msg, data){
+					$('#auto_type').val(data.auto_type);
+					$('#auto_seat').val(data.auto_seat);
+					$('#auto_brand').val(data.auto_brand);
+					$('#brand').text(data.auto_brand_name);
+					$('#driving_no').val(data.driving_no);
+					$('#car_num').val(data.car_num);
+				});
+			}
+		});
+		// 监听车型选择数据
+		window.addEventListener("initCart",function(event){
+			var d= event.detail;
+			vm.auto_brand_name = d.txt_name;
+			vm.auto_type = d.type;
+			vm.auto_seat = d.seat;
+			vm.auto_brand = d.brand;
+        });			
+	</script>		
+	</body>
+</html>

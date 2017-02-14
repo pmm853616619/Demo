@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <script src="../../js/mui.min.js"></script>
+	    <link href="../../css/mui.min.css" rel="stylesheet"/>
+	    <link rel="stylesheet" type="text/css" href="../../css/user.css"/>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+				<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+				<h1 class="mui-title">账户设置</h1>
+			</header>
+		<div id="page" class="mui-content account-settings">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-media">
+					<a data-url="account/nickname">
+						<img class="mui-media-object mui-pull-left" src="../../images/nick.png">
+						<div class="mui-media-body" style="margin-top: 10px;">
+							修改昵称
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a data-url="account/password">
+						<img class="mui-media-object mui-pull-left" src="../../images/xmima.png">
+						<div class="mui-media-body" style="margin-top: 10px;">
+							修改密码
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a data-url="account/mobile">
+						<img class="mui-media-object mui-pull-left" src="../../images/bphone.png">
+						<div class="mui-media-body" style="margin-top: 10px;">
+							绑定手机
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media">
+					<a v-on:tap="close">
+						<img class="mui-media-object mui-pull-left" src="../../images/tclose.png">
+						<div class="mui-media-body" style="margin-top: 10px;" id="close">
+							
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<script src="../../js/lib/mui.min.js"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js"></script>
+		<script src="../../js/lib/vue.min.js"></script>
+		<script src="../../js/app.min.js"></script>
+		<script>
+			var b = '';
+			var pushManager = '';
+			var context = '';
+			var vm = new Vue({
+				el: '#page',
+				data: {
+					info:[],
+					items:''
+				},
+				methods: {
+					close:function disable() {
+						if(b == 1){
+							pushManager.getInstance().turnOffPush(context);
+							http.post('api/User/ClosePhsh',{status:0},function(msg,data){
+					
+							});
+							alert("推送消息关闭成功");
+						}else{
+							pushManager.getInstance().turnOnPush(context);
+							http.post('api/User/ClosePhsh',{status:1},function(msg,data){
+					
+							});
+							alert("推送消息开启成功");
+						}
+					},
+				}
+			});
+			mui.plusReady(function() {
+				pushManager = plus.android.importClass("com.igexin.sdk.PushManager");
+				context = plus.android.runtimeMainActivity();
+				http.post('api/News/UserInfo',{},function(msg,data){
+					vm.info = data;
+					b = data.close_push;
+					if(b == 1){
+						$("#close").html("关闭推送");
+					}else{
+						$("#close").html("开启推送");
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

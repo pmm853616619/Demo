@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link href="../../../css/mui.min.css" rel="stylesheet"/>
+	    <link href="../../../css/user.css" rel="stylesheet" />
+	    <link href="../../../css/app.css" rel="stylesheet"/>
+	   	<link rel="stylesheet" type="text/css" href="../../../css/app1.css"/>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">旅游圈</h1>
+		</header>
+		<a target="content" href="http://bbs.youcara.com">
+			<button style="display: none;" id="subBtn" type="button"></button>
+		</a>
+		<iframe id="bbs" style="margin-top: 48px;" name="content"></iframe>
+		<script src="../../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			//获取窗口的高度 
+			var windowHeight = ''; 
+			//获取窗口的宽度
+			var windowWidth = '';
+			windowHeight = $(window).height();
+			windowWidth = $(window).width();
+			$('#bbs').css({'width':windowWidth,'height':(windowHeight-48)});
+		</script>
+		<script type="text/javascript">
+		   $(function(){
+		      $("#subBtn").trigger("click");
+		   });
+		   var win = document.getElementById('bbs').contentWindow;
+		</script>
+	</body>
+</html>

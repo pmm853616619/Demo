@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html class="bgf3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="../../../css/mui.min.css">
+	<link rel="stylesheet" type="text/css" href="../../../css/app.css"/>
+</head>
+<body>
+		<!--标题 begin-->
+	<header class="mui-bar mui-bar-nav m-title">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">金额支付</h1>
+	</header>
+	<!--标题 end-->
+	<div class="mui-content bgf3" id="page">	
+		<!--支付流程 begin-->
+		<div class="flow-chart">
+			<i class="icon-orange"></i>
+			<span class="fonr-orange">支付金额</span>
+			<i class="icon-gray"></i>
+			<span>支付成功</span>
+		</div>
+		<!--支付流程 end-->
+		<ul class="mui-table-view deposit" >
+			 <li class="mui-table-view-cell">车型费用<span id="1">{{typles}}</span></li>
+	         <li class="mui-table-view-cell">需付金额<span id="2">¥{{typles}}</span></li>
+		</ul>	
+		<div class="pay-way" >
+			<dl><dt>金额支付</dt><dd id="3">¥{{typles}}</dd></dl>
+			<div class="deposit-button mui-content-padded">
+				<div id='ALI_APP' class="pay">
+					<input onclick="pay1('alipay')" value="alipay" id="zfb" name="radio" type="radio">
+					<label  class="zhifubao selected" style="border-color: ;" for="zfb"><i></i>支付宝支付</label>
+				</div>
+       			<div class="pay">
+					<input onclick="pay1('wxpay')" value="wx" id="wx" type="button" class="btn btn-lg" id="pay" />
+					<label  class="wenxin selected" for="wx"><i style="height: 25px;width: 25px;background: url(../../../images/weixintubiao.jpg);background-size: 100%;"></i>微信支付</label>
+				</div>
+			</div>
+		</div>
+		<div class="mui-bottom suspension release-button bgff">
+		 	<button type="button" class="mui-btn mui-btn-block" onclick="pay()">确认支付</button>
+		</div>
+	</div>
+	<script src="../../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../../js/app.min.js" type="text/javascript" charset="utf-8"></script>	
+	<script type="text/javascript" charset="utf-8">
+	$(".deposit-button .pay").click(function(){
+			$(this).addClass("selected").siblings().removeClass("selected");  //单选按钮2
+		})
+		var pid = '';
+		var flag = '';
+		function pay1(id){
+				pid = id;
+		}
+            var channel = null;
+            var channels = null;
+             // 1. 获取支付通道
+            function plusReady() {
+                // 获取支付通道
+                plus.payment.getChannels(function(cs) {
+                    channels = cs;
+                }, function(e) {
+                    alert("获取支付通道失败：" + e.message);
+                });
+            }
+            document.addEventListener('plusready', plusReady, false);
+            var ALIPAYSERVER = 'http://app.server.youcara.com/index.php/api/User/carAlipay';
+            var WXPAYSERVER = 'http://app.server.youcara.com/index.php/api/User/carAlipay';
+             // 2. 发起支付请求
+            function pay() {
+                // 从服务器请求支付订单
+                var PAYSERVER = ''
+                if (pid == 'alipay') {
+					PAYSERVER = ALIPAYSERVER;
+					flag = '';
+                } else if (pid == 'wxpay') {
+                    PAYSERVER = WXPAYSERVER;
+                    flag = 'wx';
+                } else {
+                    plus.nativeUI.alert("不支持此支付通道！", null, "捐赠");
+                    return;
+                }
+                //获取支付通道
+                for (var i in channels) {
+                    if (channels[i].id == pid) {
+                        channel = channels[i];
+                    }
+                }
+                var self = plus.webview.currentWebview();
+				var varpay = '';
+                mui.post(PAYSERVER, {
+                    flag: flag,
+                    id: self.shuttle_id,
+                    auth_uid:self.user_id                   
+                }, function(data) {
+                	if(flag=='wx'){ 
+                		varpay = {
+	                        retcode: 0,
+	                        retmsg: "ok",
+	                        appid: data.result.appid,
+	                        noncestr: data.result.noncestr,
+	                        package: "Sign=WXPay",
+	                        partnerid: data.result.partnerid,
+	                        prepayid: data.result.prepayid,
+	                        timestamp: data.result.timestamp,
+	                        sign: data.result.sign
+                   		}
+                	}else{ 
+                		varpay = data.result;
+                	}
+                    console.info(varpay);
+                  plus.nativeUI.showWaiting( "支付处理中..." );
+                    plus.payment.request(channel, varpay, function(result) {
+                        plus.nativeUI.alert("支付成功！", function() {
+                        	plus.nativeUI.closeWaiting();
+                      	window.open('pay_success.html','update');
+                        	back();
+                        });
+                    }, function(e) {
+                    	plus.nativeUI.closeWaiting();
+                        plus.nativeUI.alert("支付失败：" + e.code + "支付失败：" + e.message);
+                        console.log(e.code);
+                        console.log(e.message);
+                    });
+                }, "json");
+            }
+           var vm = new Vue({
+			el: '#page',
+			data: {
+				page:1
+			},
+		});
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+					$("#1").html(self.typles);
+					$("#2").html(self.typles);
+					$("#3").html(self.typles);
+			})
+       </script>
+</body>
+</html>

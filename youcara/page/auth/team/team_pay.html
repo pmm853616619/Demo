@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../css/mui.min.css" rel="stylesheet"/>
+		<link href="../../../css/app.css" rel="stylesheet"/>
+		<style type="text/css">
+			
+		</style>
+	</head>
+	<body style="background-color:#F2F3F5;">
+		<header class="mui-bar mui-bar-nav mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">升级付费</h1>
+		</header>
+		<div id="page" style="margin-top: 50px;">
+			<div style="background-color: #ffffff;height: 50px;margin-top: 5px;margin-bottom: 5px;">
+				<div style="float: left;width: 25%;border: 1px solid #52c4fe;border-radius: 10px;margin-top: 10px;margin-left: 7%;background-color: #EEF9FF;">
+					<a style="float: left;margin-top: 7px;margin-bottom: 7px;margin-left: 5%;">顶级车队</a>
+					<a style="float: left;margin-top: 7px;margin-left: 5%;">
+						<img src="../../../images/drop_dpwn.png" width="20" height="10">
+					</a>
+				</div>
+				<div style="float: right;width: 20%;height: 30px;margin-top: 10px;margin-right: 5%;">
+					<a style="float: left;margin-top: 7px;margin-left: 10px;color: orange;">128&ensp;元</a>
+				</div>
+			</div>
+			<div class="pay-way">
+				<dl><dt>支付金额</dt><dd id="3">¥</dd></dl>
+				<div class="deposit-button mui-content-padded">			
+					<div id='ALI_APP' class="pay">
+						<input onclick="pay1('alipay')" value="alipay" id="zfb" name="radio" type="radio">
+						<label  class="zhifubao selected" for="zfb"><i></i>支付宝支付</label>
+					</div>
+	       			<div class="pay">
+						<input onclick="pay1('wxpay')" value="wx" id="wx" type="button" class="btn btn-lg"/>
+						<label  class="wenxin selected" for="wx"><i style="height: 25px;width: 25px;background: url(../../../images/weixintubiao.jpg);background-size: 100%;"></i>微信支付</label>
+					</div>				
+				</div>
+				<div class="deposit-button mui-content-padded">			
+					<div class="pay">
+						<input onclick="pay1('yuepay')" value="yue" id="yue" type="button" class="btn btn-lg"/>
+						<label  class="wenxin selected" for="yue"><i style="height: 25px;width: 25px;background: url(../../../images/balance1.png);background-size: 100%;"></i>余额支付</label>
+					</div>
+	       			<div class="pay">
+						<input onclick="pay1('zrpay')" value="zr" id="zr" type="button" class="btn btn-lg"/>
+						<label  class="wenxin selected" for="zr"><i style="height: 25px;width: 25px;background: url(../../../images/a_pay.png);background-size: 100%;"></i>找人支付</label>
+					</div>				
+				</div>
+			</div>
+			<div>
+				
+			</div>
+			<div>
+				
+			</div>
+		</div>
+		<script src="../../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>

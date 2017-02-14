@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html class="bgff">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <link href="../../css/mui.min.css" rel="stylesheet"/>
+    <link href="../../css/app.css" rel="stylesheet"/>
+</head>
+<body>
+	<!--标题 begin-->
+	<header class="mui-bar mui-bar-nav m-title">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">发表评价</h1>
+	</header>
+	<!--标题 end-->
+	
+	<div class="mt4 mui-content bgff" id="page">
+		<form class="form" action="api/Api/comment" id="form">
+		<div class="evaluation-wrap">
+			<dl>
+				<dt>服务评分</dt>
+				<dd>满意请给5星哦</dd>
+			</dl>
+			<div class="evaluation-content">
+				<dl>
+					<dt>服务态度</dt>
+					<dd  id="service"></dd>
+					<input type="hidden" id="service_vue" name="service" />
+				</dl>
+				<dl>
+					<dt>价格实惠</dt>
+					<dd id="price"></dd>
+					<input type="hidden" id="price_vue" name="price" />
+				</dl>
+				<dl>
+					<dt>车辆舒适</dt>
+					<dd id="auto"></dd>
+					<input type="hidden" id="auto_vue" name="auto" />
+				</dl>
+			</div>
+			<div class="textarea">
+				<textarea placeholder="请填写其他意见或建议（匿名评价，可以放心填写）" id="comment_vue" name="comment" ></textarea>
+			</div>
+			
+			<div class="pay-button car-info-button">
+				<input type="hidden" name="driver_id" id="driver_id" value="{{items.driver_id}}"/>
+				<input type="hidden" name="order_id" id="order_id" value="{{items.order_id}}"/>
+			 	<button type="button" class="mui-btn mui-btn-block" v-on:tap="commentSubmit"> 发表评价</button>
+			</div>
+		</div>
+		</form>	
+	</div>
+	<script src="../../js/lib/mui.min.js" ></script>
+	<script src="../../js/lib/jquery-2.2.1.min.js"></script>
+	<script src="../../js/lib/jquery.raty.js" ></script>
+	<script src="../../js/lib/vue.min.js" ></script>
+	<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/module/comment.js" ></script>
+	
+</body>
+</html>

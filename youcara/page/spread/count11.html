@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<link rel="stylesheet" href="../../css/mui.min.css" />
+		<style>
+			.mui-plus header.mui-bar {display: none!important;}
+			.mui-plus .mui-bar-nav~.mui-content {padding: 0!important;}
+			.mui-plus .plus {display: inline;}
+			.plus {display: none;}
+			#topPopover {position: fixed;top: 16px;right: 6px;}
+			#topPopover .mui-popover-arrow {left: auto;right: 6px;}
+			p {text-indent: 22px;}
+			span.mui-icon {font-size: 14px;color: #007aff;margin-left: -15px;padding-right: 10px;}
+			.mui-popover {height: 150px;border-radius:3px;}
+			.mui-content {padding: 10px;}
+		</style>
+		<style type="text/css">
+			table.gridtable {font-size: 15px;width: 100%;text-align: center;}
+			table.gridtable th {padding: 5px;}
+			table.gridtable td {padding: 5px;}
+				.mui-table-view-cell:after {position: absolute;right: 0;bottom: 0;left: 10px;right: 10px;height: 1px;content: '';-webkit-transform: scaleY(.5);transform: scaleY(.5);background-color: #c8c7cc;}
+		</style>
+		<style> 
+			#t {width:100%;margin: 5px auto;padding: 0px;display: table;}
+			#t li {float: left;width: 33.333%;height: 35px;list-style-type: none;text-align: center;line-height:30px;}
+		</style>
+	</head>
+	<body>
+		<header class="" style="height: 45px;background-color: #52c4fe;">
+			<h1 class="mui-title" style="width: 85px;margin-left:40%;color: #ffffff;">分享统计</h1>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="margin-top:10px;margin-left: 10px;color: #ffffff;"></a>
+       </header>
+		<div id="page">
+			<div style="background-color: white;">
+				<p style="font-size: 16px;color: #52C4FE;padding-top:10px;margin-left:-10px;">好友注册量</p>
+				<a id="menu" class="mui-pull-right" href="#topPopover" style="margin-top:-30px;margin-right:15px;">
+					<button style="color: orange;height: 22px;padding:0px 10px;border-radius:12px;border-color:orange;">最近3个月</button>
+				</a>
+				<hr style="width:100%;border:0;background-color:#e1e1e1;height:1px;" />
+				<ul id="t" v-for="si in items">
+					<li></li>
+					<li></li>
+					<li>注册量</li>
+					<li>累计</li>
+					<li style="color: orange;"></li>
+					<li style="color: orange;" id="total"></li>
+					<li>昨天</li>
+					<li style="color: orange;"></li>
+					<li style="color: orange;" id="yestoday"></li>
+					<li>今天</li>
+					<li style="color: orange;"></li>
+					<li style="color: orange;" id="today"></li>
+				</ul>
+				<hr style="width:100%;border:0;background-color:#e1e1e1;height:1px;"/>
+			</div>
+			<div style="background-color: white;margin-top:10px;">
+				<hr style="width:100%;border:0;background-color:#e1e1e1;height:1px;" />
+				<div style="width: 95%;margin-left:2.5%;border-radius:5px;overflow: auto;">
+					<p style="font-size: 16px;color: #000000;background-color:#c0e9ff;margin:0px;text-align: center;padding-right:7%;height: 35px;padding-top: 8px;"><span id="year"></span>-<span id="month"></span></p>
+					<ul id="t" style="background-color:#e5f6ff ;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;margin-top:0px;">
+						<li>日期</li>
+						<li></li>
+						<li>注册量</li>
+						<li>1日-7日</li>
+						<li ></li>
+						<li id="week_one"></li>
+						<li>8日-14日</li>
+						<li ></li>
+						<li id="week_two"></li>
+						<li>15日-21日</li>
+						<li ></li>
+						<li id="week_three"></li>
+						<li>22日-<span id="end"></span>日</li>
+						<li ></li>
+						<li id="week_four"></li>
+						<li>月总</li>
+						<li ></li>
+						<li id="monNUM"></li>
+					</ul>
+				</div>
+				<hr style="width:100%;border:0;background-color:#e1e1e1;height:1px;" />
+			</div>
+		</div>
+		<!--右上角弹出菜单-->
+		<div id="topPopover" class="mui-popover" style="width: 35%;">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view" style="font-size:14px;text-align: center;color: orange;">
+						<li class="mui-table-view-cell" style="height: 35px;">
+							<a href="#">最近一个月</a>
+						</li>
+						<li class="mui-table-view-cell" style="height: 35px;"><a href="#">最近三个月
+						</a>
+						</li>
+						<li class="mui-table-view-cell" style="height: 35px;"><a href="#">最近六个月</a>
+						</li>
+						<li class="mui-table-view-cell" style="height: 35px;"><a href="#">最近一年</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+			mui('.mui-scroll-wrapper').scroll();
+			mui('body').on('shown', '.mui-popover', function(e) {
+			});
+			mui('body').on('hidden', '.mui-popover', function(e) {
+			});
+		</script>
+		<script>
+			var date = new Date();
+			var dayNum = '';
+			var dateStr = date.toDateString();//当前时间的日期字符串
+			console.log(dateStr);
+			var year= date.getFullYear();//当前年份
+			$("#year").html(year);
+			console.log(year+"年");
+			var month = date.getMonth()+1;//当前月份(0~~11)
+			$("#month").html(month);
+			console.log(month+"月");						
+			if(year%4==0&&year%100!=0){
+				if(month==1 || month==3 || month==5 || month==7 || month==8 || month==10 || month==12){
+					dayNum = 31;
+					$("#end").html(dayNum);
+				}else if(month==4 || month==6 || month==9 || month==11){
+					dayNum = 30;
+					$("#end").html(dayNum);
+				}else{
+					dayNum = 29;
+					$("#end").html(dayNum);
+				}
+			}else if(year%400==0){
+				if(month==1 || month==3 || month==5 || month==7 || month==8 || month==10 || month==12){
+					dayNum = 31;
+					$("#end").html(dayNum);
+				}else if(month==4 || month==6 || month==9 || month==11){
+					dayNum = 30;
+					$("#end").html(dayNum);
+				}else{
+					dayNum = 29;
+					$("#end").html(dayNum);
+				}
+			}else{
+				if(month==1 || month==3 || month==5 || month==7 || month==8 || month==10 || month==12){
+					dayNum = 31;
+					$("#end").html(dayNum);
+				}else if(month==4 || month==6 || month==9 || month==11){
+					dayNum = 30;
+					$("#end").html(dayNum);
+				}else{
+					dayNum = 28;
+					$("#end").html(dayNum);
+				}
+			}
+		</script>
+		<script>
+			var vm = new Vue({
+				e1:'#page',
+				config:{debug:true},
+				data:{
+					items:[],
+				}
+			});
+			mui.plusReady(function() {
+				http.post('api/User/RegCount', {month:1}, function(msg, data){
+					vm.items = data;
+					$("#today").html(data.today);
+					$("#yestoday").html(data.yestday);
+					$("#week_one").html(data.week_one);
+					$("#week_two").html(data.week_two);
+					$("#week_three").html(data.week_three);
+					$("#week_four").html(data.week_four);
+					$("#monNUM").html(data.month_total);
+				});
+				http.post('api/User/RegCount', {month:12}, function(msg, data){
+					vm.items = data;
+					$("#total").html(data[0].total);
+				});
+			})	
+		</script>
+	</body>
+</html>

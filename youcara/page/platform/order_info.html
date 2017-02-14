@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html class="bgf3">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/mui.min.css">	
+    	<link rel="stylesheet" href="../../css/app.css" />
+    	<style>
+    		.content{font-size: 14px;letter-spacing: 1px;padding-top: 4px;}
+    	</style>
+	</head>
+	<body>
+		<!--标题 begin-->	
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的出行 - 出行信息</h1>
+		</header>
+		<!--标题 end-->
+		
+		<div class="mui-content driverdetail bgf3" id="page">
+			<div id="slider" class="mui-slider" v-if="items">
+				
+				<div class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted status">
+					<div class="mui-scroll hd-center">
+						<a class="mui-control-item mui-active">出行信息</a>
+						<a class="mui-control-item mui-action-back" v-if="items.driver_id==0" data-url="platform/quoteds" data-params="{info_id:{{items.order_id}}}">报价信息</a>
+						<a class="mui-control-item" v-else data-url="platform/quoted_info" data-params="{price_id:{{items.price_id}}}">司机信息</a>
+					</div>
+				</div>
+				
+				<div class="mui-slider-group">
+					<div class="mui-table-view car-info m0">
+						<dl class="mui-table-view-cell">
+							<dt>订单状态</dt>
+							<dd>
+								<span class="fonr-orange" id="status">{{items.status_txt}}</span>
+								<div class="changeOrder-btn">
+									<input type="button" value="修改订单" class="changeOrder" v-if="items.pay_scale==0 && items.status == 2" data-url="platform/publish" data-params="{info_id:{{items.order_id}}}"/>
+									<input type="button" value="取消行程" class="canceltrip" v-if="items.status != 0 && items.status <=2" v-on:tap="travelcancel">
+									<input type="button" value="取消合作" class="canceltrip" v-if="items.status == 3" v-on:tap="cancel">
+								</div>						
+							</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>出&ensp;发&ensp;地</dt>
+							<dd>{{items.start_address}}</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>目&ensp;的&ensp;地</dt>
+							<dd>{{items.end_address}}</dd>
+						</dl>
+					</div>
+					<div class="mui-table-view car-info">
+						<dl class="mui-table-view-cell">
+							<dt>行程需求</dt>
+							<dd>{{items.goback_txt}}</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>乘车人数</dt>
+							<dd>{{items.people_num}}人</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>出发时间</dt>
+							<dd>{{items.start_time | date 3}}</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>车型选择</dt>
+							<dd>{{items.auto_brand_name}}</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>行程计划</dt>
+							<dd>
+								<div class="stroke">
+									<textarea class="content" rows="5">{{items.content?items.content:'用户未填写具体行程'}}</textarea>
+								</div>
+							</dd>
+						</dl>
+					</div>
+					<div class="mui-table-view car-info" v-if="items.status >= 3">
+						<dl class="mui-table-view-cell">
+							<dt>行程费用</dt>
+							<dd>¥{{items.price}}</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>已付金额</dt>
+							<dd>¥{{items.price * items.pay_scale /100}}</dd>
+						</dl>
+						<dl class="mui-table-view-cell" v-if="items.price != (items.price * (items.pay_scale /100))">
+							<dt>剩余尾款</dt>
+							<dd><big class="fonr-orange">¥{{items.price * (100-items.pay_scale) /100}}</big></dd>
+						</dl>
+					</div>
+				</div>
+			</div>
+			<div class="loading" v-else>数据加载中.....</div>
+		</div>	
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					shut:[],
+					orderId: '',
+					items: null,
+				}, 
+				methods:{
+					travelcancel:function(){
+						var btnArray = ['否', '是'];
+						mui.confirm('您确认要取消行程吗？', '', btnArray, function(e) {
+							if (e.index == 1) {
+								http.post('api/User/cancelTravel', {orderId:vm.items.order_id}, function(){
+									$('#status').text('已关闭');
+									$('.changeOrder-btn').remove();
+									plus.nativeUI.toast('已取消');
+								});
+								mui.currentWebview.close();
+							} 
+						})
+
+					},
+					cancel:function(){
+						var btnArray = ['否', '是'];
+						mui.confirm('您确认要取消合作吗？', '', btnArray, function(e) {
+							if (e.index == 1) {
+								http.post('api/User/UserCancelOrder', {order_no:vm.items.order_id}, function(){
+									$('#status').text('已关闭');
+									$('.changeOrder-btn').remove();
+									plus.nativeUI.toast('已取消');
+								});
+								mui.currentWebview.close();
+							} 
+						})
+						
+					}
+				}
+			});			
+			mui.plusReady(function() {
+				http.post('api/Driver/SeekMotorcade',{}, function(msg, data){
+					vm.shut = data;
+				});
+				var self = plus.webview.currentWebview();
+				window.getInfo = function() {
+					http.post('api/User/getTravelInfo', {
+						id: self.info_id
+					}, function(msg, info) {
+						vm.items = info;
+						// 用户
+						var authInfo = database.get('auth');
+						if (authInfo.uid == info.user_id) {
+							vm.isMyInfo = true;
+						}
+						// 司机
+						auth.getInfo(function(info) {
+							vm.driver = info.driver;
+						});
+						vm.star = 1;
+					}, function() {
+						windows.send('driver-plat/index', 'update');
+//						mui.currentWebview.close();
+					});
+				};
+				getInfo();
+				windows.receive('update', function(info) {
+					getInfo();
+				});		
+			})
+			window.addEventListener("initCart",function(event){
+				var d = event.detail;
+				location.reload(d.jus);
+	       });
+		</script>
+	</body>
+</html>

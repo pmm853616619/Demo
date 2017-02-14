@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../../css/user.css"/>			
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的账户</h1>
+		</header>
+		<div class="mui-content mt20" id="page">
+			<div class="account">
+				<div class="account-title">账户余额</div>
+				<div class="account-money">¥ {{money ? money:'0.00'}}</div>
+			</div>
+			<div style="text-align: center;">
+				<span style="color: #52C4FE;">*平台收取3%的手续费</span>
+			</div>
+			<div class="mui-bottom footer">
+			 	<button type="button" class="mui-btn  footerbtn " data-url="account/withdraw">申请提现</button>
+			 	<button type="button" class="mui-btn  footerwater mt10 " data-url="account/accountlog">账户明细</button>
+			</div>
+		</div>
+		<script src="../../js/lib/mui.min.js"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js"></script>
+		<script src="../../js/lib/vue.min.js"></script>
+		<script src="../../js/app.min.js"></script>
+		<script>
+			var vm = new Vue({
+				el: '#page',
+				methods: {
+					
+				}
+			});
+			mui.plusReady(function() {
+				window.loadUserInfo = function(){
+					user.update(function(info) {
+						vm.$data = info;
+					});
+//					http.get('api/Account/getUserInfo', {},function(msg,info){
+//						vm.$data = info;
+//						database.set('user', {
+//							info: info,
+//							time: parseInt(new Date().getTime() / 100)
+//						});
+//					});
+				}
+				loadUserInfo();
+		});
+			windows.receive('update', function(info) {
+				loadUserInfo();
+			});
+			
+			window.addEventListener("initCart", function(event) {
+				var d = event.detail;
+				location.reload(d.jus);
+			});
+		</script>				
+	</body>
+</html>

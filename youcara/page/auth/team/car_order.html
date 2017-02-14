@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <link rel="stylesheet" type="text/css" href="../../../css/mui.min.css"/>
+	    <link rel="stylesheet" type="text/css" href="../../../css/app.css"/>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">车辆信息</h1>
+		</header>
+		<div class="mt4 mui-content driverdetail bgf3" id="page">
+			<div class="mui-table-view car-info">
+				<dl class="mui-table-view-cell">
+					<dt>车辆类型</dt>
+					<dd v-if="items.auto_type==1">轿车</dd>
+					<dd v-if="items.auto_type==2">越野</dd>
+					<dd v-if="items.auto_type==3">商务车</dd>
+					<dd v-if="items.auto_type==4">中巴</dd>
+					<dd v-if="items.auto_type==5">大巴</dd>
+					<dd v-if="items.auto_type==6">房车</dd>
+				</dl>
+				<dl class="mui-table-view-cell">
+					<dt>行驶证号</dt>
+					<dd>{{items.driving_no}}</dd>
+				</dl>
+				<dl class="mui-table-view-cell">
+					<dt>乘车人数</dt>
+					<dd>{{items.auto_seat}}人</dd>
+				</dl>
+				<dl class="mui-table-view-cell">
+					<dt>车辆品牌</dt>
+					<dd>{{items.auto_brand}}</dd>
+				</dl>
+				<dl class="mui-table-view-cell">
+					<dt>车牌号码</dt>
+					<dd>{{items.car_num}}</dd>
+				</dl>
+			</div>
+			
+			<div class="car-info car-info-pic">				
+				<ul class="mui-table-view mui-grid-view">
+					<li class="mui-table-view-cell mui-media mui-col-xs-2" style="width: 33%;">
+						<img id="1" class="pimg" src="" width="60" height="60"/>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-2" style="width: 33%;">
+						<img id="2" class="pimg" src="" width="60" height="60"/>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-2" style="width: 33%;">
+						<img id="3" class="pimg" src="" width="60" height="60"/>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<script src="../../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			function imgShow(outerdiv, innerdiv, bigimg, _this){
+				var src = _this.attr("src");
+				$(bigimg).attr("src", src);
+				$("<img/>").attr("src", src).load(function(){
+					var windowW = $(window).width();
+					var windowH = $(window).height();
+					var realWidth = this.width;
+					var realHeight = this.height;
+					var imgWidth, imgHeight;
+					var scale = 1;
+					
+					if(realHeight>windowH*scale) {
+						imgHeight = windowH*scale;
+						imgWidth = imgHeight/realHeight*realWidth;
+						if(imgWidth>windowW*scale) {
+							imgWidth = windowW*scale;
+						}
+					} else if(realWidth>windowW*scale) {
+						imgWidth = windowW*scale;
+						imgHeight = imgWidth/realWidth*realHeight;
+					} else {
+						imgWidth = realWidth;
+						imgHeight = realHeight;
+					}
+					$(bigimg).css("width",imgWidth);					
+					var w = (windowW-imgWidth)/2;
+					var h = (windowH-imgHeight)/2;
+					$(innerdiv).css({"top":h, "left":w});
+					$(outerdiv).fadeIn("fast");
+				});
+				$(outerdiv).click(function(){
+					$(this).fadeOut("fast");
+				});
+			}
+		</script>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#page',
+				data:{
+					driver:[],
+					items:[]
+				}
+			});
+			// 实时获取司机认证状态
+				http.get('api/Auth/getAuth',{},function(msg, info){
+					vm.driver = info.driver;
+				});
+				mui.plusReady(function() {
+					var self = plus.webview.currentWebview();
+					http.post('api/Driver/MotorcadeDetails',{motor_id:self.info_id,driver_id:self.driver_id}, function(msg, data){
+						vm.items = data;
+	//					$("#1").attr("src",data.auto_images.auto_images_a);
+	//					$("#2").attr("src",data.auto_images.auto_images_b);
+	//					$("#3").attr("src",data.auto_images.auto_images_c);
+					});	
+				})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <title></title>
+	    <script src="../../js/mui.min.js"></script>
+	    <link href="../../css/mui.min.css" rel="stylesheet"/>
+	    <link rel="stylesheet" href="../../css/app.css"/>
+	</head>
+	<body style="background-color:#f9f8fd;">
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">积分中心</h1>
+		</header>
+		<div id="page">
+			<div style="background-color: aliceblue;padding-top: 87px;">
+				<p style="font-size: 17px;padding-left: 7%;">我的余额</p>
+				<p style="color: orange;font-size: 18px;padding-left: 38%;margin-top: -18px;">{{items.invite_total_integral}} 元</p>
+				<br>
+				<p style="font-size: 17px;padding-left: 7%;">积分规则</p>
+				<p style="font-size: 13px;padding-left: 36%;margin-top: -20px;padding-bottom: 10px;">* 当余额达到20以上才能申请提现</p>
+				<div style="border: 1px #eee7e7 solid;">	</div>
+			</div>
+			
+			<ul class="mui-table-view" style="margin-top: 30px;">
+					<li class="mui-table-view-cell mui-media">
+						<a data-url="integral/withdraw">
+							<img class="mui-media-object mui-pull-left" src="../../images/tixian.png">
+							<p style="font-size: 17px;margin-top: 10px;padding-left: 70px;">提现</p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<a data-url="integral/integral_order"> 
+							<img class="mui-media-object mui-pull-left" src="../../images/jifenmingxi.png" >
+							<p style="font-size: 17px;margin-top: 10px;padding-left: 70px;">积分明细</p> 
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<a href="javascript:;">
+							<img class="mui-media-object mui-pull-left" src="../../images/shangcheng.png">
+							<p style="font-size: 17px;margin-top: 10px;padding-left: 70px;">商城</p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<a>
+							<img class="mui-media-object mui-pull-left" src="../../images/choujiang.png">
+							<p style="font-size: 17px;margin-top: 10px;padding-left: 70px;">抽奖</p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media">
+						<a href="javascript:;">
+							<img class="mui-media-object mui-pull-left" src="../../images/jinqingqidai.png">
+							<p style="font-size: 17px;margin-top: 10px;padding-left: 70px;">敬请期待</p>
+						</a>
+					</li>
+				</ul>							
+			</div>
+			<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+			<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+			<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+			<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+			<script>
+				var vm = new Vue({
+					el: '#page',
+					config:{debug:true},
+					data: {
+						items: []
+					}
+				});
+				mui.plusReady(function() {
+					http.post('api/News/UserInfo', {}, function(msg, data){
+						vm.items = data;
+					});	
+				})
+		</script>
+	</body>
+</html>

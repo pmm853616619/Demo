@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/app.css" />
+		<style type="text/css">
+			.leftpat{font-size: 16px;padding-left: 20px;color: #000000;}
+			.rightpat{font-size: 18px;padding-right: 20px;color: orange;}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">积分明细</h1>
+		</header>
+		<div class="mui-content" id="page">
+			<div id="slider" class="mui-slider mui-fullscreen">
+				<div class="mui-slider-group travel-list mt2 top">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div id="list" class="mui-scroll">
+								
+							</div>
+						</div>
+					</div>
+				</div>	
+			</div>
+		</div>
+		
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					items: [],
+					page: 1,
+					loading : 1
+				}
+			});mui.plusReady(function() {
+				window.loadData = function(){
+					page.tabNewlist(function(self,ul){
+						http.post('api/PushMsg/PushMsgList', {type:1,page:vm.page}, function(msg, data) {
+							if(data.length){
+								vm.items = data;
+								var data = data;
+								var list = '';
+								list="<ul>"
+								for(var i=0;i<data.length; i++){
+									list+='<li class="mui-table-view-cell">';
+										list+='<div class="mui-table" >';
+							                list+='<div style="display: inline;float: left;">';
+							                    list+='<h4 style="padding-top: 5px;">';
+							                    	list+='<span id="contents" class="leftpat">'+((data[i].content).split(","))[0]+'</span>';
+							                    list+='</h4>';
+							                    list+='<p style="padding-top: 10px;"><span id="time" style="padding-left: 20px;margin-top: 4px;color: #868686;">'+data[i].star_time+'</span></p>';
+							                list+='</div>';
+							                list+='<div style="display: inline;float: right;padding-top: 18px;">';
+							                	list+='<span style="color: orange;">+</span><span id="integrals" class="rightpat">'+((data[i].content).split(","))[1].replace(/[^0-9]+/g, '')+'</span>';
+							                list+='</div>';
+							            list+='</div>';
+									list+='</li>';
+								}
+								list+="</ul>";
+								console.info(list);
+								$('#list').html(list);
+							}else{
+								vm.items = [];
+							}	
+							vm.page = data.cur_page + 1;
+							if (data.count_page > data.cur_page) {
+								self.endPullUpToRefresh(false);
+							} else {
+								self.endPullUpToRefresh(true);
+							}	
+						}, function(){
+							plus.nativeUI.closeWaiting();
+							self.endPullUpToRefresh(false);
+						});
+					}, function(self,ul){
+						http.post('api/PushMsg/PushMsgList', {type:1,page:1}, function(msg, data) {
+							if(data.length){
+								vm.items = data;
+								var str = new Array();
+								str = (data[1].content).split(",");
+								$("#contents").html(str[0]);
+								$("#integrals").html(str[1].replace(/[^0-9]+/g, ''));
+							}else{
+								vm.items = [];
+							}
+							vm.loading = 0;
+							vm.page = 1;
+							if (data.count_page > data.cur_page) {
+								self.endPullDownToRefresh(false);
+							} else {
+								self.endPullDownToRefresh(true);
+							}
+						}, function(){
+							vm.loading = 0;
+							plus.nativeUI.closeWaiting();
+							self.endPullDownToRefresh(false);
+						});
+					});
+				}
+				loadData();
+				windows.receive('update', function(info) {
+					loadData();
+				});
+			})
+		</script>
+	</body>
+</html>

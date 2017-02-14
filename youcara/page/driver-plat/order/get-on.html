@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    	<link rel="stylesheet" href="../../../css/mui.min.css">
+		<link rel="stylesheet" href="../../../css/app.css"/>
+		<link rel="stylesheet" href="../../../css/decline.css">
+		
+		<script src="../../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		
+    	<style type="text/css">
+    		.top{padding-top: 0px;}
+    	</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a id="icon-menu" class="mui-action-menu mui-icon  mui-pull-right">
+				<img src="../../../images/menu.png" style="width: 60%;padding-top: 5px;float: right;"/>
+			</a>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">待上车订单</h1>
+		</header>
+		<div id="menu-wrapper" class="menu-wrapper hidden">
+			<div id="menu" class="menu">
+				<ul class="mui-table-view mui-table-view-inverted">
+					<li class="mui-table-view-cell">
+						<a data-url="driver-plat/order/confirm">待确认</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a data-url="driver-plat/order/get-on">待上车</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a data-url="driver-plat/order/carry-out">进行中</a>
+					</li>
+					<li class="mui-table-view-cell">
+						<a data-url="driver-plat/order/close">已完成</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		
+		<div class="mui-content" id="page">
+			<div id="slider" class="mui-slider mui-fullscreen">
+				<div class="mui-slider-group travel-list mt2 top">
+					
+					<div  class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="driver-quotes-list already-offer mui-table-view" data-params="{type:4}">
+									<li class="mui-table-view-cell" v-for="item in list_t1" data-url="driver-plat/order_info" data-params="{info_id:{{item.price_id}}}">
+										<div class="mui-table">
+											<div class="mui-table-cell mui-col-xs-9">
+												<h4 class="mui-ellipsis address">{{item.start_address}} - {{item.end_address}} <span>{{item.people_num}}人</span></h4>
+												<h5 class="time">{{item.start_time | date 3}}<font v-if="item.goback==1"> ~ {{item.back_time | date 3}}</font><font v-else color="#ff9037">单程</font></h5>
+												<p class="mui-h6 mui-ellipsis my-offer">我的报价: <span>¥{{item.price_price}}</span></p>
+											</div>
+											<div class="mui-table-cell mui-col-xs-3 mui-text-right">
+												<span class="mui-h5">{{item.txt_status}}</span>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+				</div>	
+			</div>
+		</div>
+		
+		
+		<script>
+			mui.init({
+				swipeBack:true //启用右滑关闭功能
+			});
+			var menuWrapper = document.getElementById("menu-wrapper");
+			var menu = document.getElementById("menu");
+			var menuWrapperClassList = menuWrapper.classList;
+			document.getElementById("icon-menu").addEventListener('tap',toggleMenu)
+			var busying = false;
+			function toggleMenu() {
+				if (busying) {
+					return;
+				}
+				busying = true;
+				if (menuWrapperClassList.contains('mui-active')) {
+					document.body.classList.remove('menu-open');
+					menuWrapper.className = 'menu-wrapper fade-out-up animated';
+					menu.className = 'menu bounce-out-up animated';
+					setTimeout(function() {
+						menuWrapper.classList.add('hidden');
+					}, 500);
+				} else {
+					document.body.classList.add('menu-open');
+					menuWrapper.className = 'menu-wrapper fade-in-down animated mui-active';
+					menu.className = 'menu bounce-in-down animated';
+				}
+				setTimeout(function() {
+					busying = false;
+				}, 500);
+			}
+		</script>
+		
+		<script type="text/javascript" charset="UTF-8">
+			var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					driver:[],
+					list_t1:[],
+					page: 1,
+					loading : 1
+				}
+			});
+			// 实时获取司机认证状态
+			http.get('api/Auth/getAuth',{},function(msg, info){
+				vm.driver = info.driver;
+			});
+			mui.plusReady(function() {
+				window.loadData = function(){
+					page.tabNewlist(function(self,ul){
+					var params = $(ul).data('params');
+			        if (params) {
+			            params = eval('(' + params + ')');
+			        }
+					params = params ? params : {};
+					params = $.extend({page: vm.page}, params);
+					http.post("api/Driver/getOrderList", params, function(msg, data) {
+						if (data.data.length) {
+							if(params.type==4) {
+								vm.list_t1 = data.data;
+							}
+						}else{
+							if(params.type==4) {
+								vm.list_t1 = [];
+							}
+						}
+						vm.page = data.cur_page + 1;
+						if (data.count_page > data.cur_page) {
+							self.endPullUpToRefresh(false);
+						} else {
+							self.endPullUpToRefresh(true);
+						}
+		
+					}, function(){
+						plus.nativeUI.closeWaiting();
+						self.endPullUpToRefresh(false);
+					});
+					}, function(self,ul){
+						var params = $(ul).data('params');
+				        if (params) {
+				            params = eval('(' + params + ')');
+				        }
+						params = params ? params : {};
+						params = $.extend({page: 1}, params);
+						http.post("api/Driver/getOrderList", params, function(msg, data) {
+							if (data.data.length) {
+								if(params.type==4) {
+									vm.list_t1 = data.data;
+								}
+							}else{
+								if(params.type==4) {
+									vm.list_t1 = [];
+								}
+							}
+							vm.loading = 0;
+							vm.page = 1;
+							if (data.count_page > data.cur_page) {
+								self.endPullDownToRefresh(false);
+							} else {
+								self.endPullDownToRefresh(true);
+							}
+			
+						}, function(){
+							vm.loading = 0;
+							plus.nativeUI.closeWaiting();
+							self.endPullDownToRefresh(false);
+						});
+						
+					});
+				};
+				loadData();
+				windows.receive('update', function(info) {
+					loadData();
+				});
+			});	
+			window.addEventListener("initCart",function(event){
+				var d = event.detail;
+				location.reload(d.jus);
+	       });
+    	</script>
+	</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="../../js/mui.min.js"></script>
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="../../css/app.css" />
+		<script type="text/javascript" src="jquery.js"></script>
+		<style type="text/css">
+			textarea {
+				line-height: 17px;
+				width: 100%;
+				height: 40px;
+				margin-bottom: 15px;
+				padding: 10px 15px;
+				-webkit-user-select: text;
+				border: 0px solid rgba(0, 0, 0, .2);
+				border-radius: 3px;
+				outline: 0;
+				background-color: transparent;
+				-webkit-appearance: none;
+			}
+			.mui-table-view-cell {
+				position: relative;
+				overflow: hidden;
+				padding: 7px 11px;
+				-webkit-touch-callout: none;
+			}
+			.mui-table-view-cell:after {
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				left: 15px;
+				height: 0px;
+				content: '';
+				-webkit-transform: scaleY(.5);
+				transform: scaleY(.5);
+				background-color: #c8c7cc;
+			}
+			.mui-table-view:before {
+				position: absolute;
+				right: 0;
+				left: 0;
+				height: 0px;
+				content: '';
+				-webkit-transform: scaleY(.5);
+				transform: scaleY(.5);
+				background-color: #c8c7cc;
+				top: 0px;
+			}
+			.mui-table-view:after {
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				height: 0px;
+				content: '';
+				-webkit-transform: scaleY(.5);
+				transform: scaleY(.5);
+				background-color: white;
+			}
+			#demo{
+			  
+			  border: 1px orange solid;
+			  border-radius: 5px;
+			  background-color:#F3F0E7;
+			  position:relative;
+			}
+			#demo:before, #demo:after{
+			  width:0px;
+			  height:0px;
+			  border:transparent solid;
+			  position:absolute;
+			  right:100%;
+			  content:"";
+			  
+			}
+			#demo:before{
+			  border-width:10px;
+			  border-right-color: orange;
+			  top:47px;
+			}
+			#demo:after{
+			  border-width:9px;
+			  border-right-color:#F3F0E7;
+			  top:48px;
+			}
+
+		</style>
+	</head>
+	<body style="background-color: #F2F3F5;">
+		<header id="head" class="mui-bar mui-bar-nav m-title">
+			<a class="mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">消息详情</h1>
+		</header>
+		<div id="page" class="mui-slider-group travel-list mt2" >
+		<div class="mui-slider-item mui-control-content mui-active" style="height:600px;margin-top: 48px;">
+			<div id="scroll1" class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view mui-table-view-chevron" style="margin-top:-1px;">
+						<li class="mui-table-view-cell mui-media" v-for="si in items" style="padding-left: 5px;margin-top: -1px;padding-bottom:0px;">
+							<div class="mui-table">
+								<div style="width: 50px;margin-right:10px;">
+									<h4 style="font-size: 14px;margin-top:60px;">{{si.create_time}}</h4>
+									<div style="width: 2px;background-color: orange;height: 150px;float: right;margin-top:-110px;"></div>
+									<span style="height: 10px;width:10px;background:#52C4FE ;border-radius: 5px;float: right;margin-right: -6px;margin-top:-15px;"></span>
+								</div>
+								<div style="float: right;width:80%;margin-top:-118px;position: absolute;margin-left:62px;">
+									<div class="mui-table-cell" id="demo" style="background-color:#F3F0E7;float:right;width:95%;margin-top:50px;margin-right:10px;">
+										<h4 v-if="si.url==3" style="font-size: 14px;padding-top: 10px;width: 130px;margin-left: 10px;color: ;"><font color="#1AB5FD">订单未支付</font></h4>
+										<h4 v-if="si.url==2" style="font-size: 14px;padding-top: 10px;width: 130px;margin-left: 10px;color: ;"><font color="#1AB5FD">订单已支付</font></h4>
+										<h4 v-if="si.url==1" style="font-size: 14px;padding-top: 10px;width: 130px;margin-left: 10px;color: ;">订单已处理</h4>
+										<h4 style="font-size: 14px;float:right;margin-top: -13px;margin-right: 5px;">{{si.star_time}}</h4>
+										<h4 style="font-size: 14px;height: 80px;padding-left: 10px;padding-top: 5px;margin-top:2px;">{{si.content}}</h4>
+										<button v-if="si.url==3" data-url="shuttle/order/quoted_infoo" data-params="{info_id:{{si.order_no}}}" style="background-color:orange;height: 23px;font-size: 14px;margin-right: 5px;float: right;margin-top: -30px;color: white;">继续支付</button>
+									</div>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		</div>
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					items: [],
+					page: 1,
+					loading : 1
+				}
+			});
+			mui.plusReady(function() {					
+				window.loadData = function(){
+					page.tabNewlist(function(self,ul){
+						http.post('api/PushMsg/PushMsgList', {type:4,page:vm.page}, function(msg, data) {
+							if(data.length){
+								vm.items = data;
+							}else{
+								vm.items = [];
+							}	
+							vm.page = data.cur_page + 1;
+							if (data.count_page > data.cur_page) {
+								self.endPullUpToRefresh(false);
+							} else {
+								self.endPullUpToRefresh(true);
+							}	
+							
+						}, function(){
+							plus.nativeUI.closeWaiting();
+							self.endPullUpToRefresh(false);
+						});
+					}, function(self,ul){
+						http.post('api/PushMsg/PushMsgList', {type:4,page:1}, function(msg, data) {
+							if(data.length){
+								vm.items = data;
+							}else{
+								vm.items = [];
+							}
+							vm.loading = 0;
+							vm.page = 1;
+							if (data.count_page > data.cur_page) {
+								self.endPullDownToRefresh(false);
+							} else {
+								self.endPullDownToRefresh(true);
+							}
+						}, function(){
+							vm.loading = 0;
+							plus.nativeUI.closeWaiting();
+							self.endPullDownToRefresh(false);
+						});
+					});
+				}
+				loadData();
+				windows.receive('update', function(info) {
+					loadData();
+				});
+			});
+			mui('#head').on('tap', 'a', function(e) {      
+				var main = plus.webview.getWebviewById("news/index");
+					var jus = '';
+					mui.fire(main,"initCart",{
+						jus:true
+	             });
+	            mui.currentWebview.close();
+			});
+		</script>
+	</body>
+</html>

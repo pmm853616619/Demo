@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+		<link href="../../../css/mui.min.css" rel="stylesheet"/>
+	    <link href="../../../css/user.css" rel="stylesheet" />
+	    <link href="../../../css/app.css" rel="stylesheet"/>
+	   	<link rel="stylesheet" type="text/css" href="../../../css/app1.css"/>
+	    <style type="text/css">
+	        * {cursor: pointer;}
+	        .weui_mask_transition {display: none;position: fixed;z-index: 1;width: 100%;height: 100%;top: 0;left: 0;background: rgba(0, 0, 0, 0);-webkit-transition: background .3s;transition: background 0.3s;}
+	        .weui_fade_toggle {background: rgba(0, 0, 0, 0.6);}
+	        .weui_actionsheet {position: fixed;left: 0;bottom: 0;-webkit-transform: translate(0, 100%);-ms-transform: translate(0, 100%);transform: translate(0, 100%);-webkit-backface-visibility: hidden;backface-visibility: hidden;z-index: 2;width: 100%;background-color: #EFEFF4;-webkit-transition: -webkit-transform .3s;transition: transform .3s;}
+	        .weui_actionsheet_toggle {-webkit-transform: translate(0, 0);-ms-transform: translate(0, 0);transform: translate(0, 0);}
+	        .weui_actionsheet_menu {background-color: #FFFFFF;}
+	        .weui_actionsheet_cell:before {content: " ";position: absolute;left: 0;top: 0;width: 100%;height: 1px;border-top: 1px solid #D9D9D9;-webkit-transform-origin: 0 0;-ms-transform-origin: 0 0;transform-origin: 0 0;-webkit-transform: scaleY(0.5);-ms-transform: scaleY(0.5);transform: scaleY(0.5);}
+	        .weui_actionsheet_cell:first-child:before {display: none;}
+	        .weui_actionsheet_cell {position: relative;padding: 10px 0;text-align: center;font-size: 18px;}
+	        .weui_actionsheet_cell.title {color: #999;}
+	        .weui_actionsheet_action {margin-top: 6px;background-color: #FFFFFF;}
+	    </style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a class=" mui-pull-right" style="height: 45px;margin-top: -0.5px;">
+				<div data-url="news/tour/publication" style="float: right;width: 40%;position: relative;margin-top: 15%;margin-right: 2%;">
+					<img src="../../../images/writle.png" style="width: 70%;float: right;">
+				</div>
+				<div style="float: right;width: 40%;position: relative;margin-top: 16%;margin-right: 7%;">
+					<img src="../../../images/search_title.png" style="width: 70%;float: right;">
+				</div>
+			</a>
+			<h1 class="mui-title">旅游圈</h1>
+		</header>
+		<div id="page" class="mui-content">
+			<div class="mui-slider">
+				<div class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<div>
+						<a class="mui-control-item mui-active" style="width: 25%;float: left;padding-top: 2%;padding-bottom: 1%;font-size: 1.1em;">全部</a>
+						<a class="mui-control-item" style="width: 25%;float: left;padding-top: 2%;padding-bottom: 1%;font-size: 1.1em;">最新</a>
+						<a class="mui-control-item" style="width: 25%;float: left;padding-top: 2%;padding-bottom: 1%;font-size: 1.1em;">最热</a>
+						<a class="mui-control-item" style="width: 25%;float: left;padding-top: 2%;padding-bottom: 1%;font-size: 1.1em;">置顶</a>
+					</div>
+				</div>
+				<div id="list">
+					<ul>
+						<li>
+							<div class="po-avt-wrap">
+			                    <img class="po-avt" src="../../../img/0.jpg">
+			                </div>
+			                <div class="po-cmt">
+			                    <div class="po-hd">
+			                        <p class="po-name"><span>高先生</span></p>
+			                        <div class="post">
+			                            <p>成都被热成狗了啊啊啊啊啊啊啊~~~~成都被热成狗了啊啊啊啊啊啊啊~~~~成都被热成狗了啊啊啊啊啊啊啊~~~~成都被热成狗了啊啊啊啊啊啊啊~~~~</p>
+			                            <p>
+			                                <img class="list-img" src="../../../img/jt1.jpg" style="height: 80px;width: 80px;">
+			                                <img class="list-img" src="../../../img/yt3.jpg" style="height: 80px;width: 80px;">
+			                                <img class="list-img" src="../../../img/0.jpg" style="height: 80px;width: 80px;">
+			                                <img class="list-img" src="../../../img/jt1.jpg" style="height: 80px;width: 80px;">
+			                                <img class="list-img" src="../../../img/yt3.jpg" style="height: 80px;width: 80px;">
+			                                <img class="list-img" src="../../../img/0.jpg" style="height: 80px;width: 80px;">
+			                            </p>
+			                        </div>
+			                        <p class="time">刚刚</p>
+			                        <div class="c-icon">
+			                        	<img  src="../../../images/message.png">
+			                        	<span>36</span>
+			                        </div>
+			                         <div class="c-icon">
+			                        	<img  src="../../../images/clicklike1.png">
+			                        	<span>36</span>
+			                        </div>
+			                    </div>
+			                    <div class="r"></div>
+			                    <div class="cmt-wrap">
+			                        <div class="like"><img src="images/l.png">高先生，高先生，高先生，高先生，高先生，高先生，高先生...</div>
+			                        <div class="cmt-list">
+			                            <p><span>高先生：</span>나는 서명～</p>
+			                            <p><span>高先生：</span>are you ok?～</p>
+			                            <p><span>高先生：</span>나는 서명～</p>
+			                            <p><span>高先生：</span>yeah,I'm fine</p>
+			                            <p><span>高先生：</span>求带上我～</p>
+			                        </div>
+			                    </div>
+			                </div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script src="../../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>
+

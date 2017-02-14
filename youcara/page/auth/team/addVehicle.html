@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html class="bgf3">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../../css/mui.min.css">
+		<link rel="stylesheet" href="../../../css/app.css">
+	</head>
+
+	<body>
+		<!--标题 begin-->
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">添加车辆</h1>
+		</header>
+		<!--标题 end-->
+
+		<div class="mt4 mui-content bgf3">
+			<div class="msg-wrap" style="height: 90px;">
+				<div class="mui-table-cell mui-col-xs-4 pic">
+					<img src="../../images/msg4.jpg" />
+				</div>
+				<div class="mui-table-cell mui-col-xs-8 text">
+					<p>完善资料,获取更多机会</p>
+				</div>
+			</div>
+			<form action="api/Auth/setDriver/t-4.html" id="page">
+				<div class="mui-table-view car-info authenticate-form more-info m0">
+					<dl class="mui-table-view-cell">
+						<dt>车牌号</dt>
+						<dd><input type="text" name="" v-model="transport_no" placeholder="请输入车牌号" /> </dd>
+					</dl>
+
+					<div class="mui-input-row mui-table-view-cell" v-on:click="typeTs">
+						<label style="padding: 0px;width: 95px;height:24px;padding-top:5px;">车型选择</label>
+						<input type="hidden" name="auto_type" id="auto_type" value="" v-model="auto_type" />
+						<input type="hidden" name="auto_seat" id="auto_seat" value="" v-model="auto_seat" />
+						<input type="hidden" name="auto_brand" id="auto_brand" value="" v-model="auto_brand" />
+						<input type="hidden" name="auto_brand_name" id="auto_brand_name" value="" v-model="auto_brand_name" />
+						<div id="brand" style="margin-top:5px;opacity: 0.6;">{{auto_brand_name?auto_brand_name:'点击选择车型及品牌座位数'}}</div>
+					</div>
+					<dl class="mui-table-view-cell">
+						<dt>行驶证号</dt>
+						<dd><input type="text" name="" v-model="cert_no" placeholder="请输入行驶证号" /> </dd>
+					</dl>
+				</div>
+				<div class="mui-table-view car-info upload-pic-wrap OptionalInfo">
+					<dl class="mui-table-view-cell">
+						<dt>上传车辆照片</dt>
+					</dl>
+					<dl class="mui-table-view-cell">
+						<dd>
+							<ul class="upload-pic">
+								<li v-on:tap="transport" style="width: 40%;height: 110px;margin-left:5%;">
+									<input id="transport_image" type="hidden" name="transport_image" v-model="transport_image" value="">
+									<img src="{{transport_image ? transport_image: '../../../images/uppic.jpg'}}" style="width: 100%;height: 100%;" />
+
+								</li>
+								<li v-on:tap="cert" style="width: 40%;height: 110px;margin-left:10%;">
+									<input id="cert_image" type="hidden" name="cert_image" v-model="cert_image" value="">
+									<img src="{{cert_image ? cert_image: '../../../images/uppic.jpg'}}" style="width: 100%;height: 100%;" />
+
+								</li>
+
+								<li v-on:tap="" style="width: 40%;height: 110px;margin-left:5%;margin-top: 15px;">
+									<input id="transport_image" type="hidden" name="transport_image" v-model="transport_image" value="">
+									<img src="{{transport_image ? transport_image: '../../../images/uppic.jpg'}}" style="width: 100%;height: 100%;" />
+
+								</li>
+								<li v-on:tap="cert" style="width: 40%;height: 110px;margin-left:10%;margin-top: 15px;">
+									<input id="cert_image" type="hidden" name="cert_image" v-model="cert_image" value="">
+									<img src="{{cert_image ? cert_image: '../../../images/uppic.jpg'}}" style="width: 100%;height: 100%;" />
+								</li>
+							</ul>
+						</dd>
+					</dl>
+				</div>
+			</form>
+			<footer style="height:65px;">
+				<div class="mui-bottom bgff suspension release-button" style="margin-top:0px;">
+					<input type="hidden" name="order_id" id="order_id" value="" />
+					<button type="button" class="mui-btn footerbtn" v-on:tap="addTask">提交</button>
+				</div>
+			</footer>
+		</div>
+		<script src="../../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var vm = new Vue({
+				el: '#page',
+				data: {
+					transport_no: '',
+					cert_no: '',
+					transport_image: '',
+					cert_image: '',
+				},
+				methods: {
+					cars: function() {
+						windows.open('auto/uploadimg');
+					},
+					success: function(msg, info) {
+						windows.open('auth/step5');
+						// user.login(info);
+						// mui.currentWebview.close();
+					},
+					// 运输证
+					transport: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.transport_image = info.url;
+						});
+					},
+					// 从业资格证
+					cert: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.cert_image = info.url;
+						});
+					},
+				}
+			});
+			http.get('api/Auth/getAuth', {}, function(msg, info) {
+				console.log(JSON.stringify(info));
+				driver = info.driver;
+				vm.transport_no = driver.transport_no;
+				vm.cert_no = driver.cert_no;
+				vm.transport_image = driver.transport_image;
+				vm.cert_image = driver.cert_image;
+
+			});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html class="bgf3">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../../css/mui.min.css">
+		<link rel="stylesheet" href="../../../css/app.css">
+	</head>
+	<body>
+	<!--标题 begin-->	
+	<header class="mui-bar mui-bar-nav m-title">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">门市认证</h1>
+	</header>
+	<!--标题 end-->
+	
+	<div class="mt4 mui-content mdb40 bgf3">
+		<div class="msg-wrap">
+			<div class="mui-table-cell mui-col-xs-4 pic">
+				<img src="../../../images/msg5.jpg" />
+			</div>
+			<div class="mui-table-cell mui-col-xs-8 text">
+				<p>提交证件，用户更放心</p>
+			</div>
+		</div>
+		<form class="form" id="page" action="api/Auth/setGroup/t-2">
+		<div class="mui-table-view car-info upload-documents m0">
+			<dl class="mui-table-view-cell">
+				<dt>身份证照</dt>
+				<dd>
+					<ul class="upload-pic">
+						<li v-on:tap="upIdcard_a">
+							<input id="lefile1" v-model="idcard_image_a" type="hidden" value="">
+							<img src="{{idcard_image_a ? idcard_image_a: '../../../images/bg1.jpg'}}" width="64" height="64"/>
+						</li>
+						<li  v-on:tap="upIdcard_b">
+							<input id="lefile2" v-model="idcard_image_b" type="hidden" value="">
+							<img src="{{idcard_image_b ? idcard_image_b: '../../../images/bg2.jpg'}}" width="64" height="64"/>
+						</li>
+					</ul>
+				</dd>
+			</dl>
+			<dl class="mui-table-view-cell">
+				<dt>营业执照</dt>
+				<dd>
+					<ul class="upload-pic">
+						<li v-on:tap="upBucard">
+							<input id="lefile3" type="hidden" v-model="business_image" value="">
+							<img src="{{business_image ? business_image: '../../../images/bg10.jpg'}}" width="64" height="64"/>
+						</li>
+					</ul>
+				</dd>
+			</dl>
+			<dl class="mui-table-view-cell">
+				<dt>名片</dt>
+				<dd>
+					<ul class="upload-pic">
+						<li v-on:tap="upBucard_a">
+							<input id="lefile5" type="hidden" v-model="business_card_a" value="">
+							<img src="{{business_card_a ? business_card_a: '../../../images/bg11.jpg'}}" width="64" height="64"/>
+						</li>
+						<li  v-on:tap="upBucard_b">
+							<input id="lefile4" v-model="business_card_b" type="hidden" value="">
+							<img src="{{business_card_b ? business_card_b: '../../../images/bg14.jpg'}}" width="64" height="64"/>
+						</li>
+					</ul>
+					
+				</dd>
+			</dl>
+			<dl class="mui-table-view-cell mui-input-row owned-company">
+				<dt>所属公司</dt>
+				<dd><input type="text" class="mui-input-clear" name="company" v-model="company" placeholder="所属公司" value=""/> </dd>
+			</dl>
+		</div>
+		<div class="mui-bottom ft-button suspension">
+			<input type="hidden" name="group_id" v-model="group_id"  value="6" />
+			<input type="hidden" name="tmp_status" v-model="tmp_status"  value="2" />
+			<button type="button" class="reset-button" data-back="true">上一步</button>
+			<button type="button" class="sure-button" v-on:tap="submit">下一步</button>
+		</div>
+		</form>
+	</div>
+	<script src="../../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>       
+			var vm = new Vue({
+				el: '#page',
+				data:{
+					idcard_image_a:'',
+					idcard_image_b:'',
+					business_image:'',
+					business_card_a:'',
+					business_card_b:'',
+
+				},
+				methods: {
+					upIdcard_a: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.idcard_image_a = info.url;
+						});
+					},
+					upIdcard_b: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.idcard_image_b = info.url;
+						});
+					},
+					upBucard: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.business_image = info.url;
+						});
+					},
+					upBucard_a: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.business_card_a = info.url;
+						});
+					},
+					upBucard_b: function() {
+						http.images('api/BaseApi/upload', function(msg, info) {
+							vm.business_card_b = info.url;
+						});
+					},
+
+					success: function(msg, info) {
+						windows.open('auth/store/step3');
+					}
+				}
+			});
+
+	</script>
+	
+	</body>
+</html>

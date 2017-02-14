@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <link href="../../css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../../css/app.css"/>
+    <style type="text/css">
+    	input[type=text]{line-height: 21px;width: 100%; height: 40px;-webkit-user-select: text;border: 0px solid ;border-radius: 3px;outline: 0; background-color: #fff;-webkit-appearance: none;}
+    </style>
+</head>
+	<body style="background-color: #FFFAFA;">
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">身份选择</h1>
+		</header>
+		<div id="page" class="mui-content" style="background-color: #FFFAFA;">
+			<p style="margin-top: 35px;text-align: center;font-size: 16px;">* 亲爱的用户，我们需要知道您的身份</p>
+		    <div style="border-style:solid;border-width: 1px;border-color: powderblue;border-radius: 30px;width: 80%;margin:10%;background-color: white;height: 42px;">
+				<img src="../../images/mima.png" style="height: 32px;vertical-align:middle;margin-left: 17px;"/>
+				<input id="name" type="text" placeholder="昵称" style="width: 50%;font-size: 15px;margin: 0px;padding: 0px;height: 30px;margin-top: 5px;">
+		    </div>		
+			<ul id="type" class="mui-table-view mui-grid-view mui-grid-9" style="background-color: #FFFAFA;height: auto;">
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" style="width: 50%;height: 140px;">
+					<a href="#">
+						<img src="../../images/youke.png" style="width:30%;"/><br/><br/>
+						<label style="padding-left: 5px"><input type="radio" name="radio1" value="1" checked/>我是游客</label>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" style="width: 50%;height: 140px;">
+					<a href="#">
+						<img src="../../images/siji.png" style="width:30%;"/><br/><br/>
+						<label style="padding-left: 5px"><input type="radio" value="2" name="radio1" />司机/车队</label>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" style="width: 50%;height: 140px;">
+					<a href="#">
+						<img src="../../images/chedui.png" style="width:30%;"/><br/><br/>
+						<label style="padding-left: 5px"><input type="radio" value="3" name="radio1" />旅行社</label>
+					</a>
+				</li>
+				<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4" style="width: 50%;height: 140px;">
+					<a href="#">
+						<img src="../../images/chedui.png" style="width:30%;"/><br/><br/>
+						<label style="padding-left: 5px"><input type="radio" value="4" name="radio1" />酒店工作人员</label>
+					</a>
+				</li>
+			</ul>
+			<a id='pre' v-on:tap="pre"  type="button" class="mui-btn mui-btn-block" style="background-color:#52C4FE;border-radius: 20px;height:40px;width:80%;margin:10%;color: #ffffff;">下一步</a>
+		</div>
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+		var _url = window.location.href;
+		function parse_url(_url) {
+			var pattern = /(\w+)=(\w+)/ig;
+			var parames = {};
+			_url.replace(pattern, function(a, b, c) {
+				parames[b] = c;
+			});
+			return parames;
+		}
+			var parames = parse_url(_url);
+			
+			var account = parames['account'];//手机号码
+			var password = parames['password'];//密码
+			//var invite_code = parames['invite_code'];//邀请码
+			var code = parames['code'];//验证码
+			new Vue({
+				el: '#page',
+				config:{debug:true},
+				methods: {
+					pre: function(){
+						var name = $('#name').val();
+						var type = $('input:radio:checked').val();
+							if (!name) {
+								plus.nativeUI.toast('请填写昵称');
+								return;
+							}
+							console.log(name);
+						var url = encodeURIComponent(window.location.href="crede.html?account="+account+"&password="+password+"&code="+code+"&nickname="+name+"&career="+type);
+						console.log(url);
+						var decodedUrl = decodeURIComponent(url);
+						console.log(decodedUrl);
+						window.location.href = decodedUrl;
+					},
+				}				
+			});
+		</script>
+	</body>
+</html>

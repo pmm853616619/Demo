@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/user.css"/>
+		<link href="../../css/app.css" rel="stylesheet"/>
+		<link rel="stylesheet" type="text/css" href="../../css/style/footer.css"/>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">我 的</h1>
+		</header>
+		<div class="mui-content" id="page">
+			<div class="personal" style="background-color: #52C4FE;color: #FFFFFF;height: 170px;">
+				<div style="padding-top: 5px;padding-left: 70%;">
+					<a href="shenfen.html"><img src="../../images/gengduo.png" style="width: 60%;height: 10%;"/></a>
+				</div>
+				<div v-on:tap="avatar">
+					<img v-cloak src="{{info.avatar ? info.avatar : '../../images/user.png'}}" id="avatar"/>
+				</div>
+				<div v-cloak style="text-align: center;">
+					<div class="personal-con mt10" v-if="info.nickname">{{info.nickname}}</div>
+					<div class="personal-con mt10" v-else style="padding-top: 5px;">用 户 名<img src="../../images/huiyuan.jpg" style="width: 3%;height: 7%;"/></div>
+					<div class="personal-money" style="padding-top: 10px;">账户余额：<span>¥ {{info.money}}</span>(不含推广)</div>
+				</div>
+			</div>
+			<div style="width: 100%;">
+				<ul class="mui-table-view mui-grid-view mui-grid-9" style="background-color:white;">
+					<li class="mui-table-view-cell mui-media mui-col-xs-4" style="height: 110px;">
+						<a data-url="shuttle/order/key-order">
+							<img src="../../images/quan.png" style="width:30%;"/>
+							<p style="padding-top: 10px;"><strong>一键下单</strong></p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4" style="height: 110px;">
+						<a data-url="shuttle/order/NoPay_order">
+							<img src="../../images/dingdan.png" style="width:38%;"/>
+							<p style="padding-top: 10px;"><strong>接送订单</strong></p>
+						</a>
+					</li>
+					<li id="nav" class="mui-table-view-cell mui-media mui-col-xs-4" style="height: 110px;">
+						<a data-url="spread/inte_center">
+							<img src="../../images/yaoqing.png" style="width:30%;"/>
+							<p style="padding-top: 10px;"><strong>推广中心</strong></p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4" style="height: 110px;">
+						<a data-url="integral/integral">
+							<img src="../../images/jifen.png" style="width:35%;"/>
+							<p style="padding-top: 10px;"><strong>积分中心</strong></p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4" style="height: 110px;">
+						<a data-url="account/account">
+							<img src="../../images/zhanghu.png" style="width:30%;"/>
+							<p style="padding-top: 10px;"><strong>账户余额</strong></p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4" style="height: 110px;">
+						<a data-url="account/about">
+							<img src="../../images/women.png" style="width:35%;"/>
+							<p style="padding-top: 10px;"><strong>关于我们</strong></p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4" style="height: 110px;">
+						<a data-url="account/setting">
+							<img src="../../images/shezhi.png" style="width:35%;"/>
+							<p style="padding-top: 10px;"><strong>设置</strong></p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4" style="height: 110px;">
+						<a v-on:tap="logout">
+							<img src="../../images/clear.png" style="width:30%;"/>
+							<p style="padding-top: 10px;"><strong>退出程序</strong></p>
+						</a>
+					</li>
+					<li class="mui-table-view-cell mui-media mui-col-xs-4" style="height: 110px;">
+						<a href="#">
+							<img src="../../images/add.png" style="width:45%;"/>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div style="display: block;" class="footer_bar openwebview">
+			<ul class="warp clearfix">
+			    <li>
+			        <a data-url="index">
+			            <i><img src="../../images/shouye.png"/></i>
+			            <span style="font-size: 14px;">首页</span>
+			        </a>
+			    </li>
+			    <li>
+			        <a data-url="news/index">
+			            <i><img src="../../images/xiaoxi.png"/></i>
+			            <span style="font-size: 14px;">消息</span>
+			        </a>
+			    </li>
+			    <li>
+			        <a data-url="account/index">
+			            <i><img src="../../images/own1.png"/></i>
+			            <span style="font-size: 14px;color: #52C4FE;">我</span>
+			        </a>
+			    </li>
+			</ul>
+		</div>
+		<script src="../../js/lib/mui.min.js"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js"></script>
+		<script src="../../js/lib/vue.min.js"></script>
+		<script src="../../js/app.min.js"></script>
+		<script> 
+			var vm = new Vue({
+				el: '#page',
+				data: {
+					driver: {},
+					guide: {},
+					info: {}
+				},
+				methods: {
+					avatar: function(){
+						// 更换头像
+						http.images('api/Account/avatarUpload', function(msg, info) {
+							vm.info.avatar = info.url;
+							loadUserInfo();
+						});
+					},
+					logout: function() {
+						user.out();
+						mui.currentWebview.close();
+					}
+				}
+			});
+			mui.plusReady(function() {
+				var page = mui.preload({
+				    url:'/page/spread/inte_center.html',
+				    id:'spread/inte_center',//默认使用当前页面的url作为id
+				    styles:{},//窗口参数
+				    extras:{}//自定义扩展参数
+				});
+				
+				mui('#nav').on('tap', 'a', function(e) {      
+				  mui.openWindow({
+				    id:'spread/inte_center'
+				  });
+				});
+				
+				window.noStart = function(){
+					plus.nativeUI.toast('暂时未开放，请等待下个版本！');
+				}
+				
+				http.post('api/News/getNewsList', {type: 2}, function(msg, data) {
+					vm.news = data.data;
+				});
+				window.homeLoad = function(){
+					if (user.check()) {
+						auth.update(function(info){
+							vm.driver = info.driver;
+						});
+						user.update(function(info) {
+							vm.info = info;
+						});	
+					}				
+				}	
+				homeLoad();
+		        windows.receive('update', function(info) {
+					homeLoad();
+				});	
+				window.loadUserInfo = function(){
+					auth.update(function(info){
+						vm.driver = info.driver;
+					});
+					user.update(function(info) {
+						vm.info = info;
+					});
+				}
+				loadUserInfo();				
+			})
+			window.addEventListener("update",function(event){
+				loadUserInfo();
+	     });
+	     
+	     window.addEventListener("initCart", function(event) {
+			var d = event.detail;
+			location.reload(d.jus);
+		});
+		</script>
+	</body>
+</html>

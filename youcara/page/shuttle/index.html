@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/app.css"/>
+	</head>
+	<body id="index" style="background-image: url(../../images/nav1.jpg);background-size: 100%;">
+		<header>
+			<a jump-back class="mui-icon mui-icon-left-nav mui-pull-left" style="content:url(../../images/back_login.png);width: 10%;padding-top: calc(10px);padding-left:calc(10px);"></a>
+		</header>
+		<div align="middle" style="padding-top: 40%;">
+			<ul>
+				<li jump-plane>
+					<img src="../../images/sendfeiji.png" style="width:50%;" />
+				</li>
+				<li jump-train style="margin-top: 45px;">
+					<img src="../../images/sendhuoche.png" style="width:50%;" />
+				</li>
+				<li jump-key style="margin-top: 45px;">
+					<img src="../../images/down.png" style="width:50%;" />
+				</li>
+			</ul>
+		</div>
+		<div style="padding-top: 25%;width: 100%;text-align: center;letter-spacing: 0.4px;">
+			<span style="font-size: 14px;color: #ffffff;">
+				注：此活动价仅限市区三环内
+			</span><br/><br/>
+			<h4 style="font-size: 14px;color: #ffffff;">三环外接送服务请致电</h4><br/>
+			<h4 style="font-size: 14px;color: #ffffff;">29座以下：18980878649</h4><br/>
+			<h4 style="font-size: 14px;color: #ffffff;">29座以上：17716133601</h4><br/>
+		</div>
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/touchwipe.js"></script>
+		<script>
+			mui.plusReady(function() {
+				/*右侧滑动到主页*/
+				$('#index').touchwipe({
+					wipeRight: function() {
+						var main = plus.webview.getWebviewById("Hbuilder");
+							var jus = '';
+							mui.fire(main,"initCart",{
+								jus:true
+			             });
+						mui.currentWebview.close();
+					}, //右侧滑动事件
+				});
+				
+				var page1 = mui.preload({
+				    url:'/page/shuttle/meet-plane.html',
+				    id:'shuttle/meet-plane',//默认使用当前页面的url作为id
+				    extras:{},//自定义扩展参数
+				    show:{
+				    	autoShow:true,
+					    aniShow:"slide-in-right",
+					    duration:500,
+				    },//页面跳转动画
+				});
+				var page2 = mui.preload({
+				    url:'/page/shuttle/meet-train.html',
+				    id:'shuttle/meet-train',//默认使用当前页面的url作为id
+				    extras:{},//自定义扩展参数
+				    show:{
+				    	autoShow:true,
+					    aniShow:"slide-in-right",
+					    duration:500,
+				    },//页面跳转动画
+				});
+				var page3 = mui.preload({
+				    url:'/page/shuttle/order/key.html',
+				    id:'shuttle/order/key',//默认使用当前页面的url作为id
+				    extras:{},//自定义扩展参数
+				    show:{
+				    	autoShow:true,
+					    aniShow:"slide-in-right",
+					    duration:500,
+				    },//页面跳转动画
+				});
+				
+				mui('body').on('tap', '[jump-plane]', function(e) {      
+				  mui.openWindow({
+				    id:'shuttle/meet-plane'
+				  });
+				});
+				
+				mui('body').on('tap', '[jump-train]', function(e) {      
+				  mui.openWindow({
+				    id:'shuttle/meet-train'
+				  });
+				});
+				
+				mui('body').on('tap', '[jump-key]', function(e) {      
+				  mui.openWindow({
+				    id:'shuttle/order/key'
+				  });
+				});
+			});	
+			
+			window.addEventListener("initCart", function(event) {
+				var d = event.detail;
+				location.reload(d.jus);
+			});
+			
+			mui('body').on('tap', '[jump-back]', function(e) {      
+				var main = plus.webview.getWebviewById("Hbuilder");
+					var jus = '';
+					mui.fire(main,"initCart",{
+						jus:true
+	             });
+	            mui.currentWebview.close();
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="bgf3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="../../css/mui.min.css">
+	<link rel="stylesheet" type="text/css" href="../../css/app.css"/>
+</head>
+<body>
+		<!--标题 begin-->	
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">司机报价</h1>
+		</header>
+		<!--标题 end-->
+		<div class="mt4 mui-content bgf3" id="page">
+			<div class="mui-content travel-list view-wrap">
+			    <ul class="mui-table-view-striped mui-table-view-condensed">
+			        <li>     
+			            <h4 class="mui-ellipsis">{{items.start_time | date 2}} ~ {{items.back_time | date 2}}&emsp;{{items.people_num}}人&ensp;|&ensp;{{items.goback_txt}}<span class="wait-offer">{{items.status_txt}}</span></h4>
+			            <p class="row1"><i></i>{{items.start_address}}</p>
+			            <p class="row2"><i></i>{{items.end_address}}</p>
+			        </li>
+			        <li>
+			        	<h4 class="mui-ellipsis">需求车型：{{items.auto_brand_name}}</h4>
+			        	<p>行程计划：{{items.content?items.content:'未填写具体行程'}}</p>
+			        </li>
+			    </ul>
+			</div>
+			<div id="slider" class="mui-slider quoted-price">
+				<div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<a class="mui-control-item mui-active" href="#item1mobile">综 合</a>
+					<a class="mui-control-item" href="#item2mobile">好评度</a>
+					<a class="mui-control-item" href="#item3mobile">报价从低到高<i class="icon-jiantou"></i></a>
+				</div>
+				<div id="sliderProgressBar" class="mui-slider-progress-bar mui-col-xs-4"></div>
+				<div class="mui-slider-group">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<div class="bd">	
+									<ul class="mui-table-view" data-params="{type:1}">
+										
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="item2mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll2" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<div class="bd">
+									<ul class="mui-table-view" data-params="{type:2}">
+										
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="item3mobile" class="mui-slider-item mui-control-content">
+						<div id="scroll3" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<div class="bd">	
+									<ul class="mui-table-view" data-params="{type:3}">
+										
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					items: [],
+					page:1,
+				}
+			});
+			mui.plusReady(function() {
+				var value = plus.webview.currentWebview();
+				// console.log(JSON.stringify(value));
+				orderId = value.info_id;
+				http.get('api/User/getTravelInfo', {id:orderId}, function(msg, data){
+					vm.items = data;
+				});
+				// page.tablist('api/Api/getTravelTaskPriceList', true, {orderId:orderId});
+				page.tabNewlist(function(self,ul){
+					var params = $(ul).data('params');
+			        if (params) {
+			            params = eval('(' + params + ')');
+			        }
+					params = params ? params : {};
+					params = $.extend({page: vm.page, orderId:orderId}, params);
+					http.post("api/User/getTravelPriceList", params, function(msg, data) {
+						if (data.data) {
+							console.log(JSON.stringify(data.data));
+							$.each(data.data, function(i, v) {
+								
+								var auto_num = (v.auto_num).substr(0,5);
+								var leng = (v.auto_num).length;
+								for(var i=0;i<leng-5;i++){
+									auto_num +="*";
+								}
+								
+								var name = (v.name).substr(0,1);
+								var length = (v.name).length;
+								for(var i=0;i<length-1;i++){
+									name +="*";
+								}
+								var tpl ='<li class="mui-table-view-cell mui-media" data-url="platform/quoted_info" data-params="{price_id:'+ v.price_id +'}">'
+										+	'<a href="javascript:;">'
+										+		'<img class="mui-media-object mui-pull-left" src="../../images/user.png">'
+										+		'<div class="mui-media-body">'
+										+			'<h1 class="name">'+ name +'&nbsp'+ auto_num + '</h1>'
+										+			'<p class="mui-ellipsis">'
+										+				'<span>'+ v.offer_car +'座</span>'
+										+				'<em class="star-box">4.0<i class="star"><b></b></i></em>'
+										+			'</p>'
+										+		'</div>'
+										+		'<div class="price">'
+										+			'<p>￥<em>'+ v.price +'</em></p>'
+										+			'<span>查看详情</span>'
+										+		'</div>'
+										+	'</a>'
+										+'</li>';
+								$(ul).append(tpl);		
+							});
+						}
+						vm.loading = 0;
+						vm.page = data.cur_page + 1;
+						if (data.count_page > data.cur_page) {
+							self.endPullUpToRefresh(false);
+						} else {
+							self.endPullUpToRefresh(true);
+						}
+		
+					}, function(){
+						plus.nativeUI.closeWaiting();
+						vm.loading = 0;
+						self.endPullUpToRefresh(false);
+					});
+				}, function(self,ul){
+					var params = $(ul).data('params');
+			        if (params) {
+			            params = eval('(' + params + ')');
+			        }
+					params = params ? params : {};
+					params = $.extend({page: 1, orderId:orderId}, params);
+					http.post("api/User/getTravelPriceList", params, function(msg, data) {
+						if (data.data) {
+							$(ul).html('');
+							$.each(data.data, function(i, v) {
+								
+								var auto_num = (v.auto_num).substr(0,5);
+								var leng = (v.auto_num).length;
+								for(var i=0;i<leng-5;i++){
+									auto_num +="*";
+								}
+								
+								var name = (v.name).substr(0,1);
+								var length = (v.name).length;
+								for(var i=0;i<length-1;i++){
+									name +="*";
+								}
+								var tpl ='<li class="mui-table-view-cell mui-media mui-navigate-right" data-url="platform/quoted_info" data-params="{price_id:'+ v.price_id +'}">'
+										+	'<a href="javascript:;" class="mui-navigate-right">'
+										+		'<img class="mui-media-object mui-pull-left" src="../../images/user.png">'
+										+		'<div class="mui-media-body">'
+										+			'<h1 class="name">'+ name +'&nbsp'+ auto_num +'</h1>'
+										+			'<p class="mui-ellipsis">'
+										+				'<span>'+ v.offer_car +'座</span>'
+										+				'<em class="star-box">4.0<i class="star"><b></b></i></em>'
+										+			'</p>'
+										+		'</div>'
+										+		'<div class="price">￥<em>'+ v.price +'</em></div>'
+										+	'</a>'
+										+'</li>';
+								$(ul).append(tpl);		
+							});
+						}
+						vm.loading = 0;
+						vm.page = 1;
+						if (data.count_page > data.cur_page) {
+							self.endPullDownToRefresh(false);
+						} else {
+							self.endPullDownToRefresh(true);
+						}
+		
+					}, function(){
+						vm.loading = 0;
+						plus.nativeUI.closeWaiting();
+						self.endPullDownToRefresh(false);
+					});
+					
+				});
+			})
+			
+		</script>
+</body>
+</html>

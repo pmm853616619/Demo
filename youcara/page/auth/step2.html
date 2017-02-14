@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html class="bgf3">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/app.css">
+	</head>
+	<body>
+		<!--标题 begin-->	
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">司机认证 - 完善车辆信息</h1>
+		</header>
+		<!--标题 end-->
+		<div class="mt4 mui-content mdb40">
+			<form class="form" action="api/Auth/setDriver/t-2.html" id="page">
+				<div class="msg-wrap">
+					<div class="mui-table-cell mui-col-xs-4 pic">
+						<img src="../../images/msg2.png" />
+					</div>
+					<div class="mui-table-cell mui-col-xs-9 text">
+						<p>完善车辆信息，方便客户找到你</p>
+					</div>
+				</div>
+				<div class="mui-table-view car-info authenticate-form m0">
+						<dl class="mui-table-view-cell">
+							<dt>车&ensp;牌&ensp;号</dt>
+							<dd><input type="text" name="auto_num" v-model="auto_num" value="" placeholder="请准确填写您的车牌号"/></dd>
+						</dl> 
+						<dl class="mui-table-view-cell mui-media">
+							<dt>品牌车型</dt>
+							<dd v-on:click="typeTs">
+								<input type="hidden" name="auto_type" id="auto_type" value="" v-model="auto_type" />
+								<input type="hidden" name="auto_seat" id="auto_seat" value="" v-model="auto_seat" />
+								<input type="hidden" name="auto_brand" id="auto_brand" value="" v-model="auto_brand" />
+								<input type="hidden" name="auto_brand_name" id="auto_brand_name" value="" v-model="auto_brand_name"/>
+								<div id="brand">{{auto_brand_name ? auto_brand_name: '点击选择品牌及车型'}}</div>
+							</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>车辆性质</dt>
+							<dd>
+								<div class="radio gender">
+									<div class="mui-input-row mui-radio mui-left">
+										<label for="radio1">营运</label>
+										<input name="auto_kind" v-model="auto_kind" value="1" type="radio" id="radio1" checked>
+									</div>
+									<div class="mui-input-row mui-radio mui-left">
+										<label for="radio2">非营运</label>
+										<input name="auto_kind" v-model="auto_kind" value="2" type="radio" id="radio2" >
+									</div>
+									<div class="mui-input-row mui-radio mui-left">
+										<label for="radio3">租赁</label>
+										<input name="auto_kind" v-model="auto_kind" value="3"  type="radio" id="radio3">
+									</div>
+								</div>
+							</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>公司/个人</dt>
+							<dd>
+								<div class="radio gender">
+									<div class="mui-input-row mui-radio mui-left">
+										<label for="radio4">公司</label>
+										<input name="auto_own" v-model="auto_own" value="1" type="radio" id="radio4">
+									</div>
+									<div class="mui-input-row mui-radio mui-left">
+										<label for="radio5">个人</label>
+										<input name="auto_own" v-model="auto_own" value="2" type="radio" id="radio5" checked>
+									</div>
+								</div>
+							</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>所属公司</dt>
+							<dd><input type="text" name="auto_company" placeholder="填写你所属公司的具体名称" v-model="auto_company" value=""/> </dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>燃油类型</dt>
+							<dd>
+								<select v-model="auto_fuel" name="auto_fuel">
+			                        <option value="1" selected="">汽油</option>
+			                        <option value="2">柴油</option>
+			                        <option value="3">电</option>
+			                        <option value="4">混合</option>
+			                    </select>
+		                    
+							</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>排 &emsp;&emsp;量</dt>
+							<dd><input type="text" name="auto_displacement" v-model="auto_displacement" placeholder="填写你车辆的排量" value=""/> </dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>车辆识别代号</dt>
+							<dd><input style="width: 50%;" type="text" name="driving_no" v-model="driving_no" placeholder="填写你的行驶证号" value=""/> </dd>
+						</dl>
+				</div>
+				<div class="mui-bottom ft-button documents-btn">
+					<button type="button" class="reset-button" data-back="auto/personal_info">上一步</button>
+					<button type="button" class="sure-button" v-on:tap="submit">下一步</button>
+				</div>
+			</form>	
+		</div>
+	
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var vm = new Vue({
+				el: '#page',
+				methods: {
+					typeTs: function(e){
+						windows.open('auth/car');
+					},
+					postForm: function(){
+						var d = form.getFormData("#page");
+						console.log(JSON.stringify(d));
+					},
+					success: function(msg, info) {
+						var d = form.getFormData("#page");
+						windows.open('auth/step3', {auto_kind: d.auto_kind});
+					}
+				}
+   			});
+   			// 监听车型选择数据
+			window.addEventListener("initCart",function(event){
+				var d= event.detail;
+//				 $("#brand").html(d.txt_name);
+				vm.auto_brand_name = d.txt_name;
+				vm.auto_type = d.type;
+				vm.auto_seat = d.seat;
+				vm.auto_brand = d.brand;
+				console.log(JSON.stringify(event.detail));
+	       });
+					http.get('api/Auth/getAuth',{},function(msg, info){
+						console.log(JSON.stringify(info));
+						driver = info.driver;
+						if (driver.status==1) {
+							mui.toast('您已通过司机认证');
+							mui.currentWebview.close();
+							return false;
+						}
+						vm.auto_num = driver.auto_num;
+						vm.auto_brand = driver.auto_brand;
+						vm.auto_type = driver.auto_type;
+						vm.auto_seat = driver.auto_seat;
+						vm.auto_kind = driver.auto_kind;
+						vm.auto_own = driver.auto_own;
+						vm.auto_company = driver.auto_company;
+						vm.auto_fuel = driver.auto_fuel;
+						vm.auto_displacement = driver.auto_displacement;
+						vm.driving_no = driver.driving_no;
+					});	
+	</script>	
+	</body>
+</html>

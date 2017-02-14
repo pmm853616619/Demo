@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html class="bgf3">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/app.css">
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<!--<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>-->
+	   	<!--<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>-->
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">交通出行 - 我的出行</h1>
+		</header>
+		<div class="mui-content" id="page">
+			<div id="slider" class="mui-slider mui-fullscreen">
+				<div id="sliderSegmentedControl" class="mui-scroll-wrapper mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+					<div class="mui-scroll">
+						<a class="mui-control-item mui-active" href="#item1mobile"><span class="mui-badge mui-badge-primary">1</span>待报价</a>
+						<a class="mui-control-item" href="#item2mobile"><span class="mui-badge mui-badge-primary">2</span>待确认</a>
+						<a class="mui-control-item" href="#item3mobile"><span class="mui-badge mui-badge-primary">3</span>待付款</a>
+						<a class="mui-control-item" href="#item4mobile"><span class="mui-badge mui-badge-primary">4</span>出行中</a>
+						<a class="mui-control-item" href="#item5mobile"><span class="mui-badge mui-badge-primary">5</span>已完成</a>
+						<a class="mui-control-item" href="#item6mobile"><span class="mui-badge mui-badge-primary">6</span>已关闭</a>
+					</div>
+				</div>
+				<div class="mui-slider-group travel-list mt2">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view" data-params="{type:1}" >
+									<li class="mui-table-view-cell" v-for="item in list_t1">
+										<div class="mui-table" >
+							                <div class="mui-table-cell mui-col-xs-9" data-url="user/order_info" data-params="{info_id:{{item.order_id}} }">
+							                    <h4 class="mui-ellipsis" v-if="item.goback==1">{{item.start_time | date 2}} ~ {{item.back_time | date 2}}&emsp;{{item.people_num}}人&ensp;|&ensp;{{item.auto_type_name}}</h4>
+							                    <h4 class="mui-ellipsis" v-else>{{item.start_time | date 2}} <font color="#ff9037">单程</font>&emsp;{{item.people_num}}人&ensp;|&ensp;{{item.auto_type_name}}</h4>
+							                    <p class="row1"><i></i>{{item.start_address}} ~ {{item.end_address}}</p>
+							                    <p class="mui-h6 mui-ellipsis my-offer">任务编号：<span>{{item.order_no}}</span></p>
+							                </div>
+							                <div class="mui-table-cell mui-col-xs-3 mui-text-right" data-url="user/quoted" data-params="{info_id:{{item.order_id}} }">
+							                    <span class="mui-h5 wait-offer" v-if="item.status == 1">等待报价</span>
+							                    <span class="icon-num" v-if="item.status == 1">{{item.quoted_num}}</span>
+							                </div>
+							            </div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div id="item2mobile" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view" data-params="{type:2}" >
+									<li class="mui-table-view-cell" v-for="item in list_t2">
+										<div class="mui-table" >
+							                <div class="mui-table-cell mui-col-xs-9" data-url="user/order_info" data-params="{info_id:{{item.order_id}} }">
+							                    <h4 class="mui-ellipsis">{{item.start_time | date 2}} ~ {{item.back_time | date 2}}&emsp;{{item.people_num}}人&ensp;|&ensp;{{item.auto_type_name}}</h4>
+							                    <p class="row1"><i></i>{{item.start_address}} ~ {{item.end_address}}</p>
+							                    <p class="mui-h6 mui-ellipsis my-offer">任务编号：<span>{{item.order_no}}</span></p>
+							                </div>
+							                <div class="mui-table-cell mui-col-xs-3 mui-text-right" data-url="user/quoted" data-params="{info_id:{{item.order_id}} }">
+							                    <span class="mui-h5 wait-offer" v-if="item.status == 2">等确认报价</span>
+							                    <span class="icon-num" v-if="item.status == 2">{{item.quoted_num}}</span>
+							                </div>
+							            </div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+					<div id="item3mobile" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view" data-params="{type:3}">
+										<li class="mui-table-view-cell" v-for="item in list_t3" >
+											<div class="mui-table">
+								                <div class="mui-table-cell mui-col-xs-9" data-url="user/order_info" data-params="{info_id:{{item.order_id}} }">
+								                    <h4 class="mui-ellipsis">{{item.start_time | date 2}} ~ {{item.back_time | date 2}}&emsp;{{item.people_num}}人&ensp;|&ensp;{{item.auto_type_name}}</h4>
+								                    <p class="row1"><i></i>{{item.start_address}}</p>
+								                    <p class="row2"><i></i>{{item.end_address}}</p>
+								                </div>
+								                <div class="mui-table-cell mui-col-xs-3 mui-text-right"  data-url="user/quoted_info" data-params="{price_id:{{item.price_id}} }">
+								                    <span class="mui-h5 wait-offer" v-if="item.status == 3 && item.pay_scale==0">待付订金</span>
+								                    <span class="mui-h5 wait-offer" v-else>待付尾款</span>
+								                    <span class="icon-num" v-if="item.status >= 3 && item.pay_scale<100">¥</span>
+								                </div>
+								            </div>
+										</li>
+
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+					<div id="item4mobile" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view" data-params="{type:4}">
+										<li class="mui-table-view-cell" v-for="item in list_t4" >
+											<div class="mui-table" >
+								                <div class="mui-table-cell mui-col-xs-9" data-url="user/order_info" data-params="{info_id:{{item.order_id}} }">
+								                    <h4 class="mui-ellipsis">{{item.start_time | date 2}} ~ {{item.back_time | date 2}}&emsp;{{item.people_num}}人&ensp;|&ensp;{{item.auto_type_name}}</h4>
+								                    <p class="row1"><i></i>{{item.start_address}}</p>
+								                    <p class="row2"><i></i>{{item.end_address}}</p>
+								                </div>
+								                <div class="mui-table-cell mui-col-xs-3 mui-text-right" data-url="user/quoted" data-params="{info_id:{{item.order_id}} }">
+								                    <span class="mui-h5 wait-offer" v-if="item.status == 1">等待报价</span>
+								                    <span class="icon-num" v-if="item.status == 1">{{item.quoted_num}}</span>
+								                </div>
+								            </div>
+										</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+					<div id="item5mobile" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view" data-params="{type:5}">
+		
+									<li class="mui-table-view-cell" v-for="item in list_t5">
+										<div class="mui-table" >
+							                <div class="mui-table-cell mui-col-xs-9" data-url="user/order_info" data-params="{info_id:{{item.order_id}} }">
+							                    <h4 class="mui-ellipsis">{{item.start_time | date 2}} ~ {{item.back_time | date 2}}&emsp;{{item.people_num}}人&ensp;|&ensp;{{item.auto_type_name}}</h4>
+							                    <p class="row1"><i></i>{{item.start_address}}</p>
+							                    <p class="row2"><i></i>{{item.end_address}}</p>
+							                </div>
+							                <div class="mui-table-cell mui-col-xs-3 mui-text-right" data-url="user/quoted_info" data-params="{price_id:{{item.price_id}} }">
+							                    <span class="mui-h5 wait-offer" v-if="item.status == 5 && item.commented==0">等待评价</span>
+							                    <span class="mui-h5 wait-offer" v-else=>已完成</span>
+							                    <span class="icon-num" v-if="item.status == && item.commented==0">GO</span>
+							                </div>
+							            </div>
+									</li>
+
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+					<div id="item6mobile" class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view" data-params="{type:6}">
+									<templates v-if="list_t6">
+										<li class="mui-table-view-cell" v-for="item in list_t6" >
+											<div class="mui-table">
+								                <div class="mui-table-cell mui-col-xs-9" data-url="user/order_info" data-params="{info_id:{{item.order_id}} }">
+								                    <h4 class="mui-ellipsis">{{item.start_time | date 2}} ~ {{item.back_time | date 2}}&emsp;{{item.people_num}}人&ensp;|&ensp;{{item.auto_type_name}}</h4>
+								                    <p class="row1"><i></i>{{item.start_address}}</p>
+								                    <p class="row2"><i></i>{{item.end_address}}</p>
+								                </div>
+								                <div class="mui-table-cell mui-col-xs-3 mui-text-right" data-url="user/quoted" data-params="{info_id:{{item.order_id}} }">
+								                    <span class="mui-h5 wait-offer" v-if="item.status == 1">等待报价</span>
+								                    <span class="icon-num" v-if="item.status == 1">{{item.quoted_num}}</span>
+								                </div>
+								            </div>
+										</li>
+									</templates>
+									<templates v-else>
+										<div class="payment" >
+											<img src="../../images/qurz.jpg" />
+											<p class="row2">亲，您没有关闭的订单</p>
+											<p class="row3"><span class="mui-icon mui-icon-arrowdown"></span></p>
+										</div>
+									</templates>
+								</ul>
+							</div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>	
+		<div class="mui-bottom suspension release-button bgff">
+			<button type="button" class="mui-btn mui-btn-block" data-url="user/publish">发布出行任务</button>
+		</div>
+		<!--<script type="text/javascript">
+			var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					driver:[],
+					items: [],
+					list_t1: null,
+					list_t2: null,
+					list_t3: null,
+					list_t4: null,
+					list_t5: null,
+					list_t6: null,
+					page: 1,
+					loading : 1
+				}
+			});
+			// 实时获取司机认证状态
+			http.get('api/Auth/getAuth',{},function(msg, info){
+				vm.driver = info.driver;
+			});
+			mui.plusReady(function() {
+				window.loadData = function(){
+					page.tabNewlist(function(self,ul){
+						var params = $(ul).data('params');
+				        if (params) {
+				            params = eval('(' + params + ')');
+				        }
+						params = params ? params : {};
+						params = $.extend({page: vm.page}, params);
+						http.post("api/User/getTravelList", params, function(msg, data) {
+							if (data.data.length) {
+								if(params.type==1) {
+									vm.list_t1 = data.data;
+								}
+								if(params.type==2) {
+									vm.list_t2 = data.data;
+								}
+								if(params.type==3) {
+									vm.list_t3 = data.data;
+								}
+								if(params.type==4) {
+									vm.list_t4 = data.data;
+								}
+								if(params.type==5) {
+									vm.list_t5 = data.data;
+								}
+								if(params.type==6) {
+									vm.list_t6 = data.data;
+								}
+							}else{
+								if(params.type==1) {
+									vm.list_t1 = [];
+								}
+								if(params.type==2) {
+									vm.list_t2 = [];
+								}
+								if(params.type==3) {
+									vm.list_t3 = [];
+								}
+								if(params.type==4) {
+									vm.list_t4 = [];
+								}
+								if(params.type==5) {
+									vm.list_t5 = [];
+								}
+								if(params.type==6) {
+									vm.list_t6 = [];
+								}
+							}
+							vm.page = data.cur_page + 1;
+							if (data.count_page > data.cur_page) {
+								self.endPullUpToRefresh(false);
+							} else {
+								self.endPullUpToRefresh(true);
+							}
+			
+						}, function(){
+							plus.nativeUI.closeWaiting();
+							self.endPullUpToRefresh(false);
+						});
+					}, function(self,ul){
+						var params = $(ul).data('params');
+				        if (params) {
+				            params = eval('(' + params + ')');
+				        }
+						params = params ? params : {};
+						params = $.extend({page: 1}, params);
+						http.post("api/User/getTravelList", params, function(msg, data) {
+							if (data.data.length) {
+								if(params.type==1) {
+									vm.list_t1 = data.data;
+								}
+								if(params.type==2) {
+									vm.list_t2 = data.data;
+								}
+								if(params.type==3) {
+									vm.list_t3 = data.data;
+								}
+								if(params.type==4) {
+									vm.list_t4 = data.data;
+								}
+								if(params.type==5) {
+									vm.list_t5 = data.data;
+								}
+								if(params.type==6) {
+									vm.list_t6 = data.data;
+								}
+							}else{
+								if(params.type==1) {
+									vm.list_t1 = [];
+								}
+								if(params.type==2) {
+									vm.list_t2 = [];
+								}
+								if(params.type==3) {
+									vm.list_t3 = [];
+								}
+								if(params.type==4) {
+									vm.list_t4 = [];
+								}
+								if(params.type==5) {
+									vm.list_t5 = [];
+								}
+								if(params.type==6) {
+									vm.list_t6 = [];
+								}
+							}
+							vm.loading = 0;
+							vm.page = 1;
+							if (data.count_page > data.cur_page) {
+								self.endPullDownToRefresh(false);
+							} else {
+								self.endPullDownToRefresh(true);
+							}
+			
+						}, function(){
+							vm.loading = 0;
+							plus.nativeUI.closeWaiting();
+							self.endPullDownToRefresh(false);
+						});
+						
+					});
+				}
+				loadData();
+				windows.receive('update', function(info) {
+					loadData();
+				});
+			});			
+		</script>-->
+	</body>
+</html>

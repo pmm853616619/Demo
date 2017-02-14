@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/app.css">
+	</head>
+	<body style="padding-top: 50px;">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">身份认证</h1>
+	</header>
+		<div id="page">
+			<table style="width: 100%;" frame="below" rules="rows" bordercolor="#e1e1e1">
+				<tr align="center">
+					<td data-url="platform/user" style="width: 30%;">
+						<img src="../../images/youke.png" style="width: 50%;padding-top: 5px;"/>
+					</td>
+					<td data-url="platform/user" style="width: 70%;text-align: left;">
+						<big>游&emsp;客</big>
+						<span  style="float: right;">
+							<img src="../../images/yirenzheng.png" style="width: 60%;"/>
+						</span>
+					</td>
+				</tr>
+				
+				<!--司机认证-->
+				<tr v-if="driver.status == 1">
+					<td data-url="driver-plat/index" style="width: 30%;text-align: center;">
+						<img src="../../images/siji.png" style="width: 50%;padding-top: 5px;"/>
+					</td>
+					<td data-url="driver-plat/index" style="width: 70%;text-align: left;">
+						<big>司&emsp;机</big>
+						<span style="float: right;" >
+							<img src="../../images/yirenzheng.png" style="width: 60%;"/><li></li>
+						</span>
+					</td>
+				</tr>
+				<tr v-else>
+					<td data-url="auth/step1" style="width: 30%;text-align: center;">
+						<img src="../../images/siji.png" style="width: 50%;padding-top: 5px;"/>
+					</td>
+					<td data-url="auth/step1" style="width: 70%;text-align: left;">
+						<big>司&emsp;机</big>
+					</td>
+				</tr>
+				
+				<!--车队认证-->
+				<tr v-if="driver.status == 1">
+					<td data-url="auth/team/team" style="width: 30%;text-align: center;">
+						<img src="../../images/chedui.png" style="width: 50%;padding-top: 5px;"/>
+					</td>
+					<td data-url="auth/team/team" style="width: 70%;text-align: left;">
+						<big>车&emsp;队</big>
+						<span style="float: right;" v-if="shut[0].count >= 2">
+							<img src="../../images/yirenzheng.png" style="width: 60%;"/><li></li>
+						</span>
+					</td>
+				</tr>
+				<tr v-else>
+					<td data-url="auth/step1" style="width: 30%;text-align: center;">
+						<img src="../../images/chedui.png" style="width: 50%;padding-top: 5px;"/>
+					</td>
+					<td data-url="auth/step1" style="width: 70%;text-align: left;">
+						<big>车&emsp;队</big>
+					</td>
+				</tr>
+
+				<!--导游认证-->
+				<tr>
+					<td style="width: 30%;text-align: center;">
+						<img src="../../images/daoyou1.png" style="width: 50%;padding-top: 5px;"/>
+					</td>
+					<td style="width: 70%;text-align: left;">
+						<big>导&emsp;游</big>
+						<span style="float: right;" v-if="driver.status == 4">
+							<img src="../../images/yirenzheng.png" style="width: 60%;"/><li></li>
+						</span>
+					</td>
+				</tr>
+				
+				<!--计调认证-->
+				<tr>
+					<td style="width: 30%;text-align: center;">
+						<img src="../../images/jidiao.png" style="width: 50%;padding-top: 5px;"/>
+					</td>
+					<td style="width: 70%;text-align: left;">
+						<big>计&emsp;调</big>
+						<span style="float: right;" v-if="driver.status == 5">
+							<img src="../../images/yirenzheng.png" style="width: 60%;"/><li></li>
+						</span>
+					</td>
+				</tr>
+				
+				<!--门市认证-->
+				<tr>
+					<td style="width: 30%;text-align: center;">
+						<img src="../../images/menshi.png" style="width: 50%;padding-top: 5px;"/>
+					</td>
+					<td style="width: 70%;text-align: left;">
+						<big>门&emsp;市</big>
+						<span style="float: right;" v-if="driver.status == 6">
+							<img src="../../images/yirenzheng.png" style="width: 60%;"/><li></li>
+						</span>
+					</td>
+				</tr>
+				
+				<!--租赁认证-->
+				<tr >
+					<td style="width: 30%;text-align: center;">
+						<img src="../../images/zulin.png" style="width: 50%;padding-top: 5px;"/>
+					</td>
+					<td style="width: 70%;text-align: left;">
+						<big>租&emsp;赁</big>
+						<span style="float: right;" v-if="driver.status == 7">
+							<img src="../../images/yirenzheng.png" style="width: 60%;"/><li></li>
+						</span>
+					</td>
+				</tr>	
+				
+				<!--中介认证-->
+				<tr>
+					<td style="width: 30%;text-align: center;">
+						<img src="../../images/zhongjie.png" style="width:50%;padding-top: 5px;"/>
+					</td>
+					<td style="width: 70%;text-align: left;">
+						<big>中&emsp;介</big>
+						<span style="float: right;" v-if="driver.status == 8">
+							<img src="../../images/yirenzheng.png" style="width: 60%;"/><li></li>
+						</span>
+					</td>
+				</tr>
+			</table>
+		</div>	
+		<script src="../../js/lib/mui.min.js"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js"></script>
+		<script src="../../js/lib/vue.min.js"></script>
+		<script src="../../js/app.min.js"></script>
+		<script>
+			var vm = new Vue({
+			el: '#page',
+				config:{debug:true},
+				data: {
+					items: [],
+					driver:[],
+					shut:[]
+				}
+			});
+			mui.plusReady(function() {
+				http.post('api/News/UserInfo',{}, function(msg, data){
+						vm.items = data;
+				});	
+				http.get('api/Auth/getAuth',{},function(msg, info){
+					vm.driver = info.driver;
+				});
+				http.post('api/Driver/SeekMotorcade',{}, function(msg, data){
+					vm.shut = data;
+				});
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html class="bgff">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <link href="../../css/mui.min.css" rel="stylesheet"/>
+    <link href="../../css/app.css" rel="stylesheet"/>
+    <style>
+    	.nav .mui-pull-left{color: #fff;margin-top: 12px;}
+		.pro-details{border-top: 1px solid #E7E7E7;background-color: #fff;}
+		.pro-details .title{font-size: 0.9rem;color: #333; padding: 1em;line-height: 20px; border-bottom: 1px solid #E7E7E7;}
+		.pro-details .content{padding: 1em;}
+		.pro-details .tc{text-align: center;}
+		.pro-details img{max-width: 100%;height: auto;}
+		.pro-details p{font-size:0.8rem;color: #333;line-height: 22px;margin-top: 10px;text-indent: 2em;}
+    </style>
+</head>
+<body>
+	<!--标题 begin-->	
+	<header class="mui-bar mui-bar-nav m-title">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+	</header>
+	<!--标题 end-->
+	
+	<div class="mui-content" id="page">
+
+		<div class="pro-details">
+			<h1 class="title">{{items.title}}</h1>
+			<div class="content">
+				{{{items.content}}}
+			</div>
+		</div>
+		
+	</div>
+	<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+//		var vm = new Vue({
+//			el: '#page',
+//			data: {
+//				items: null,
+//			}
+//		});
+//		mui.plusReady(function() {	
+//			var self = plus.webview.currentWebview();
+//			http.post('api/News/getNewsInfo', {id: self.info_id}, function(msg, data) {
+//				vm.items = data;
+//				console.log(JSON.stringify(data));
+//			});
+//		});    
+		var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					items: []
+				}
+			});
+			mui.plusReady(function() {
+				http.post('api/PushMsg/PushMsgList', {user_id:681,type:4}, function(msg, data){
+					vm.items = data;
+				});
+			})
+	</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../../../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../../../css/app.css"/>
+	</head>
+	<body>
+		<!--标题 begin-->	
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">订单详情</h1>
+		</header>
+		<!--标题 end-->
+		<div class="mui-content bgf3" id="page">
+			<div id="slider" class="mui-slider" v-for="si in items">
+				<div class="mui-slider-group">
+					<div class="mui-table-view car-info">
+						<dl class="mui-table-view-cell">
+							<dt>订单状态</dt>
+							<dd>
+								<span class="fonr-orange" id="status">{{si.status}} </span>	
+								<div class="changeOrder-btn">
+									<input type="button" value="退款" class="canceltrip" data-url="shuttle/order/drop" data-params="{info_id:{{si.order_no}} }">
+								</div>
+							</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>接送地址</dt>
+							<dd>{{si.sites}}</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>送达地址</dt>
+							<dd>{{si.address}}</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>乘车班次</dt>
+							<dd>{{si.number}}</dd>
+						</dl>
+					</div>
+					<div class="mui-table-view car-info">
+						<dl class="mui-table-view-cell">
+							<dt>乘车人数</dt>
+							<dd>{{si.people_num}}人</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>联系人</dt>
+							<dd>{{si.people}}</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>联系电话</dt>
+							<dd>{{si.phone}}</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>用车费用</dt>
+							<dd>￥{{si.typles}}元</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>用车时间</dt>
+							<dd>{{si.start_time}}</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>备 注</dt>
+							<dd>{{si.remark}}</dd>
+						</dl>
+					</div>	
+				</div>
+			</div>
+		</div>
+		<script src="../../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					items: [],
+					page:1
+				},
+			});
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				var params = self.info_id;
+				http.post('api/PushMsg/PickOrderClose', {order_no:params}, function(msg, data){
+					
+				});
+				http.post('api/User/PickOrderDetail', {order_no:params}, function(msg, data){
+					vm.items = data;
+				});
+			})
+		</script>
+	</body>
+</html>

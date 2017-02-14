@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <link href="../../css/mui.min.css" rel="stylesheet"/>
+	    <link href="../../css/user.css" rel="stylesheet" />
+	    <link href="../../css/app.css" rel="stylesheet"/>
+	    <link rel="stylesheet" type="text/css" href="../../css/style/footer.css"/>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">消 息</h1>
+		</header>
+		<div id="page" style="padding-top: 50px;" >
+			<ul class="mui-table-view mui-table-view-chevron">
+				<li class="mui-table-view-cell" data-url = "news/tour/index">
+					<a class="mui-navigate-right">
+						<span class="mui-badge"></span>
+						<div class="mui-table-view-cell mui-media">
+							<img class="mui-media-object mui-pull-left" src="../../images/tourism.png"/>
+							<div class="mui-media-body">
+								<span>旅游圈</span>
+								<p style="margin-top: 10px;">最新更新动态</p>
+							</div>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right">
+						<span class="mui-badge"></span>
+						<div class="mui-table-view-cell mui-media">
+							<img class="mui-media-object mui-pull-left" src="../../images/cheyou1.png"/>
+							<div class="mui-media-body">
+								<span>车友圈</span>
+								<p style="margin-top: 10px;">好友最新更新动态</p>
+							</div>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right">
+						<span class="mui-badge mui-badge-blue"></span>
+						<div class="mui-table-view-cell mui-media">
+							<img class="mui-media-object mui-pull-left" src="../../images/siji1.png">
+							<div class="mui-media-body">
+								<span>司机信息</span>
+								<p style="margin-top: 10px;">司机发来消息</p>
+							</div>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right">
+						<span class="mui-badge"></span>
+						<div class="mui-table-view-cell mui-media">
+							<img class="mui-media-object mui-pull-left" src="../../images/yonghu1.png">
+							<div class="mui-media-body">
+								<span>用户信息</span>
+								<p style="margin-top: 10px;">用户发来消息</p>
+							</div>
+						</div>
+					</a>
+				</li>
+				<li id="push" class="mui-table-view-cell">
+					<a class="mui-navigate-right" >
+						<span id="1" class="mui-badge mui-badge-primary"></span>
+						<div class="mui-table-view-cell mui-media">
+							<img class="mui-media-object mui-pull-left" src="../../images/tuisong1.png">							
+							<div class="mui-media-body">
+								<span>游卡推送</span>
+								<p style="margin-top: 10px;">推送游卡最新消息</p>
+							</div>
+						</div>
+					</a>
+				</li>
+				<li class="mui-table-view-cell">
+					<a class="mui-navigate-right">
+						<span class="mui-badge"></span>
+						<div class="mui-table-view-cell mui-media">
+							<img class="mui-media-object mui-pull-left" src="../../images/huodong1.png">							
+							<div class="mui-media-body">
+								<span>活动信息</span>
+								<p style="margin-top: 10px;">最新活动提醒</p>
+							</div>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div style="display: block;" class="footer_bar openwebview">
+			<ul class="warp clearfix">
+			    <li>
+			        <a data-url="index">
+			            <i><img src="../../images/shouye.png"/></i>
+			            <span style="font-size: 14px;">首页</span>
+			        </a>
+			    </li>
+			    <li>
+			        <a data-url="news/index">
+			            <i><img src="../../images/xiaoxi1.png"/></i>
+			            <span style="font-size: 14px;color: #52C4FE;">消息</span>
+			        </a>
+			    </li>
+			    <li>
+			        <a data-url="account/index">
+			            <i><img src="../../images/own.png"/></i>
+			            <span style="font-size: 14px;">我</span>
+			        </a>
+			    </li>
+			</ul>
+		</div>
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					page:1
+				}
+			});
+			mui.plusReady(function() {
+				var page = mui.preload({
+				    url:'/page/news/messageD.html',
+				    id:'/page/news/messageD.html',//默认使用当前页面的url作为id
+				    styles:{},//窗口参数
+				    extras:{}//自定义扩展参数
+				});
+				http.post('api/PushMsg/PushMsgRead', {type:4}, function(msg, data){
+					$("#1").html(data);
+				});
+			});
+			mui('#push').on('tap', 'a', function(e) {      
+			  mui.openWindow({
+			    id:'/page/news/messageD.html'
+			  });
+			});
+			window.addEventListener("initCart", function(event) {
+				var d = event.detail;
+				location.reload(d.jus);
+			});
+		</script>
+	</body>
+</html>

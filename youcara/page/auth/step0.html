@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="../../css/mui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/app.css"/>
+</head>
+<body>
+	<!--标题 begin-->	
+	<header class="mui-bar mui-bar-nav m-title">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">交通出行</h1>
+	</header>
+	<!--标题 end-->
+	<div class="mui-content bgff" id="page">
+		<!--角色 begin-->
+		<!--<div class="character">
+			<ul>
+				<li data-url="user/index">
+					<a href="javascript:;">
+						<i class="icon-user"></i>我是用户
+					</a>
+				</li>
+				<li class="on">
+					<a href="javascript:;">
+						<i class="icon-driver"></i>我是司机
+					</a>
+				</li>
+			</ul>
+		</div>-->
+		<!--角色 end-->
+		<template v-if="status!=1&&tmp_status<4">
+			<div class="payment" >
+				<img src="../../images/qurz.png" />
+				<p class="row2">认证为司机，接单更方便</p>
+				<button class="payment-button" type="button" data-url="auth/step1">现在认证</button>
+			</div>
+		</template>
+		<template v-if="status==2&&tmp_status==4">
+			<div class="payment" >
+				<img src="../../images/qurz.png" />
+				<p class="row2">审核未通过，请仔细填写正确资料</p>
+				<button class="payment-button" type="button" data-url="auth/step1">现在认证</button>
+			</div>
+		</template>
+		<template v-if="status==0&&tmp_status==4">
+			<div class="payment" >
+				<img src="../../images/tjcg.png" height="120"/>
+				<p class="row1">您的司机认证信息已成功提交</p>
+				<p class="row2">审核将在1个工作日内完成</p>
+				<button class="payment-button" type="button" data-back="true">关闭</button>
+			</div>
+		</template>		
+	</div>
+	<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+	<script>
+		var vm = new Vue({
+			el: '#page',
+			data:{
+				status:0,
+				tmp_status:0
+			},
+		});
+		var status=0;
+		var tmp_status=0;
+		http.get('api/Auth/getAuth',{},function(msg, info){
+			if (info.driver) {
+				vm.$data = info.driver;
+				if (vm.status==1) {
+					mui.toast('您已通过司机认证');
+					mui.fire('index.html','getDetail',{id:'asdf'});
+					// mui.currentWebview.close();
+					windows.open('driver/index');
+					return false;
+				}
+			}
+		});
+   	</script>		
+</body>
+</html>

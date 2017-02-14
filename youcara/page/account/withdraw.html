@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html class="bgff">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../../css/user.css"/>			
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">提现</h1>
+		</header>
+		<div class="mui-content withdraw mt10" id="page">
+			<form id="form">
+				<div class="mui-input-row">
+					<label>姓&emsp;&emsp;名</label>
+					<input type="text" class="mui-input-clear" placeholder="账户姓名" name="bank_card">
+				</div>
+				<div class="mui-input-row">
+					<label>银&emsp;&emsp;行</label>
+					<input type="text" class="mui-input-clear" placeholder="银行名称" name="bank_name">
+				</div>
+				<div class="mui-input-row">
+					<label>开户银行</label>
+					<input type="text" class="mui-input-clear" placeholder="开户银行名称" name="open_name">
+				</div>
+				<div class="mui-input-row">
+					<label>银&ensp;行&ensp;卡</label>
+					<input type="text" class="mui-input-clear" placeholder="您本人的银行卡号" name="bank_no">
+				</div>
+				<div class="mui-input-row">
+					<label>提现金额</label>
+					<input type="text" class="mui-input-clear" placeholder="¥" name="money">
+				</div>
+				<div class="pd1 mt10 fs con-content">当前账户余额<span>{{money}}</span>元，可提现金额<span>{{money}}</span>元</div>
+				
+				<div class="mui-bottom footer">
+			 		<button type="button" class="mui-btn footerbtn link" v-on:tap="withdraw">提现</button>
+				</div>
+			</form>
+		</div>
+		<script src="../../js/lib/mui.min.js"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js"></script>
+		<script src="../../js/lib/vue.min.js"></script>
+		<script src="../../js/app.min.js"></script>
+		<script>
+			var vm = new Vue({
+				el: '#page',
+				methods: {
+					withdraw: function() {
+						var formData = form.getFormData("#form");
+						formData = params = $.extend({flag: 1}, formData);
+						http.post('api/Account/setWithdraw',formData, function(msg, d){
+							userInfo();
+							windows.send('account/index','update');
+							windows.send('account/account','update');
+							plus.nativeUI.toast(msg);
+							alert("提现申请已成功！预计三到五个工作日到账，请耐心等候！");
+							var main = plus.webview.getWebviewById("acount/acount");
+							var jus = '';
+							mui.fire(main,"initCart",{
+								jus:true
+			             });
+						});
+					}
+				}
+			});
+			window.userInfo = function(){
+				user.update(function(info){
+					vm.$data = info;
+				});
+			}
+			userInfo();
+		</script>	
+	</body>
+</html>

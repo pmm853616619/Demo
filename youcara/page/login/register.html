@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../css/app.css" />
+		
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		
+		<style>* {margin: 0;padding: 0;}
+			input::-webkit-input-placeholder,textarea::-webkit-input-placeholder {color: #ffffff;}
+		</style>
+	</head>
+	<body style="background-image: url(../../images/bg_login.jpg);background-size: 100%;">
+		<a href="login.html" class="mui-icon mui-icon-left-nav mui-pull-left" style="content:url(../../images/back_login.png);width: 10%;padding-top: 10px;padding-left:10px;"></a>
+		<div id="page">
+			<div style="padding-top:25%;">
+				<div id="image-youka" align="middle">
+					<img src="../../images/logo_login.png" width="40%">
+				</div>
+			</div>
+			<form class="" style="padding-top:13%;background-color:transparent;position: relative;">
+				<div class="mui-input-row">
+					<label style="width: 25%;height: 40px;"><img src="../../images/shouji.png" height=40px style="padding-top:6px;padding-left:38%;"></label>
+					<input id='account' type="text" class="mui-input-clear mui-input" placeholder="请输入手机号" style="padding:0px;width:73%;margin-top: 13px;font-size:15px;">
+					<hr style="width:90%;margin-left: 5%;border:0;background-color:#ffffff;height:1px;"/>
+				</div>
+				<div class="mui-input-row" style="margin-top: 10px">
+					<label style="width: 25%;height: 40px;"><img src="../../images/yanzheng.png" height=35px style="padding-top:5px;padding-left:36%;"></label>
+					<input id='code' type="text" class="mui-input-clear mui-input" placeholder="请输入验证码" style="padding:0px;width:73%;padding-right:32%;margin-top:11px;font-size:15px;">
+					<input id="getCode" type="button" v-on:tap="getcode" value="获取验证码" style="width:75px; height:25px;margin-right:9%;border-radius: 15px; display: inline-block; background:white ;position: absolute; right:0; top:30%;font-size: 10px;text-align:right;">
+					<hr style="width:90%;margin-left: 5%;border:0;background-color:white;height:1px;"/>
+				</div>
+				<div class="mui-input-row" style="margin-top: 10px">
+					<label style="width: 25%;height: 40px;"><img src="../../images/mima.png" height=40px style="padding-top:5px;padding-left:38%;"></label>
+					<input id='password' type="password" class="mui-input-clear mui-input" placeholder="请输入密码" style="padding:0px;width:73%;margin-top: 13px;font-size:15px;">
+					<hr style="width:90%;margin-left: 5%;border:0;background-color:#ffffff;height:1px;"/>
+				</div>
+			</form>
+			<div class="pay-button" style="margin-top: 75px;">
+				<button id='reg' v-on:tap="reg" class="mui-btn mui-btn-block registered-button" style="background-color:transparent;border-radius:20px;height:40px;width:95%;border:1px solid white;margin-left:2.5%;margin-bottom:10%;font-size:17px;">下一步</button>
+			</div>
+		</div>
+		<script>
+			//获取验证码
+			var wait = 60;
+			function time(o) {
+				if (wait == 0) {
+					o.removeAttribute("disabled");
+					o.value = "重新发送验证码";
+					wait = 60;
+				} else {
+					o.setAttribute("disabled", true);
+					o.value = +wait + " 秒后重新发送";
+					wait--;
+					setTimeout(function() {
+							time(o)
+						},
+						1000)
+				}
+			};
+			document.getElementById("getCode").onclick = function() {
+				time(this);
+			}
+		</script>
+		<script>
+			var accountBox = document.getElementById('account');
+			var passwordBox = document.getElementById('password');
+			var code = document.getElementById('code');
+			var vm = new Vue({
+				el: '#page',
+				methods: {
+					reg: function() {
+						var regInfo = {
+							account:accountBox.value,
+							code:code.value
+						};
+						if (!accountBox.value) {
+							plus.nativeUI.toast('请输入手机号码');
+							return;
+						}
+						if (!passwordBox.value) {
+							plus.nativeUI.toast('请输入密码');
+							return;
+						}
+						if (!code.value) {
+							plus.nativeUI.toast('请输入验证码');
+							return;
+						}
+						http.post('api/Account/CheckCode',{"account":accountBox.value,"code":code.value}, function(msg, info) {
+							
+							window.location.href="charactor.html?account="+accountBox.value+"&password="+passwordBox.value+"&code="+code.value;
+							
+						});
+					},
+					getcode: function() {
+						var account = $('#account').val();
+						console.log(this);
+						http.post('api/BaseApi/regverify', {
+							receive: account
+						}, function(msg, info) {
+							plus.nativeUI.toast();
+						});
+					},
+					success: function(msg, info) {
+						mui.currentWebview.close();
+					}
+				}
+			});
+		</script>
+	</body>
+</html>

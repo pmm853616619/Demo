@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="../../../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../../../css/app.css"/>
+	</head>
+	<body>
+		<!--标题 begin-->	
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">订单详情</h1>
+		</header>
+		<!--标题 end-->
+		<div class="mui-content bgf3" id="page">
+			<div id="slider" class="mui-slider" v-for="si in items">
+				<div class="mui-slider-group">
+					<div class="mui-table-view car-info">
+						<dl class="mui-table-view-cell">
+							<dt>支付状态</dt>
+							<dd v-if="si.pay_status==0">未支付</dd>
+							<dd v-if="si.pay_status==1">已支付</dd>
+						</dl>
+						<!--<dl class="mui-table-view-cell">
+							<dt>下单时间</dt>
+							<dd>{{si.create_time}}</dd>
+						</dl>-->
+						<dl class="mui-table-view-cell">
+							<dt>订单号</dt>
+							<dd>{{si.order_no}}</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>支付费用</dt>
+							<dd>￥{{si.typles}}</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>差价费用</dt>
+							<dd>￥{{si.add_money}}</dd>
+						</dl>
+						<dl class="mui-table-view-cell">
+							<dt>行程汇总</dt>
+							<textarea style="height: 100px;width: 80%;margin-left: 20px;letter-spacing: 1px;font-size: 13px;line-height: 16px;">{{si.content}}</textarea>
+						</dl>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script>
+			var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					driver:[],
+					items:[],   
+					page: 1,
+					loading : 1
+				},
+			});
+			// 实时获取司机认证状态
+			http.get('api/Auth/getAuth',{},function(msg, info){
+				vm.driver = info.driver;
+			});
+			mui.plusReady(function() {
+				http.post('api/NowShuttle/GetNowShuttle',{}, function(msg, data){
+					vm.items = data;
+				});
+//				window.loadData = function(){
+//					page.tabNewlist(function(self,ul){
+//						var params = $(ul).data('params');
+//				        if (params) {
+//				            params = eval('(' + params + ')');
+//				        }
+//						params = params ? params : {};
+//						params = $.extend({page: vm.page}, params);
+//						http.post('api/NowShuttle/GetNowShuttle', params, function(msg, data) {
+//								vm.items = data.data;
+//							vm.page = data.cur_page + 1;
+//							if (data.count_page > data.cur_page) {
+//								self.endPullUpToRefresh(false);
+//							} else {
+//								self.endPullUpToRefresh(true);
+//							}
+//						}, function(){
+//							plus.nativeUI.closeWaiting();
+//							self.endPullUpToRefresh(false);
+//						});
+//					}, function(self,ul){
+//						var params = $(ul).data('params');
+//				        if (params) {
+//				            params = eval('(' + params + ')');
+//				        }
+//						params = params ? params : {};
+//						params = $.extend({page: 1}, params);
+//						http.post('api/NowShuttle/GetNowShuttle',params, function(msg, data) {
+//							vm.items = data.data;
+//							vm.loading = 0;
+//							vm.page = 1;
+//							if (data.count_page > data.cur_page) {
+//								self.endPullDownToRefresh(false);
+//							} else {
+//								self.endPullDownToRefresh(true);
+//							}
+//						}, function(){
+//							vm.loading = 0;
+//							plus.nativeUI.closeWaiting();
+//							self.endPullDownToRefresh(false);
+//						});
+//					});
+//				}
+//				loadData();
+//				windows.receive('update', function(info) {
+//					loadData();
+//				});
+			})
+		</script>	
+	</body>
+</html>

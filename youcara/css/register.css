@@ -1,0 +1,16 @@
+.area{margin:20px auto 0 auto}
+.mui-input-group{background:0 0}
+.mui-input-group:first-child{margin-top:4px}
+.mui-input-group .mui-input-row{height:46px;background-color:#fff}
+.mui-input-group label{font-family:"Microsoft YaHei";font-size:.8rem;width:22%;height:46px;line-height:46px;padding:0 0 0 1.5em}
+.mui-input-row label~input,.mui-input-row label~select,.mui-input-row label~textarea{font-family:"Microsoft YaHei";font-size:.8rem;width:78%;height:46px;line-height:46px}
+.mui-checkbox input[type=checkbox],.mui-radio input[type=radio]{top:6px}
+.mui-content-padded{margin-top:25px}
+.mui-btn{font-family:"Microsoft YaHei";padding:10px;height:40px;line-height:40px;padding:0;background-color:#52c4fe;border:none}
+#code{width:46%;float:left;display:inline-block;float:left;line-height:26px}
+#getCode{float:right;width:30%;text-align:right;font-size:.8rem;color:#ff9037;line-height:34px}
+#getCode:active{background:0 0}
+.login-button button{height:40px;line-height:40px;padding:0;font-size:1rem;background-color:#52c4fe;border:none}
+.mui-btn-primary:enabled:active{background-color:#F5806C;border:none}
+.login-button .registered-button{font-size:1rem;color:#fff;background-color:#50D066;border:none;margin-bottom:10px}
+.mui-input-group:after{background: transparent;}

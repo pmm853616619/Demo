@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html class="bgf3">
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+		<link rel="stylesheet" type="text/css" href="../../css/mui.min.css">
+		<link rel="stylesheet" type="text/css" href="../../css/app.css"/>
+	</head>
+	<body>
+		<!--标题 begin-->	
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">司机详情</h1>
+		</header>
+		<!--标题 end-->	
+		<div class="mt4 mui-content bgf3" id="page">
+			<!--<div  class="payment" v-if="items.price_id == 0">	
+				<img src="../../images/publish.jpg" />
+				<p class="row2">~亲，暂时没有合作司机</p>
+			</div>-->
+			<section v-else>
+				<div class="driver-info">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell mui-media">
+							<a href="javascript:;">
+								<img class="mui-media-object mui-pull-left" src="../../images/user.png">
+								<div class="mui-media-body">
+									<h1 class="name"><span id="name"></span>&ensp;&ensp;<span v-if="order_status >=4">{{mobile}}</span></h1>
+									<p class='mui-ellipsis'>
+										<em class="star-box">4.0<i class="star"><b></b></i></em>
+									</p>
+								</div>
+							</a>
+						</li>
+						<li class="quote">
+							<span>本次报价</span>
+							<em>¥<i>{{price}}</i></em>
+						</li>
+					</ul>
+				</div>
+				<div class="mui-table-view car-info">
+					<dl class="mui-table-view-cell">
+						<dt>车     型</dt>
+						<dd>{{offer_car}}</dd>
+					</dl>
+					<dl class="mui-table-view-cell">
+						<dt>车 牌 号</dt>
+						<dd id="auto_num"></dd>
+					</dl>
+					<dl class="mui-table-view-cell">
+						<dt>车辆性质</dt>
+						<dd v-if="auto_kind ==1">营运车辆</dd>
+						<dd v-if="auto_kind ==2">非营运</dd>
+						<dd v-if="auto_kind ==3">租赁</dd>
+					</dl>
+				</div>
+				<div class="mui-table-view car-info">
+					<dl class="mui-table-view-cell">
+						<dt>所属公司</dt>
+						<dd>{{auto_company}}</dd>
+					</dl>
+					<dl class="mui-table-view-cell">
+						<dt>累计接单</dt>
+						<dd>{{order_num}}单</dd>
+					</dl>
+				</div>
+				<div class="car-info car-info-pic">				
+					<ul class="mui-table-view mui-grid-view">
+						<li class="mui-table-view-cell mui-media mui-col-xs-2">
+							<img id="1" class="pimg" src="" width="50" height="50"/>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-2">
+							<img id="2" class="pimg" src="" width="50" height="50"/>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-2">
+							<img id="3" class="pimg" src="" width="50" height="50"/>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-2">
+							<img id="4" class="pimg" src="" width="50" height="50"/>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-2">
+							<img id="5" class="pimg" src="" width="50" height="50"/>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-2">
+							<img id="6" class="pimg" src="" width="50" height="50"/>
+						</li>
+					</ul>
+				</div>
+				
+				<div class="car-info pay-button default-button" v-if="order_status == 2">
+				 	<button type="button" class="mui-btn mui-btn-block" v-on:tap="setQuoted">确认合作</button>
+				</div>
+				<div class="car-info pay-button default-button" v-if="order_status == 4 && pay_scale == 0">
+				 	<button type="button" class="mui-btn mui-btn-block" v-on:tap="pay">支付订金</button>
+				</div>
+				<div class="car-info pay-button default-button" v-if="order_status == 5 && pay_scale == 20">
+				 	<button type="button" class="mui-btn mui-btn-block" v-on:tap="pay_again">支付尾款</button>
+				</div>
+				<div class="car-info pay-button default-button" v-if="order_status == 6 && commented == 0">
+				 	<button type="button" class="mui-btn mui-btn-block" v-on:tap="comment">评价</button>
+				</div>
+			</section>  
+		</div>
+		<div id="outerdiv" style="position: fixed; top: 0px; left: 0px; z-index: 2; width: 100%; height: 100%; display: none; background: rgba(0, 0, 0, 0.701961);">
+			<div id="innerdiv" style="position: absolute; top: 90.9px; left: 369.74px;">
+				<img id="bigimg" style="border: 5px solid rgb(255, 255, 255); width: 1163.52px;" src="./ex1_files/8.jpg">
+			</div>
+		</div>
+		<script src="../../js/jquery-1.9.0.min.js"></script>
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>	
+		<script>
+			function imgShow(outerdiv, innerdiv, bigimg, _this){
+				var src = _this.attr("src");
+				$(bigimg).attr("src", src);
+				$("<img/>").attr("src", src).load(function(){
+					var windowW = $(window).width();
+					var windowH = $(window).height();
+					var realWidth = this.width;
+					var realHeight = this.height;
+					var imgWidth, imgHeight;
+					var scale = 1;
+					
+					if(realHeight>windowH*scale) {
+						imgHeight = windowH*scale;
+						imgWidth = imgHeight/realHeight*realWidth;
+						if(imgWidth>windowW*scale) {
+							imgWidth = windowW*scale;
+						}
+					} else if(realWidth>windowW*scale) {
+						imgWidth = windowW*scale;
+						imgHeight = imgWidth/realWidth*realHeight;
+					} else {
+						imgWidth = realWidth;
+						imgHeight = realHeight;
+					}
+					$(bigimg).css("width",imgWidth);
+					
+					var w = (windowW-imgWidth)/2;
+					var h = (windowH-imgHeight)/2;
+					$(innerdiv).css({"top":h, "left":w});
+					$(outerdiv).fadeIn("fast");
+				});
+				$(outerdiv).click(function(){
+					$(this).fadeOut("fast");
+				});
+			}
+		</script>
+		<script>
+			$(function(){
+				$(".pimg").click(function(){
+					var _this = $(this);
+					imgShow("#outerdiv", "#innerdiv", "#bigimg", _this);
+				});
+			});
+		</script>
+		<script type="text/javascript">
+			function replacePos(strObj, pos, replacetext){
+			   var str = strObj.substr(0, pos-1) + replacetext + strObj.substring(pos, strObj.length);
+			   return str;
+			}
+			var text="abcdefg" ;
+			var mystr = replacePos(text, 3, "n");
+				mystr = replacePos(mystr, 5, "m");
+				var vm = new Vue({
+						el: '#page',
+						config:{debug:true},
+						methods:{
+							setQuoted:function(){
+								plus.nativeUI.confirm('您已成功确认，若司机15分钟内无响应，您有权取消合作！', function(e) {
+								if (e.index == 1) {
+									return false;
+								}
+								http.post('api/User/setQuoted', {price_id:vm.price_id}, function(msg,d){
+									windows.open('platform/order/get-on', {info_id:vm.order_id});
+								});
+							});
+							},
+							pay:function(){
+								windows.open('platform/pay', {info_id:vm.order_id});
+							},
+							pay_again:function(){
+								windows.open('platform/pay_again', {info_id:vm.order_id});
+							},
+							comment:function(){
+								windows.open('platform/comment', {info_id:vm.order_id,driver_id:vm.driver_id});
+							},
+						}
+				});
+				mui.plusReady(function() {
+					var self = plus.webview.currentWebview();
+					window.getInfo = function() {
+						if (self.price_id==0) {
+							vm.items = {"price_id":0};
+						} else{
+							http.post('api/User/getTravelPriceInfo', {id: self.price_id}, function(msg, info) {
+								vm.$data = info;
+								
+								$("#1").attr("src",info.idcard_image_code.upIdcard_a_image);
+								$("#2").attr("src",info.driving_image_code.driving_image_code_a);
+								$("#3").attr("src",info.driver_image_code.driver_image_code_a);
+								$("#4").attr("src",info.transport_image_code);
+								$("#5").attr("src",info.cert_image_code);
+								if(info.policy_image_code){
+									$("#6").attr("src",info.policy_image_code);
+								}								
+								var auto_num = (info.auto_num).substr(0,5);
+								var leng = (info.auto_num).length;
+								for(var i=0;i<leng-5;i++){
+									auto_num +="*";
+								}
+								$("#auto_num").html(auto_num);
+								
+								var name = (info.name).substr(0,1);
+								var length = (info.name).length;
+								for(var i=0;i<length-1;i++){
+									name +="*";
+								}
+								$("#name").html(name);						
+							}, function() {
+								windows.send('platform/quoted_info', 'update');
+		//						mui.currentWebview.close();
+							});
+						}
+					};
+					getInfo();       
+					windows.receive('update', function(info) {
+						getInfo();
+					});
+				});
+				window.addEventListener("initCart",function(event){
+					var d = event.detail;
+					location.reload(d.jus);
+		       });
+		</script>
+	</body>
+</html>

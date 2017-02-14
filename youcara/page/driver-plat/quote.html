@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html class="bgf3">
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <link href="../../css/mui.min.css" rel="stylesheet"/>
+	    <link href="../../css/app.css" rel="stylesheet"/>
+	</head>
+	<body>
+		<!--标题 begin-->	
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">司机中心 - 行程报价</h1>
+		</header>
+		<!--标题 end-->
+		<div class="mt4 mui-content driverdetail bgf3" id="page">
+			<templates v-if="task_user">
+				<div class="mui-table-view">
+					<div class="order-info-user">
+						<img src="../../images/user.png" width="60" class="user-img mui-pull-left"/>
+						<ul class="userinfo mui-pull-left">
+							<li>订单编号:<span>{{order_info.order_no}}</span></li>
+							<li>出发地:{{order_info.start_address}}</li>
+							<li>目的地:{{order_info.end_address}}</li>
+						</ul>
+					</div>
+				</div>
+				<div class="mui-table-view car-info">
+					<dl class="mui-table-view-cell">
+						<dt>任务状态</dt>
+						<dd><font color="#EF5350">{{order_info.status_txt}}</font></dd>
+					</dl>
+					<dl class="mui-table-view-cell">
+						<dt>行程需求</dt>
+						<dd>{{order_info.goback_txt}}</dd>
+					</dl>
+					<dl class="mui-table-view-cell">
+						<dt>乘车人数</dt>
+						<dd>{{order_info.people_num}}人</dd>
+					</dl>
+					<dl class="mui-table-view-cell">
+						<dt>出发时间</dt>
+						<dd>{{order_info.start_time | date 3}}</dd>
+					</dl>
+					<dl class="mui-table-view-cell" v-if="order_info.goback==1">
+						<dt>返程时间</dt>
+						<dd>{{order_info.back_time | date 3}}</dd>
+					</dl>
+					<dl class="mui-table-view-cell">
+						<dt>选择车型</dt>
+						<dd >
+							<input name="carN" type="text" value="{{order_info.auto_brand_name}}" style="border: 0px;"/>
+						</dd>
+					</dl>
+					<dl class="mui-table-view-cell">
+						<dt>行程计划</dt>
+						<dd v-if="order_info.content != false">{{order_info.content}}</dd>
+						<dd v-else>无</dd>
+					</dl>
+				</div>
+				<div class="mui-bottom travel-offer" v-if="order_info.price_id==0">
+					<dl>
+						<dt>行程总价</dt>
+						<dd>
+							<span>¥</span>
+							<input type="number" name="price"/>
+						</dd>
+					</dl>
+					<div class="mui-bottom pay-button default-button">
+					 	<button type="button" class="mui-btn mui-btn-block" v-on:tap="offer(order_info.order_id)">确认报价</button>
+					</div>
+				</div>			
+			</templates>
+			<templates v-else="true">
+				<div class="loading">数据加载中.....</div>
+			</templates>
+		</div>
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var vm = new Vue({
+				el: '#page',
+				methods: {
+					offer: function(id){
+						var auto_type_name = $("input[name='carN']").val();
+						var price = $("input[name='price']").val();
+						if(!price || price < 100) {
+							plus.nativeUI.toast('请填写合理报价！');
+							return false;
+						}
+						// 任务报价开始
+						http.post('api/Driver/setOrderPrice', {orderId:id,price:price,offer_car:auto_type_name}, function(msg){
+							windows.send('driver-plat/index', 'update');
+							plus.nativeUI.toast(msg);
+							mui.currentWebview.close();
+						});
+					},
+				}
+			});		
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				window.getInfo = function() {
+					http.post('api/Driver/getOrderInfo', {id: self.info_id}, function(msg, info) {
+						vm.$data = info;
+						// 用户
+						var authInfo = database.get('auth');
+						if (authInfo.uid == info.task_user.user_id) {
+							vm.isMyInfo = true;
+						}
+						// 司机
+						auth.getInfo(function(info) {
+							vm.driver = info.driver;
+						});
+						vm.star = 1;
+					}, function() {
+						windows.send('driver-plat/index', 'update');
+						mui.currentWebview.close();
+					});
+				};
+				getInfo();
+				windows.receive('update', function(info) {
+					getInfo();
+				});
+			});
+		</script>
+	</body>
+</html>

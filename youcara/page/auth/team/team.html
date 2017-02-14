@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../../css/mui.min.css">
+		<link rel="stylesheet" href="../../../css/app.css"/>
+		<link rel="stylesheet" href="../../../css/decline.css">
+		<style type="text/css">
+			.btn{background-color: #52C4FE;border: 1px solid #ffffff;color: #ffffff;text-align: center;font-family: "微软雅黑";font-size: 1.1em;height: 25px;padding-left: 5%;padding-right: 5%;}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">车队车辆</h1>
+			<a data-url="auth/team/team_update" class="mui-pull-right" style="margin-top:13px;">
+				<button class="btn">升级车队</button>
+			</a>
+		</header>
+		<div class="mui-content" id="page">
+			<div id="slider" class="mui-slider mui-fullscreen">
+				<div class="mui-slider-group travel-list mt2 top">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view">
+									<li class="mui-table-view-cell" v-for="item in items">
+										<div class="mui-table" >
+							                <div class="mui-table-cell mui-col-xs-9" data-url="auth/team/car_order" data-params="{info_id:{{item.motor_id}},driver_id:{{item.driver_id}}}">
+												<h1 style="height: 30px;padding-top: 2px;">
+													<a style="width: 30%;float: left;text-align: left;">
+														<span style="font-size: 28px;color: orange;">{{item.auto_seat}}</span>
+														<span style="padding-left: 5px;font-size: 18px;">座</span>
+													</a>
+													<a style="width: 30%;float: left;text-align: center;padding-top: 5px;">
+														<span style="font-size: 18px;" v-if="item.auto_type==1">轿车</span>
+														<span style="font-size: 18px;" v-if="item.auto_type==2">越野</span>
+														<span style="font-size: 18px;" v-if="item.auto_type==3">商务车</span>
+														<span style="font-size: 18px;" v-if="item.auto_type==4">中巴</span>
+														<span style="font-size: 18px;" v-if="item.auto_type==5">大巴</span>
+														<span style="font-size: 18px;" v-if="item.auto_type==6">房车</span>
+													</a>
+													<a style="width: 30%;float: right;padding-top: 5px;">
+														<span style="font-size: 18px;">{{item.car_num}}</span>
+													</a>
+												</h1>
+							                </div>						                
+							            </div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>	
+			</div>
+			<div class="mui-bottom bgff suspension release-button" data-url="auth/team/team_add">
+			 	<button type="button" class="mui-btn footerbtn" >添加车辆</button>
+			</div>
+		</div>
+		<script src="../../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script>
+	   		var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					page:1,
+					loading : 1,
+					driver:[],
+					items: []
+				}
+			});
+			// 实时获取司机认证状态
+			http.get('api/Auth/getAuth',{},function(msg, info){
+				vm.driver = info.driver;
+			});
+			mui.plusReady(function() {
+//				http.post('api/Driver/SeekMotorcade',{}, function(msg, data){
+//					vm.items = data;
+//				});	
+				window.loadData = function(){
+					page.tabNewlist(function(self,ul){
+						http.post("api/Driver/SeekMotorcade", {}, function(msg, data) {
+								if(data.length){
+									vm.items = data;
+								}else{
+									vm.items = [];
+								}	
+								vm.page = data.cur_page + 1;
+							if (data.count_page > data.cur_page) {
+								self.endPullUpToRefresh(false);
+							} else {
+								self.endPullUpToRefresh(true);
+							}
+						}, function(){
+							plus.nativeUI.closeWaiting();
+							self.endPullUpToRefresh(false);
+						});
+					}, function(self,ul){
+						http.post("api/Driver/SeekMotorcade", {}, function(msg, data) {
+								if(data.length){
+									vm.items = data;
+								}else{
+									vm.items = [];
+								}
+								vm.loading = 0;
+								vm.page = 1;
+							if (data.count_page > data.cur_page) {
+								self.endPullDownToRefresh(false);
+							} else {
+								self.endPullDownToRefresh(true);
+							}
+						}, function(){
+							vm.loading = 0;
+							plus.nativeUI.closeWaiting();
+							self.endPullDownToRefresh(false);
+						});
+					});
+				}
+				loadData();
+				windows.receive('update', function(info) {
+					loadData();
+				});
+			});
+	   	</script>
+	</body>
+</html>

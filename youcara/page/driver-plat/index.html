@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+	    <title></title>
+	    <script src="../../js/mui.min.js"></script>
+	    <link href="../../css/mui.min.css" rel="stylesheet"/>
+	    <link rel="stylesheet" href="../../css/app.css"/>
+	    <style type="text/css">
+	    	.mui-fullscreen.mui-slider .mui-slider-group {height: 65%;}
+	    	.mui-table-view:after {height: 0px;}
+			.mui-table-view:before {height: 0px;}
+			.push{height:35px;background-color: #f6f6f6;}
+			.pleft{float: left;padding-top: 10px;padding-left: 5px;font-size: 17px;}
+			.pright{float: right;}
+			.buttonStyle{margin-bottom: -22px;background:white;opacity: 0.5;color:orange;margin-top:4px;}
+			.mui-col-xs-9 {
+				width: 83%;
+			}
+			.mui-col-xs-3 {
+			    width: 20%;
+			}		
+	    </style>
+	</head>
+	<body style="background-color: #F6F6F6;">
+		<header class="mui-bar mui-bar-nav m-title">
+			<a class="">
+				<img src="../../images/switching.png" style="width:7%; float: right;padding-top: 10px;" data-url="platform/user"/>
+			</a>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">司机工作台</h1>
+		</header>
+		<div id="page" class="mui-content driversCenter">
+			<div id="slider" class="mui-slider mui-fullscreen">
+				<div style="background-color: white;">
+					
+					<div id="page1">
+						<ul class="mui-table-view mui-grid-view mui-grid-3" style="padding-right: 0px;">
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="width: 33.3%;">
+								<a href="#" style="padding-left: 0px;">
+						        	<span style="font-size: 16px;">本月接单</span>
+						        	<div class="mui-media-body" style="color: orange;font-size: 16px;" ><span id="count"></span><span>单</span></div>
+								</a>
+							</li>               
+						    <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="width: 33.3%;font-size: 16px;">
+						    	<a href="#">
+						        	<span>本月收入</span>
+						        	<div class="mui-media-body" style="color: orange;font-size: 16px;" ><span>￥</span><span id="Mmoney"></span></div>
+						    	</a>
+						    </li>
+						    <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="width: 33.3%;font-size: 16px;">
+						    	<a href="#">
+						        	<span>可用提现</span>
+						        	<div class="mui-media-body" style="color: orange;font-size: 16px;" ><span>￥</span><span id="money"></span></div>
+						    	</a>
+						    </li>
+							<img src="../../images/sijigongzuotai_03.png" style="width: 83%;margin: 5px;margin-left: 9.3%;"/>       
+						</ul>
+						<ul class="mui-table-view mui-grid-view mui-grid-3" style="padding-left: 5px;">
+							<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="width: 25%;">
+								<a data-url="driver-plat/order/confirm">
+							    	<button style="height: 60px;width: 60px; background-image: url(../../images/sijigongzuotai_07.png);background-size: 100%;border-radius: 30px;color:#FFFFFF;font-size: 15px;overflow:hidden;border: white;">
+							      		 待确认
+							      		 <div id="1" class="buttonStyle">0</div>
+							    	</button>
+						    	</a>
+							</li>             
+						    <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="width: 25%;">
+						    	<a data-url="driver-plat/order/get-on">
+							    	<button style="height: 60px;width: 60px; background-image: url(../../images/sijigongzuotai_09.png);background-size: 100%;border-radius: 30px;color:#FFFFFF;font-size: 15px;overflow:hidden;border: white;">
+							      	 	 待上车
+							      	 	 <div id="2" class="buttonStyle">0</div>
+							    	</button> 
+						    	</a>
+						    </li>
+						    <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="width: 25%;">
+						    	<a data-url="driver-plat/order/carry-out">
+							    	<button style="height: 60px;width: 60px; background-image: url(../../images/sijigongzuotai_11.png);background-size: 100%;border-radius: 30px;color:#FFFFFF;font-size: 15px;overflow:hidden;border: white;">
+							          	进行中
+							          	<div id="3" class="buttonStyle">0</div>
+							    	</button>
+						    	</a>
+						    </li>
+						    <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="width: 25%;">
+						    	<a data-url="driver-plat/order/close">
+							   		<button style="height: 60px;width: 60px; background-image: url(../../images/sijigongzuotai_13.png);background-size: 100%;border-radius: 30px;color:#FFFFFF;font-size: 15px;overflow:hidden;border: white;">
+							        	已完成
+							        	<div id="4" class="buttonStyle">0</div>
+							   		</button>
+						   		</a>
+						   </li>
+						</ul>
+					</div>
+				</div>
+				<hr style="border:none;border-top:1px solid #e1e1e1;" />
+				<div class="push">
+					<div class="pleft"  style="margin-left: 10px;">
+						等待报价
+					</div>
+					<div class="pright" data-url="driver-plat/order">
+						<input type="button" value="已报价" style="border: 0px;margin-top: 2px;"/>
+					</div>
+				</div>	
+				<hr style="border:none;border-top:1px solid #e1e1e1;" />
+				<div class="mui-slider-group travel-list mt2 top">
+					<div class="mui-slider-item mui-control-content">
+						<div class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="driver-quotes-list already-offer mui-table-view" data-params="{type:1}">							
+									<li class="mui-table-view-cell" v-if="list_t1" v-for="item in list_t1" style="padding-left:5px;">
+										<div v-if="shut[0].count >= 2" class="mui-table" data-url="auth/team/team_order" data-params="{info_id:{{item.order_id}}}">
+											<div class="mui-table-cell mui-col-xs-9">
+												<h4 class="mui-ellipsis address">{{item.start_address}} - {{item.end_address}}<span style="margin-left: 15px;"><font style="color: red;">{{item.people_num}}</font>人</span></h4>
+												<h5 class="time" style="margin-top:5px;">{{item.start_time | date 3}}<font v-if="item.goback==1"> ~ {{item.back_time | date 3}}</font><font v-else color="#ff9037" style="margin-left:10px;">单程</font></h5>
+											</div>
+											<div class="mui-table-cell mui-col-xs-3 mui-text-right" >
+												<span style="color:#F6400D;position: absolute;font-size: 13px;padding-right:7px;width:70px;">需要报价</span>
+												<span class="mui-h5">{{item.status_text}}</span><button type="button" style="background-color:#FA9B1A;height: 25px;margin-top:28px;margin-left:15px;">报价</button>
+											</div>
+										</div>	
+										
+										<div v-else class="mui-table" data-url="driver-plat/quote" data-params="{info_id:{{item.order_id}}}">
+											<div class="mui-table-cell mui-col-xs-9">
+												<h4 class="mui-ellipsis address">{{item.start_address}} - {{item.end_address}} <span>{{item.people_num}}人</span></h4>
+												<h5 class="time">{{item.start_time | date 3}}<font v-if="item.goback==1"> ~ {{item.back_time | date 3}}</font><font v-else color="#ff9037">单程</font></h5>
+											</div>
+											<div class="mui-table-cell mui-col-xs-3 mui-text-right">
+												<span class="mui-h5" >{{item.status_text}}</span><button type="button">报价</button>
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>					
+			</div>
+		</div>				
+		<script src="../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../js/app.min.js" type="text/javascript" charset="utf-8"></script>	
+	   	<script>
+	   		var vm = new Vue({
+				el: '#page1',
+				config:{debug:true},
+			});
+			mui.plusReady(function() {
+				http.post('api/Driver/MonthOrder',{},function(msg, info){
+					if(info.count == undefined || info.count==''){
+						$("#count").html(0);
+					}else{
+						$("#count").html(info.count);
+					}
+					if(info.money == undefined || info.count==''){
+						$("#Mmoney").html(0);
+					}else{
+						$("#Mmoney").html(info.money); 
+					}
+					
+					if(info.status3 == undefined || info.status3==''){
+						$("#1").html(0);
+					}else{
+						$("#1").html(info.status3); 
+					}
+					if(info.status4 == undefined || info.status4==''){
+						$("#2").html(0);
+					}else{
+						$("#2").html(info.status4); 
+					}
+					if(info.status5 == undefined || info.status5==''){
+						$("#3").html(0);
+					}else{
+						$("#3").html(info.status5); 
+					}
+					if(info.status6 == undefined || info.status6==''){
+						$("#4").html(0);
+					}else{
+						$("#4").html(info.status6); 
+					}
+				});
+				window.loadUserInfo = function(){
+					user.update(function(info) {
+						$("#money").html(info.money);
+					});
+				}
+				loadUserInfo();	
+			})
+	   	</script>
+	   	<script type="text/javascript" charset="UTF-8">
+			var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					driver:[],
+					items: [],
+					list_t1:[],
+					shut:[],
+					page: 1,
+					loading : 1
+				}
+			});
+			// 实时获取司机认证状态
+			http.get('api/Auth/getAuth',{},function(msg, info){
+				vm.driver = info.driver;
+			});
+			mui.plusReady(function() {
+				http.post('api/Driver/SeekMotorcade',{}, function(msg, data){
+					vm.shut = data;
+				});
+				window.loadData = function(){
+					page.tabNewlist(function(self,ul){
+					var params = $(ul).data('params');
+			        if (params) {
+			            params = eval('(' + params + ')');
+			        }
+					params = params ? params : {};
+					params = $.extend({page: vm.page}, params);
+					http.post("api/Driver/getOrderList", params, function(msg, data) {
+						if (data.data.length) {
+							if(params.type==1) {
+								vm.list_t1 = data.data;
+							}
+						}else{
+							if(params.type==1) {
+								vm.list_t1 = [];
+							}
+						}
+						vm.page = data.cur_page + 1;
+						if (data.count_page > data.cur_page) {
+							self.endPullUpToRefresh(false);
+						} else {
+							self.endPullUpToRefresh(true);
+						}		
+					}, function(){
+						plus.nativeUI.closeWaiting();
+						self.endPullUpToRefresh(false);
+					});
+					}, function(self,ul){
+						var params = $(ul).data('params');
+				        if (params) {
+				            params = eval('(' + params + ')');
+				        }
+						params = params ? params : {};
+						params = $.extend({page: 1}, params);
+						http.post("api/Driver/getOrderList", params, function(msg, data) {
+							if (data.data.length) {
+								if(params.type==1) {
+									vm.list_t1 = data.data;
+								}
+							}else{
+								if(params.type==1) {
+									vm.list_t1 = [];
+								}
+							}
+							vm.loading = 0;
+							vm.page = 1;
+							if (data.count_page > data.cur_page) {
+								self.endPullDownToRefresh(false);
+							} else {
+								self.endPullDownToRefresh(true);
+							}
+						}, function(){
+							vm.loading = 0;
+							plus.nativeUI.closeWaiting();
+							self.endPullDownToRefresh(false);
+						});						
+					});
+				};
+				loadData();
+				windows.receive('update', function(info) {
+					loadData();
+				});
+			});	
+			
+			mui.plusReady(function(){
+				setTimeout(function(){
+					var array = plus.webview.all();
+					if(array){
+						for(var i=0,len=array.length;i<len;i++){
+						    	console.log(array[i].getURL());
+					        }
+					}
+				},5000)
+			});
+    	</script>
+	</body>
+</html>

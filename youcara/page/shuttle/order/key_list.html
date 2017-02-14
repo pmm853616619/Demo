@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    	<link rel="stylesheet" href="../../../css/mui.min.css">
+		<link rel="stylesheet" href="../../../css/app.css"/>
+		<link rel="stylesheet" href="../../../css/decline.css">
+		
+		<script src="../../../js/lib/mui.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/lib/jquery-2.2.1.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/lib/vue.min.js" type="text/javascript" charset="utf-8"></script>
+	   	<script src="../../../js/app.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav"></a>
+			<h1 class="mui-title">一键下单</h1>
+		</header>
+		<div class="mui-content" id="page">
+			<div id="slider" class="mui-slider mui-fullscreen">
+				<div class="mui-slider-group travel-list mt2 top">
+					<div id="item1mobile" class="mui-slider-item mui-control-content mui-active">
+						<div id="scroll1" class="mui-scroll-wrapper">
+							<div class="mui-scroll">
+								<ul class="mui-table-view" data-params="{type:1}" >
+									<li class="mui-table-view-cell" v-for="item in items">
+										<div class="mui-table" >
+							                <div class="mui-table-cell mui-col-xs-9" data-url="shuttle/order/key-order" data-params="{info_id:{{item.s_id}} }">
+							                    <h4 class="mui-ellipsis"><font style="color: orange;">{{item.typles}}元</font><font style="float: right;" v-if="item.status==0">订单状态：<span style="color: orange;">未支付</span></font></h4>
+							                    <p>发单时间：{{item.create_time}}</p>
+							                    <p class="mui-h6 mui-ellipsis my-offer">任务编号：<span>{{item.order_no}}</span></p>
+							                </div>
+							            </div>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>	
+			</div>
+		</div>
+		<script>
+			var vm = new Vue({
+				el: '#page',
+				config:{debug:true},
+				data: {
+					driver:[],
+					items:[],   
+					page: 1,
+					loading : 1
+				},
+			});
+			// 实时获取司机认证状态
+			http.get('api/Auth/getAuth',{},function(msg, info){
+				vm.driver = info.driver;
+			});
+			mui.plusReady(function() {
+				http.post('api/NowShuttle/GetNowShuttle',{}, function(msg, data){
+					vm.items = data;
+				});
+			})
+		</script>
+	</body>
+</html>

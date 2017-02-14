@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html class="bgf3">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+		<link rel="stylesheet" href="../../css/mui.min.css">
+		<link rel="stylesheet" href="../../css/app.css">
+		<link rel="stylesheet" href="../../css/user.css">
+	</head>
+	<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">账户流水</h1>
+	</header>
+	<div class="mui-content account-water bgf3" id="pullrefresh">
+
+		<div class="msg-wrap" v-if="!items">
+			<div class="mui-table-cell mui-col-xs-4 pic">
+				<img src="../../images/msg3.jpg" />
+			</div>
+			<div class="mui-table-cell mui-col-xs-8 text">
+				<p>亲，暂无账户明细哦~</p>
+			</div>
+		</div>		
+		<ul id="list" class=" mui-table-view-chevron con-ul ul-3 runningwater" v-else>
+			<li class="mui-table-view-cell" v-for="item in items">
+				<span class="fl account-span">{{item.week}}<br/>{{item.date}}</span>
+				<i class="account-icon5"></i>
+				<div class="account-span2">
+					<strong v-if="item.type==0">-{{item.money}}</strong>
+					<strong v-if="item.type==1">+{{item.money}}</strong><br/>
+					<span>流水号：{{item.log_no}}</span><br/>
+					<span>说明：{{item.remark}}</span>
+				</div>
+			</li>
+		</ul>
+		
+	</div>		
+	<script src="../../js/lib/mui.min.js"></script>
+	<script src="../../js/lib/jquery-2.2.1.min.js"></script>
+	<script src="../../js/lib/vue.min.js"></script>
+	<script src="../../js/app.min.js"></script>		
+	<script>
+	var vm = new Vue({
+		el: '#pullrefresh',
+		data: {items: [],
+			page: 1,
+			loading : 1
+		}
+		});
+	page.list('api/Account/getAccountLog', true);
+	windows.receive('update', function(info) {
+		page.upList('tourism/Travel/index');
+	});
+	</script>
+	</body>
+</html>
